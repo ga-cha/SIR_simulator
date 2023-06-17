@@ -2,9 +2,14 @@
 % a script to simulate atrophy accrual due to the accumulation of misfolded alpha-syn aggregates
 % 42-region parcellation
 % load gene expressions, real atrophy, ROIsize, functional connectivity...
+
+tic
+
 load('data/42regions/workspace.mat');
 % load structural connectivity
 load('data/42regions/sc35.mat');
+
+
 
 N_regions = 42;
 v = 1;
@@ -36,3 +41,5 @@ ratio_cum = k2 * ratio_cum + k1 * (1-exp(-ratio * dt));
 
 % add all the increments across t
 simulated_atrophy = cumsum(ratio_cum, 2);
+
+toc
