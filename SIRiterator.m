@@ -15,7 +15,7 @@
 % From this we derive theortical atrophy per region for each gene and
 % correlate with empirical atrophy per region per gene.
 
-function [gene_corrs] = SIRiterator(N_regions, v, dt, T_total, GBA, genes, ...
+function [gene_corrs, sim_atrophy] = SIRiterator(N_regions, v, dt, T_total, GBA, genes, ...
     sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, ...
     trans_rate, emp_atrophy)
 
@@ -28,7 +28,9 @@ for gene = 1:width(genes)
     gene_name = genes.Properties.VariableNames{gene};
     disp(gene_name)
     %%%%% simulation ------ >>>
-    [Rnor_all, Rmis_all] = SIRsimulator(N_regions, v, dt, T_total, GBA, genes(:,gene), sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate);
+    [Rnor_all, Rmis_all] = SIRsimulator(N_regions, v, dt, T_total, GBA, ...
+        genes(:,gene), sconnLen, sconnDen, ROIsize, seed, syn_control, ...
+        init_number, prob_stay, trans_rate);
     [sim_atrophy] = SIRatrophy(Rnor_all, Rmis_all, sconnDen, N_regions, dt);
     [corr] = SIRcorr(sim_atrophy, emp_atrophy);
     gene_corrs(gene,:) = {gene_name, corr};

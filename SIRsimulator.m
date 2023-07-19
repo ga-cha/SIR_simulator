@@ -58,6 +58,8 @@ synthesis_rate = normcdf(zscore(expr));
 
 %% normal alpha-syn growth 
 % fill the network with normal proteins
+% YQZ itermax v high. With new values, seems to not hit steady state, early
+% termination
 iter_max = 1000000000;
 
 for t = 1:iter_max   

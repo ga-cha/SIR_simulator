@@ -15,12 +15,12 @@
 %
 %
 
-load('data/42regions/GC_workspace.mat');
-load('data/42regions/some_genes.mat');
+% load('data_gc/42regions/GC_workspace.mat');
+%load('data_yqz/42regions/YQZ_workspace.mat');
 % load structural connectivity
-load('data/42regions/sc35.mat');
+%load('data_yqz/42regions/sc35.mat');
 
-N_regions = 42;
+N_regions = 41;
 v = 1;
 dt = 0.01;
 T_total = 20000;
@@ -32,8 +32,8 @@ trans_rate = 1;
 seed = 40;
 % load your GBA, SNCA, sconnDen, sconnLen, ROISize ....
 
-gene_corrs = SIRiterator(N_regions, v, dt, T_total, GBA, genes, sconnLen, ...
+[gene_corrs, sim_atrophy] = SIRiterator(N_regions, v, dt, T_total, LAMP_avg, A1BG, sconnLen, ...
     sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, ...
     trans_rate, emp_atrophy);
-head(gene_corrs)
+tail(gene_corrs)
 
