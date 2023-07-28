@@ -1,5 +1,5 @@
 % SIRsimulator.m
-function [Rnor_all, Rmis_all, Rnor0, Pnor0, Pnor_all, Pmis_all] = SIRsimulator(N_regions, v, dt, T_total, GBA, expr, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate)
+function [Rnor_all, Rmis_all, Rnor0, Pnor0, Pnor_all, Pmis_all] = SIRsimulator(N_regions, v, dt, T_total, clear_gene, risk_gene, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate)
 % A function to simulate the spread of misfolded alpha-syn
 
 %% input parameters (inside parenthesis are values used in the paper)
@@ -44,9 +44,10 @@ weights = (1 - prob_stay) .* weights + prob_stay .* diag(sum(weights, 2)) ;
 weights = weights ./ repmat(sum(weights, 2), 1, N_regions);
 
 % convert gene expression scores to probabilities
-clearance_rate = normcdf(zscore(GBA));
-expr = table2array(expr);
-synthesis_rate = normcdf(zscore(expr));
+clear_gene = table2array(clear_gene);
+clearance_rate = normcdf(zscore(clear_gene));
+risk_gene = table2array(risk_gene);
+synthesis_rate = normcdf(zscore(risk_gene));
 
 % store the number of normal/misfoled alpha-syn at each time step
 [Rnor_all, Rmis_all] = deal( zeros([N_regions, T_total]) );
