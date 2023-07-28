@@ -19,9 +19,9 @@ function [gene_corrs, sim_atrophy] = SIRiterator(N_regions, v, dt, T_total, GBA,
     sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, ...
     trans_rate, emp_atrophy)
 
-gene_corrs = table('Size', [width(genes), 2], ...
-    'VariableTypes', {'string', 'double'}, ...
-    'VariableNames', {'gene', 'correlation'});
+gene_corrs = table('Size', [width(genes), 3], ...
+    'VariableTypes', {'string', 'double', 'double'}, ...
+    'VariableNames', {'gene', 'correlation', 't'});
 
 for gene = 1:width(genes)
     tic
@@ -32,8 +32,8 @@ for gene = 1:width(genes)
         genes(:,gene), sconnLen, sconnDen, ROIsize, seed, syn_control, ...
         init_number, prob_stay, trans_rate);
     [sim_atrophy] = SIRatrophy(Rnor_all, Rmis_all, sconnDen, N_regions, dt);
-    [corr] = SIRcorr(sim_atrophy, emp_atrophy);
-    gene_corrs(gene,:) = {gene_name, corr};
+    [corr, tstep] = SIRcorr(sim_atrophy, emp_atrophy);
+    gene_corrs(gene,:) = {gene_name, corr, tstep};
     toc
 end
 
