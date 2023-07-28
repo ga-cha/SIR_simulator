@@ -130,7 +130,7 @@ for t = 1:T_total
     Rnor_cleared = Rnor .* (1-exp(-clearance_rate.* dt)) ;
     Rmis_cleared = Rmis .* (1-exp(-clearance_rate.* dt))  ;
     % the probability of getting misfolded
-    gamma0 = 1 .* trans_rate ./ROIsize;
+    gamma0 = 1 .* trans_rate ./ROIsize;     
     misProb = 1 - exp( -Rmis .* gamma0 .* dt ) ; % trans_rate: default
     % number of newly infected
     N_misfolded = Rnor .* exp(-clearance_rate) .* misProb ;
