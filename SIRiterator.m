@@ -25,8 +25,8 @@ gene_corrs = table('Size', [width(risk_genes)*width(clear_genes), 4], ...
 
 for risk_gene = 1:width(risk_genes)
     %tic
-    gene_name = risk_genes.Properties.VariableNames{risk_gene};
-    disp(gene_name)
+    risk_name = risk_genes.Properties.VariableNames{risk_gene};
+    % disp(risk_name)
     for clear_gene = 1:width(clear_genes)
         %%%%% simulation ------ >>>
         clear_name = clear_genes.Properties.VariableNames{clear_gene};
@@ -35,11 +35,12 @@ for risk_gene = 1:width(risk_genes)
             init_number, prob_stay, trans_rate);
         [sim_atrophy] = SIRatrophy(Rnor_all, Rmis_all, sconnDen, N_regions, dt);
         [corr, tstep] = SIRcorr(sim_atrophy, emp_atrophy);
-        gene_corrs(risk_gene,:) = {gene_name, clear_name, corr, tstep};
+        index = risk_gene + (clear_gene-1)*width(risk_genes);
+        gene_corrs(index,:) = {risk_name, clear_name, corr, tstep};
     end
     %toc
 end
 
-gene_corrs = sortrows(gene_corrs, 2);
+gene_corrs = sortrows(gene_corrs, 3);
 
 end
