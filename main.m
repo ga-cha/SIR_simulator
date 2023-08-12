@@ -9,16 +9,12 @@
 % Monash University
 %
 % a script to simulate atrophy accrual due to the accumulation of misfolded
-% alpha-syn aggregates
-% 42-region parcellation
-% load gene expressions, real atrophy, ROIsize, functional connectivity...
-%
-%
+% protein aggregates
 
-% load('data_gc/42regions/GC_workspace.mat');
-%load('data_yqz/42regions/YQZ_workspace.mat');
+% load gene expressions, real atrophy, ROIsize, functional connectivity...
+load('data_gc/GC_workspace.mat');
 % load structural connectivity
-%load('data_yqz/42regions/sc35.mat');
+% load('data_gc/sc35.mat');
 
 N_regions = 41;
 v = 1;
@@ -32,7 +28,7 @@ trans_rate = 1;
 seed = 40;
 % load your GBA, SNCA, sconnDen, sconnLen, ROISize ....
 
-[gene_corrs, sim_atrophy] = SIRiterator(N_regions, v, dt, T_total, parvalb, genes, sconnLen, ...
+[gene_corrs, sim_atrophy] = SIRiterator(N_regions, v, dt, T_total, REEP4, LAMP5, sconnLen, ...
     sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, ...
     trans_rate, emp_atrophy);
 tail(gene_corrs)
