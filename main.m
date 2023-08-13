@@ -19,7 +19,7 @@ load('data_gc/GC_workspace.mat');
 N_regions = 41;
 v = 1;
 dt = 0.01;
-T_total = 20000;
+T_total = 10000;
 init_number = 1;
 syn_control = ROIsize;
 prob_stay = 0.5;

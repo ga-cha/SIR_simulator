@@ -13,9 +13,9 @@ n_cnxs = 306;
 n_iter = n_cnxs * 100; % as per Fornito's book chapter 10
 n_reals = 10000;
 
-for n = 1:n_reals
+for n = 4850:n_reals
     [R, S, eff] = randmio_und_den_len(sconnDen, sconnLen, n_iter);
-    writematrix(R, strcat('rewire/rewireDen', num2str(n), '.csv'));
-    writematrix(S, strcat('rewire/rewireLen', num2str(n), '.csv'));
+    writematrix(R, strcat('data_gc/rewire/rewireDen', num2str(n), '.csv'));
+    writematrix(S, strcat('data_gc/rewire/rewireLen', num2str(n), '.csv'));
 end
 
