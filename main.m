@@ -4,7 +4,7 @@
 % load gene expressions, real atrophy, ROIsize, functional connectivity...
 load('data/42regions/workspace.mat');
 % load structural connectivity
-load('data/42regions/sc35.mat');
+load('data/42regions/sc30.mat');
 
 N_regions = 42;
 v = 1;
@@ -17,8 +17,43 @@ trans_rate = 1;
 seed = N_regions;
 % load your GBA, SNCA, sconnDen, sconnLen, ROISize ....
 
+allclose = @(x, y, tol) all(abs(x-y)<tol, 'all');
+
+%%
 %%%%% simulation ------ >>>
-[Rnor_all, Rmis_all, Rnor0] = SIRsimulator(N_regions, v, dt, T_total, GBA, SNCA, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate);
+
+f1 = @() SIRsimulator(N_regions, v, dt, T_total, GBA, SNCA, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate);
+f2 = @() SIRsimulator2(N_regions, v, dt, T_total, GBA, SNCA, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate);
+
+clc
+tic
+[Rnor_all, Rmis_all, Rnor0] = f1();
+toc
+
+tic
+[Rnor_all_2, Rmis_all_2, Rnor0_2] = f2();
+toc
+
+% timeit(f1), timeit(f2)
+
+allclose(Rnor_all, Rnor_all_2, 1e-10)
+allclose(Rmis_all, Rmis_all_2, 1e-10)
+allclose(Rnor0, Rnor0_2, 1e-10)
+
+%%
+figure; 
+subplot(2, 4, 1); imagesc(Rnor_all'); title('R_{nor}');
+subplot(2, 4, 2); imagesc(Rnor_all_2'); title('R_{nor}^{test}');
+subplot(2, 4, 3); imagesc(Rmis_all'); title('R_{mis}')
+subplot(2, 4, 4); imagesc(Rmis_all_2'); title('R_{mis}^{test}');
+
+subplot(2, 4, [5 6]); imagesc(abs(Rnor_all' - Rnor_all_2')./Rnor_all'<0.1); 
+title("Where is R_{nor}^{test} within 10% of expected?")
+
+subplot(2, 4, [7 8]); imagesc(abs(Rmis_all' - Rmis_all_2')./Rmis_all'<0.1); 
+title("Where does R_{mis}^{test} within 10% of expected?")
+
+%%
 ratio = Rmis_all ./(Rnor_all + Rmis_all) ;
 ratio(Rmis_all<1) = 0; % remove possible NaNs...
 

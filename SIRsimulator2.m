@@ -19,6 +19,7 @@ function [Rnor_all, Rmis_all, Rnor0, Pnor0, Pnor_all, Pmis_all] = SIRsimulator2(
 % prob_stay: the probability of staying in the same region per unit time (0.5)
 % trans_rate: a scalar value, controlling the baseline infectivity
 
+
 %% output parameters
 % Rnor_all: A N_regions * T_total matrix, recording the number of normal
 % alpha-syn in regions
@@ -31,6 +32,8 @@ function [Rnor_all, Rmis_all, Rnor0, Pnor0, Pnor_all, Pmis_all] = SIRsimulator2(
 % Rnor0: a N_Regions * 1 vector, the population of normal agents in regions before pathogenic spreading
 % Pnor0: a N_Regions * 1 vecotr, the population of normal agents in edges before pathogenic spreading
 
+
+%%
 % make sure the diag is zero
 sconnDen(eye(N_regions)==1) = 0;
 sconnLen(eye(N_regions)==1) = 0;
@@ -63,13 +66,6 @@ sTerm = 1 ./ sconnLen .* dt .* v; sTerm(isinf(sTerm)) = 0;
 wTerm = weights .* dt;
 gamma0 = 1 .* trans_rate ./ ROIsize .* dt ; % the probability of getting misfolded
 
-
-%% TRY INITIAL CONFIG
-% % % % % tic
-% % % % % C = eye(N_regions) - diag(betaTerm) + diag(sum(wTerm,2));
-% % % % % Rnor = (C-wTerm)\alphaTerm;
-% % % % % Pnor = Rnor .* wTerm ./ sTerm;
-% % % % % toc
 
 %% normal alpha-syn growth
 % fill the network with normal proteins
@@ -112,7 +108,7 @@ title('Closed form phase 1 - MG first try');
 
 subplot(2, 2, 2); scatter(Rtest, Rtest2, [], 1:N_regions, 'filled'); lsline;
 title('Changing order of updating');
-xlabel('R_{test} v1'); ylabel('R_{test} v2')
+xlabel('R_{test} v1'); ylabel('R_{test} v2');
 
 subplot(2, 2, 3);
 scatter(Rtest, (Rtest + sum(Ptest .* sTerm,1)' - sum(Rtest.*wTerm,2)).*betaTerm + alphaTerm, [], 1:N_regions, 'filled');
