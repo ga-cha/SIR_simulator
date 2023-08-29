@@ -63,7 +63,7 @@ synthesis_rate = normcdf(zscore(SNCA));
 alphaTerm = (synthesis_rate .* syn_control) .* dt;
 betaTerm = exp(-clearance_rate.*dt);
 sTerm = 1 ./ sconnLen .* dt .* v; sTerm(isinf(sTerm)) = 0;
-wTerm = weights .* dt;
+wTerm = weights .* dt; wTermSum = 1-sum(wTerm, 2);
 gamma0 = 1 .* trans_rate ./ ROIsize .* dt ; % the probability of getting misfolded
 
 
@@ -85,8 +85,8 @@ for t = 1:iter_max
 
     Pnor = Pnor - movOut + movDrt;
     Rtmp = Rnor;
-    Rnor = Rnor + sum(movOut, 1)' - sum(movDrt, 2);
-
+    Rnor = wTermSum.*Rnor + sum(movOut, 1)'; % equivalent to (and faster than) Rnor = Rnor + sum(movOut, 1)' - sum(movDrt, 2);
+    
     %%% growth process
     Rnor = Rnor .* betaTerm + alphaTerm;
 
@@ -117,10 +117,10 @@ for t = 1:T_total
 
     % update regions and paths
     Pnor = Pnor - movOut_nor + movDrt_nor;
-    Rnor = Rnor + sum(movOut_nor, 1)' - sum(movDrt_nor, 2);
+    Rnor = wTermSum.*Rnor + sum(movOut_nor, 1)'; % Rnor = Rnor + sum(movOut_nor, 1)' - sum(movDrt_nor, 2);
 
     Pmis = Pmis - movOut_mis + movDrt_mis;
-    Rmis = Rmis + sum(movOut_mis, 1)' - sum(movDrt_mis, 2);
+    Rmis = wTermSum.*Rmis + sum(movOut_mis, 1)'; % Rmis = Rmis + sum(movOut_mis, 1)' - sum(movDrt_mis, 2);
 
     misProb = 1 - exp( -Rmis .* gamma0 ) ; % trans_rate: default
     % number of newly infected

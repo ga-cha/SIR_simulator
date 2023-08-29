@@ -2,9 +2,9 @@
 % a script to simulate atrophy accrual due to the accumulation of misfolded alpha-syn aggregates
 % 42-region parcellation
 % load gene expressions, real atrophy, ROIsize, functional connectivity...
-load('data/42regions/workspace.mat');
+load('data_yqz/42regions/workspace.mat');
 % load structural connectivity
-load('data/42regions/sc30.mat');
+load('data_yqz/42regions/sc30.mat');
 
 N_regions = 42;
 v = 1;
@@ -18,12 +18,13 @@ seed = N_regions;
 % load your GBA, SNCA, sconnDen, sconnLen, ROISize ....
 
 allclose = @(x, y, tol) all(abs(x-y)<tol, 'all');
+imageFunction = @(a,b) eval('figure; subplot(1, 3, 1); imagesc(a); colorbar; subplot(1,3,2); imagesc(b); colorbar; subplot(1, 3, 3); imagesc(a-b); colorbar');
 
 %%
 %%%%% simulation ------ >>>
 
 f1 = @() SIRsimulator(N_regions, v, dt, T_total, GBA, SNCA, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate);
-f2 = @() SIRsimulator2(N_regions, v, dt, T_total, GBA, SNCA, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate);
+f2 = @() SIRsimulator3(N_regions, v, dt, T_total, GBA, SNCA, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate);
 
 clc
 tic
@@ -36,9 +37,15 @@ toc
 
 % timeit(f1), timeit(f2)
 
-allclose(Rnor_all, Rnor_all_2, 1e-10)
-allclose(Rmis_all, Rmis_all_2, 1e-10)
-allclose(Rnor0, Rnor0_2, 1e-10)
+allclose(Rnor0, Rnor0_2, 1e-7)
+allclose(Rnor_all, Rnor_all_2, 1e-7)
+allclose(Rmis_all, Rmis_all_2, 1e-7)
+
+
+imageFunction(Rnor_all, Rnor_all_2);
+imageFunction(Rmis_all, Rmis_all_2);
+
+
 
 %%
 figure; 

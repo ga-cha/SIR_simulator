@@ -1,5 +1,5 @@
 % SIRsimulator.m
-function [Rnor_all, Rmis_all, Rnor0, Pnor0, Pnor_all, Pmis_all] = SIRsimulator2(N_regions, v, dt, T_total, GBA, SNCA, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate)
+function [Rnor_all, Rmis_all, Rnor0, Pnor0, Pnor_all, Pmis_all] = SIRsimulator3(N_regions, v, dt, T_total, GBA, SNCA, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate)
 % A function to simulate the spread of misfolded alpha-syn
 
 %% input parameters (inside parenthesis are values used in the paper)
@@ -63,7 +63,7 @@ synthesis_rate = normcdf(zscore(SNCA));
 alphaTerm = (synthesis_rate .* syn_control) .* dt;
 betaTerm = exp(-clearance_rate.*dt);
 sTerm = 1 ./ sconnLen .* dt .* v; sTerm(isinf(sTerm)) = 0;
-wTerm = weights .* dt;
+wTerm = weights .* dt; wTermSum = 1-sum(wTerm, 2);
 gamma0 = 1 .* trans_rate ./ ROIsize .* dt ; % the probability of getting misfolded
 
 
@@ -83,68 +83,18 @@ for t = 1:iter_max
     % update moving
     movOut = Pnor .* sTerm; % longer path & smaller v = lower probability of moving out of paths
 
-    Ptmp = Pnor;
     Pnor = Pnor - movOut + movDrt;
     Rtmp = Rnor;
-    Rnor = Rnor + sum(movOut, 1)' - sum(movDrt, 2);
-
+    Rnor = wTermSum.*Rnor + sum(movOut, 1)'; % equivalent to (and faster than) Rnor = Rnor + sum(movOut, 1)' - sum(movDrt, 2);
+    
     %%% growth process
-    Rnor = Rnor.*betaTerm + alphaTerm; % corresponds to Rtest2
-%     Rnor = Rnor.*betaTerm + alphaTerm + sum(movOut, 1)' - sum(movDrt, 2); % corresponds to Rtest ;
+    Rnor = Rnor .* betaTerm + alphaTerm;
 
     if abs(Rnor - Rtmp) < (1e-7 * Rtmp); break; end
 end
 
-%%
-t = tic;
-C = eye(N_regions) - diag(betaTerm) + diag(sum(wTerm,2)); Rtest2 = (C-wTerm)\alphaTerm;
-C = diag(1./betaTerm) - eye(N_regions) + diag(sum(wTerm,2)); Rtest = (C-wTerm)\(alphaTerm./betaTerm);
-Ptest = (Rtest .* wTerm) ./ sTerm; Ptest(sTerm == 0) = 0;
-fprintf('Time to estimate closed form for phase 1: %f\n', toc(t));
-
-figure; subplot(2, 2, 1); scatter(Rnor, Rtest, [], 1:N_regions, 'filled'); lsline;
-xlabel('Numerical solution, R_{nor}'); ylabel('Closed form prediction, R_{test}');
-title('Closed form phase 1 - MG first try');
-
-subplot(2, 2, 2); scatter(Rtest, Rtest2, [], 1:N_regions, 'filled'); lsline;
-title('Changing order of updating');
-xlabel('R_{test} v1'); ylabel('R_{test} v2');
-
-subplot(2, 2, 3);
-scatter(Rtest, phase1step1(Rtest, Ptest, alphaTerm, betaTerm, sTerm, wTerm, 1000), [], 1:N_regions, 'filled');
-title("Results of incrementing approximation");
-xlabel("R_{test}^{t}"); ylabel("R_{test}^{t+1}");
-
-subplot(2, 2, 4);
-scatter(Rnor, phase1step1(Rnor, Pnor, alphaTerm, betaTerm, sTerm, wTerm, 1000), [], 1:N_regions, 'filled');
-xlabel("R_{nor}^{t}"); ylabel("R_{nor}^{t+1}");
-
-
-%% diff 1
-
-Rdiff = phase1step1(Rnor, Pnor, alphaTerm, betaTerm, sTerm, wTerm, 1000); 
-[Rdiff2, ~, ~, Pdiff2] = phase1step1(Rtest, Ptest, alphaTerm, betaTerm, sTerm, wTerm, 1000);
-figure; tiledlayout(2, 3); 
-nexttile(); imagesc(Rnor); colorbar; 
-nexttile(); imagesc(Rdiff); colorbar;
-nexttile(); imagesc(Rnor - Rdiff); colorbar;
-nexttile(); imagesc(Rtest); colorbar;
-nexttile(); imagesc(Rdiff2); colorbar;
-nexttile(); imagesc(Rtest - Rdiff2); colorbar;
-
-figure; tiledlayout(2, 3); 
-nexttile(); imagesc(Pnor); colorbar; 
-nexttile(); imagesc(Ptmp); colorbar;
-nexttile(); imagesc(Pnor - Ptmp); colorbar;
-nexttile(); imagesc(Ptest); colorbar; 
-nexttile(); imagesc(Pdiff2); colorbar;
-nexttile(); imagesc(Ptest - Pdiff2); colorbar;
 
 %% misfolded protein spreading process
-
-% % % % % % % % % % % % % % % % 
-Rnor = Rtest; Pnor = Ptest; % to use values from closed form calculation
-% % % % % % % % % % % % % % % % 
 Pnor0 = Pnor;
 Rnor0 = Rnor;
 
@@ -167,10 +117,10 @@ for t = 1:T_total
 
     % update regions and paths
     Pnor = Pnor - movOut_nor + movDrt_nor;
-    Rnor = Rnor + sum(movOut_nor, 1)' - sum(movDrt_nor, 2);
+    Rnor = wTermSum.*Rnor + sum(movOut_nor, 1)'; % Rnor = Rnor + sum(movOut_nor, 1)' - sum(movDrt_nor, 2);
 
     Pmis = Pmis - movOut_mis + movDrt_mis;
-    Rmis = Rmis + sum(movOut_mis, 1)' - sum(movDrt_mis, 2);
+    Rmis = wTermSum.*Rmis + sum(movOut_mis, 1)'; % Rmis = Rmis + sum(movOut_mis, 1)' - sum(movDrt_mis, 2);
 
     misProb = 1 - exp( -Rmis .* gamma0 ) ; % trans_rate: default
     % number of newly infected
@@ -190,7 +140,3 @@ for t = 1:T_total
 
 end
 end
-
-
-
-
