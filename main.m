@@ -11,25 +11,31 @@
 % a script to simulate atrophy accrual due to the accumulation of misfolded
 % protein aggregates
 
-% load gene expressions, real atrophy, ROIsize, functional connectivity...
-load('data_gc/GC_workspace.mat');
-% load structural connectivity
-% load('data_gc/sc35.mat');
+function [] = main(clear_genes)
+    % load gene expressions, real atrophy, ROIsize, functional connectivity...
+    load('data_gc/GC_workspace.mat', 'genes', 'sconnDen', 'sconnLen', ...
+        'ROIsize', 'emp_atrophy');
+    
+    N_regions = 41;
+    v = 1;
+    dt = 0.01;
+    T_total = 10000;
+    init_number = 1;
+    syn_control = ROIsize;
+    prob_stay = 0.5;
+    trans_rate = 1;
+    % init seed to hip
+    seed = 40;
+    
+    % clearance and risk genes are input as gene x region expression tables
+    clear_genes = genes(:, clear_genes);
+    risk_genes = genes;
+    
+    [gene_corrs, ~] = SIRiterator(N_regions, v, dt, T_total, ...
+        clear_genes, risk_genes, sconnLen, sconnDen, ROIsize, seed, ...
+        syn_control, init_number, prob_stay, trans_rate, emp_atrophy);
+    
+    % tail(gene_corrs)
+    writetable(gene_corrs, 'results_gc/gene_corrs.csv', 'WriteMode', 'Append')
 
-N_regions = 41;
-v = 1;
-dt = 0.01;
-T_total = 10000;
-init_number = 1;
-syn_control = ROIsize;
-prob_stay = 0.5;
-trans_rate = 1;
-% init seed to hip
-seed = 40;
-% load your GBA, SNCA, sconnDen, sconnLen, ROISize ....
-
-[gene_corrs, sim_atrophy] = SIRiterator(N_regions, v, dt, T_total, REEP4, LAMP5, sconnLen, ...
-    sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, ...
-    trans_rate, emp_atrophy);
-tail(gene_corrs)
-writetable(gene_corrs, "gene_corrs_parvalb_clear.csv")
+end
