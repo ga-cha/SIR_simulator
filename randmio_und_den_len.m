@@ -1,15 +1,5 @@
-function [R,S,eff]=randmio_und_den_len(R, S, ITER)
+function [R,S,eff]=randmio_und_den(R, ITER)
 % RANDMIO_UND     Random graph with preserved degree distribution
-% Adapted from Brain Connectivity Toolbox; original as below
-%
-% Gabriella Chan 13/08/2023
-% gabriella.chan@monash.edu
-% Monash University
-%
-% Takes in two input graphs: a region-by-region density connectivity matrix
-% (R) and a region-by-region length connectivity matrix (S).
-% Randomisation functions exactly as originally described to randomise R.
-% After success, same transformation is applied to S.
 
 %
 %   R = randmio_und(W,ITER);
