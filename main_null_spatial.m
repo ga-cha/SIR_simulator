@@ -43,11 +43,11 @@ nulls = 1000;
 null_corrs = zeros(nulls,1);
 
 for i = 1:nulls
-    [null_corrs(i), ~] = SIRcorr(sim_atrophy, null_atrophy(i), T_total);
+    [null_corrs(i), ~] = SIRcorr(sim_atrophy, null_atrophy(i, :), T_total);
 end
 
 % experimental atrophy correlation
-exp_corr = SIRcorr(sim_atrophy, emp_atrophy, T_total);
+[exp_corr, ~] = SIRcorr(sim_atrophy, emp_atrophy, T_total);
 
 % p-value
 [h,p]=ttest2(exp_corr,null_corrs);
