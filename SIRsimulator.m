@@ -1,14 +1,22 @@
 % SIRsimulator.m
-function [Rnor_all, Rmis_all, Rnor0, Pnor0, Pnor_all, Pmis_all] = SIRsimulator(N_regions, v, dt, T_total, GBA, SNCA, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate)
+%
+% Package based off https://github.com/yingqiuz/SIR_simulator
+% Zheng, Ying-Qiu, et al. PLoS biol. 17.11 (2019): e3000495.
+%
+% Mehul Gajwani 27/08/23
+% mehul.gajwani1@monash.edu
+
+function [Rnor_all, Rmis_all, Rnor0, Pnor0, Pnor_all, Pmis_all] = SIRsimulator(N_regions, v, dt, T_total, clear_gene, risk_gene, sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, trans_rate)
 % A function to simulate the spread of misfolded alpha-syn
+
 
 %% input parameters (inside parenthesis are values used in the paper)
 % N_regions: number of regions (42)
 % v: speed (1)
 % dt: time step (0.01)
 % T_total: total time steps (10000)
-% GBA: GBA gene expression (zscore, N_regions * 1 vector) (empirical GBA expression)
-% SNCA: SNCA gene expression after normalization (zscore, N_regions * 1 vector) (empirical SNCA expression)
+% clear_gene: clear_gene gene expression (zscore, N_regions * 1 vector) (empirical clear_gene expression)
+% risk_gene: risk_gene gene expression after normalization (zscore, N_regions * 1 vector) (empirical risk_gene expression)
 % sconnLen: structural connectivity matrix (length) (estimated from HCP data)
 % sconnDen: structural connectivity matrix (strength) (estimated from HCP data)
 % ROIsize: region sizes (voxel counts)
@@ -48,8 +56,10 @@ weights = weights ./ repmat(sum(weights, 2), 1, N_regions);
 weights(eye(N_regions, 'logical')) = 0;
 
 % convert gene expression scores to probabilities
-clearance_rate = normcdf(zscore(GBA));
-synthesis_rate = normcdf(zscore(SNCA));
+clear_gene = table2array(clear_gene);
+clearance_rate = normcdf(zscore(clear_gene));
+risk_gene = table2array(risk_gene);
+synthesis_rate = normcdf(zscore(risk_gene));
 
 % store the number of normal/misfoled alpha-syn at each time step
 [Rnor_all, Rmis_all] = deal( zeros([N_regions, T_total]) );
@@ -69,8 +79,9 @@ gamma0 = 1 .* trans_rate ./ ROIsize .* dt ; % the probability of getting misfold
 
 %% normal alpha-syn growth
 % fill the network with normal proteins
+% this should take just over 20000 steps
 iter_max = 1000000000;
-disp('normal alpha synuclein growth');
+% disp('normal alpha synuclein growth');
 for t = 1:iter_max
     %%% moving process
     % regions towards paths
@@ -100,7 +111,7 @@ Rnor0 = Rnor;
 
 % inject misfolded alpha-syn
 Rmis(seed) = init_number;
-disp('misfolded alpha synuclein spreading');
+% disp('misfolded alpha synuclein spreading');
 for t = 1:T_total
     %%% moving process
     % normal proteins: region -->> paths
@@ -137,6 +148,5 @@ for t = 1:T_total
     % paths
     %Pnor_ave(:, :, t) = Pnor;
     %Pmis_ave(:, :, t) = Pmis;
-
 end
 end

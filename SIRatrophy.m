@@ -4,8 +4,10 @@
 % gabriella.chan@monash.edu
 % Monash University
 %
-% 
-%
+% We take normal and misfolded protein expression over time and return
+% simulated atrophy. Atrophy may occur as the result of misfolded protein
+% accumulation, or deafferentiation.
+% Simulated atrophy is returned as atrophy per region per timepoint
 %
 
 function [sim_atrophy] = SIRatrophy(Rnor_all, Rmis_all, sconnDen, N_regions, dt)
