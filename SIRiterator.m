@@ -15,30 +15,34 @@
 % From this we derive theortical atrophy per region for each gene and
 % correlate with empirical atrophy per region per gene.
 
-function [gene_corrs, sim_atrophy] = SIRiterator(N_regions, v, dt, T_total, clear_genes, risk_genes, ...
-    sconnLen, sconnDen, ROIsize, seed, syn_control, init_number, prob_stay, ...
-    trans_rate, emp_atrophy)
+function [gene_corrs, sim_atrophy] = SIRiterator(N_regions, v, dt, ...
+    T_total, clear_genes, risk_genes, sconnLen, sconnDen, ROIsize, ...
+    seed, syn_control, init_number, prob_stay, trans_rate, emp_atrophy)
 
 gene_corrs = table('Size', [width(risk_genes)*width(clear_genes), 4], ...
     'VariableTypes', {'string', 'string', 'double', 'double'}, ...
     'VariableNames', {'risk gene', 'clearance gene', 'correlation', 't'});
 
+index = 1;
 for risk_gene = 1:width(risk_genes)
-    %tic
+    % tic
     risk_name = risk_genes.Properties.VariableNames{risk_gene};
-    % disp(risk_name)
     for clear_gene = 1:width(clear_genes)
-        %%%%% simulation ------ >>>
         clear_name = clear_genes.Properties.VariableNames{clear_gene};
-        [Rnor_all, Rmis_all] = SIRsimulator(N_regions, v, dt, T_total, clear_genes(:,clear_gene), ...
-            risk_genes(:,risk_gene), sconnLen, sconnDen, ROIsize, seed, syn_control, ...
+        if strcmp(clear_name, risk_name)
+            continue
+        end
+        %%%%% simulation ------ >>>
+        [Rnor_all, Rmis_all] = SIRsimulator(N_regions, v, dt, T_total, ...
+            clear_genes(:,clear_gene), risk_genes(:,risk_gene), ...
+            sconnLen, sconnDen, ROIsize, seed, syn_control, ...
             init_number, prob_stay, trans_rate);
         [sim_atrophy] = SIRatrophy(Rnor_all, Rmis_all, sconnDen, N_regions, dt);
-        [corr, tstep] = SIRcorr(sim_atrophy, emp_atrophy);
-        index = risk_gene + (clear_gene-1)*width(risk_genes);
+        [corr, tstep] = SIRcorr(sim_atrophy, emp_atrophy, T_total);
         gene_corrs(index,:) = {risk_name, clear_name, corr, tstep};
+        index = index + 1;
     end
-    %toc
+    % toc
 end
 
 gene_corrs = sortrows(gene_corrs, 3);
