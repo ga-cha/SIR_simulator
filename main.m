@@ -11,7 +11,7 @@
 % a script to simulate atrophy accrual due to the accumulation of misfolded
 % protein aggregates
 
-function [] = main(clear_genes)
+function [] = main(clear_gene)
     % load gene expressions, real atrophy, ROIsize, functional connectivity...
     load('data_gc/GC_workspace.mat', 'genes', 'sconnDen', 'sconnLen', ...
         'ROIsize', 'emp_atrophy');
@@ -28,7 +28,11 @@ function [] = main(clear_genes)
     seed = 40;
     
     % clearance and risk genes are input as gene x region expression tables
-    clear_genes = genes(:, clear_genes);
+    try
+        clear_genes = genes(:, clear_gene);
+    catch 
+        return;
+    end
     risk_genes = genes;
     
     [gene_corrs, ~] = SIRiterator(N_regions, v, dt, T_total, ...
