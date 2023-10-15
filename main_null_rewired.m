@@ -33,8 +33,8 @@ trans_rate = 1;
 % initialise seed to hip
 seed = 40;
 % single risk/clearance gene pair input, as tables
-clear_genes = genes(:, 'REEP4');
-risk_genes = LAMP5;
+clear_gene = genes(:, 'GNLY');
+risk_gene = genes(:, 'EHMT2');
 nulls = 1000;
 null_corrs = zeros(nulls,1);
 
@@ -44,14 +44,14 @@ for i = 1:nulls
     sconnDen_sim = readmatrix(f);
     sconnDen_sim = sconnDen_sim(1:N_regions,1:N_regions);
     [gene_corrs, ~] = SIRiterator(N_regions, v, dt, T_total, ...
-        clear_genes, risk_genes, sconnLen_sim, sconnDen_sim, ROIsize, seed, ...
+        clear_gene, risk_gene, sconnLen_sim, sconnDen_sim, ROIsize, seed, ...
         syn_control, init_number, prob_stay, trans_rate, emp_atrophy);
     null_corrs(i) = gene_corrs.correlation;
 end
 
 % experimental atrophy
 [gene_corrs, ~] = SIRiterator(N_regions, v, dt, T_total, ...
-    clear_genes, risk_genes, sconnLen, sconnDen, ROIsize, seed, ...
+    clear_gene, risk_gene, sconnLen, sconnDen, ROIsize, seed, ...
     syn_control, init_number, prob_stay, trans_rate, emp_atrophy);
 exp_corr = gene_corrs.correlation;
 % p-value
