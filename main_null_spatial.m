@@ -15,6 +15,7 @@
 
 % load gene expressions, real atrophy, ROIsize, functional connectivity...
 load('data_gc/GC_workspace.mat');
+load('data_gc/spatial/null_atrophy.mat');
 
 N_regions = 41;
 v = 1;
@@ -27,8 +28,8 @@ trans_rate = 1;
 % init seed to hip
 seed = 40;
 % single risk/clearance gene pair input, as tables
-clear_gene = genes(:, 'REEP4');
-risk_gene = LAMP5;
+clear_gene = genes(:, 'GNLY');
+risk_gene = genes(:, 'EHMT2');
 
 % First we generate simulated atrophy 
 [Rnor_all, Rmis_all] = SIRsimulator(N_regions, v, dt, T_total, ...
