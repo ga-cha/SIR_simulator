@@ -28,8 +28,8 @@ trans_rate = 1;
 % init seed to hip
 seed = 40;
 % single risk/clearance gene pair input, as tables
-clear_gene = genes(:, 'GNLY');
-risk_gene = genes(:, 'EHMT2');
+clear_gene = genes(:, 'REEP4');
+risk_gene = genes(:, 'LAMP5');
 
 % First we generate simulated atrophy 
 [Rnor_all, Rmis_all] = SIRsimulator(N_regions, v, dt, T_total, ...
@@ -62,8 +62,8 @@ w95=(q95-q3)/(2*q3);
 
 figure;
 hold on
-boxplot(null_corrs, 'whisker', w95)
-swarmchart(ones(length(null_corrs),1),null_corrs,10,'jitter','on')
+boxplot(null_corrs, 'whisker', 0.7193)
+swarmchart(ones(length(null_corrs),1),null_corrs,5,'MarkerEdgeAlpha',0.5,'jitter','on')
 ylim([0 0.85])
-scatter(1,exp_corr,20,"filled")
+plot(1,exp_corr,'_','LineWidth', 1.2,'MarkerSize',35)
 hold off
