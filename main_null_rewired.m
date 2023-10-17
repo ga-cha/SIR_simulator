@@ -17,10 +17,13 @@
 % load gene expressions, real atrophy, ROIsize, functional connectivity...
 load('data_gc/GC_workspace.mat');
 
-% Load simulated structural connectivity, since Maslov-Sneppen may connect
-% unconnected nodes. Described in greater detail in Zheng PLoS biol. (2019)
+% Load simulated structural connectivity lengths.
+% Described in greater detail in Zheng PLoS biol. (2019)
 % The implementation is given in SIR_utils/null_ROI_dist.m
 load('data_gc/sconnLen_sim.mat');
+% Load simulated structural connectivity density. Derivation in
+% null_rewire.m, from BCT implementation of Maslov Sneppen
+load('data_gc/rewire/sconnDen_sim.mat');
 
 N_regions = 41;
 v = 1;
@@ -33,18 +36,14 @@ trans_rate = 1;
 % initialise seed to hip
 seed = 40;
 % single risk/clearance gene pair input, as tables
-clear_gene = genes(:, 'GNLY');
-risk_gene = genes(:, 'EHMT2');
+clear_gene = genes(:, 'REEP4');
+risk_gene = genes(:, 'LAMP5');
 nulls = 1000;
 null_corrs = zeros(nulls,1);
 
-% initialise the array
 for i = 1:nulls
-    f = strcat('data_gc/rewire/rewire', num2str(i), '.csv');
-    sconnDen_sim = readmatrix(f);
-    sconnDen_sim = sconnDen_sim(1:N_regions,1:N_regions);
     [gene_corrs, ~] = SIRiterator(N_regions, v, dt, T_total, ...
-        clear_gene, risk_gene, sconnLen_sim, sconnDen_sim, ROIsize, seed, ...
+        clear_gene, risk_gene, sconnLen_sim, sconnDen_sim(:,:,i), ROIsize, seed, ...
         syn_control, init_number, prob_stay, trans_rate, emp_atrophy);
     null_corrs(i) = gene_corrs.correlation;
 end
@@ -67,7 +66,7 @@ w95=(q95-q3)/(2*q3);
 figure;
 hold on
 boxplot(null_corrs, 'whisker', 0.7193)
-swarmchart(ones(length(null_corrs),1),null_corrs,10,'jitter','on')
+swarmchart(ones(length(null_corrs),1),null_corrs,5,'MarkerEdgeAlpha',0.5,'jitter','on')
 ylim([0 0.85])
-scatter(1,exp_corr,20,"filled")
+plot(1,exp_corr,'_','LineWidth', 1.2,'MarkerSize',35)
 hold off

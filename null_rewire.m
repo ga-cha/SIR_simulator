@@ -11,10 +11,11 @@
 load('data_gc/GC_workspace.mat');
 % n_cnxs = 306; as per BCT: (each edge is rewired approximately ITER times)
 n_iter = 100; % as per Fornito's book chapter 10
-n_reals = 10000; % this is wrong lol
+n_reals = 1000;
+
+sconnDen_sim = zeros(size(sconnDen));
 
 for n = 1:n_reals
-    [R, eff] = randmio_und(sconnDen, n_iter);
-    writematrix(R, strcat('data_gc/rewire/rewireDen', num2str(n), '.csv'));
+    [sconnDen_sim(:,:,n), eff] = randmio_und(sconnDen, n_iter);
 end
 
