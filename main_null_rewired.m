@@ -15,15 +15,14 @@
 % plot on a box-and-whiskers plot.
 
 % load gene expressions, real atrophy, ROIsize, functional connectivity...
-load('data_gc/GC_workspace.mat');
-
-% Load simulated structural connectivity lengths.
-% Described in greater detail in Zheng PLoS biol. (2019)
+% simulated structural connectivity lengths are described in greater 
+% detail in Zheng PLoS biol. (2019)
 % The implementation is given in SIR_utils/null_ROI_dist.m
-load('data_gc/sconnLen_sim.mat');
-% Load simulated structural connectivity density. Derivation in
+load('data/GC_workspace.mat');
+
+% Load simulated structural connectivity density. Derived in
 % null_rewire.m, from BCT implementation of Maslov Sneppen
-load('data_gc/rewire/sconnDen_sim.mat');
+load('data/rewire/sconnDen_sim.mat');
 
 N_regions = 41;
 v = 1;
