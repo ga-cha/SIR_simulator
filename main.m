@@ -39,7 +39,8 @@ function [] = main(clear_gene)
         clear_genes, risk_genes, sconnLen, sconnDen, ROIsize, seed, ...
         syn_control, init_number, prob_stay, trans_rate, emp_atrophy);
     
-    tail(gene_corrs)
-    % writetable(gene_corrs, 'results_gc/gene_corrs.csv', 'WriteMode', 'Append')
+    % tail(gene_corrs)
+    % writetable(gene_corrs, 'results/gene_corrs.csv', 'WriteMode', 'Append')
+    writetable(gene_corrs, 'results/gene_corrs.csv')
 
 end
