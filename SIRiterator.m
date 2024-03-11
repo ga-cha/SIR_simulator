@@ -15,36 +15,34 @@
 % From this we derive theortical atrophy per region for each gene and
 % correlate with empirical atrophy per region per gene.
 
-function [gene_corrs, sim_atrophy] = SIRiterator(N_regions, v, dt, ...
+function [gene_corrs, index] = SIRiterator(gene_corrs, index, col3, N_regions, v, dt, ...
     T_total, clear_genes, risk_genes, sconnLen, sconnDen, ROIsize, ...
-    seed, syn_control, init_number, prob_stay, trans_rate, emp_atrophy)
+    seed, init_number, prob_stay, trans_rate, emp_atrophy_bgs, ...
+    emp_atrophy_cobre, emp_atrophy_hcpep, emp_atrophy_stages, plotting)
 
-gene_corrs = table('Size', [width(risk_genes)*width(clear_genes), 4], ...
-    'VariableTypes', {'string', 'string', 'double', 'double'}, ...
-    'VariableNames', {'risk gene', 'clearance gene', 'correlation', 't'});
-
-index = 1;
-for risk_gene = 1:width(risk_genes)
-    % tic
-    risk_name = risk_genes.Properties.VariableNames{risk_gene};
-    for clear_gene = 1:width(clear_genes)
-        clear_name = clear_genes.Properties.VariableNames{clear_gene};
-        if strcmp(clear_name, risk_name)
-            continue
+    for risk_gene = 1:width(risk_genes)
+        % tic
+        risk_name = risk_genes.Properties.VariableNames{risk_gene};
+        for clear_gene = 1:width(clear_genes)
+            clear_name = clear_genes.Properties.VariableNames{clear_gene};
+            if strcmp(clear_name, risk_name)
+                continue
+            end
+            %%%%% simulation ------ >>>
+            [Rnor_all, Rmis_all] = SIRsimulator(N_regions, v, dt, T_total, ...
+                clear_genes(:,clear_gene), risk_genes(:,risk_gene), sconnLen, ...
+                sconnDen, ROIsize, seed, init_number, prob_stay, trans_rate, plotting);
+            [sim_atrophy] = SIRatrophy(Rnor_all, Rmis_all, ROIsize, sconnDen, ...
+                N_regions, dt, plotting);
+            [bgs_max, cobre_max, hcpep_max, stages_max, tstep, ~] = SIRcorr(sim_atrophy, emp_atrophy_bgs, ...
+                emp_atrophy_cobre, emp_atrophy_hcpep, emp_atrophy_stages, ...
+                risk_name, clear_name, plotting);
+            % avg_max = mean(cat (1,bgs_max, cobre_max, hcpep_max, stages_max));
+            end_max = mean(cat (1,bgs_max, cobre_max));
+            % Note col3 is the test variable; e.g. seed, null #, etc
+            gene_corrs(index,:) = {risk_name, clear_name, col3, end_max, bgs_max, cobre_max, hcpep_max, stages_max, tstep};
+            index = index + 1;
         end
-        %%%%% simulation ------ >>>
-        [Rnor_all, Rmis_all] = SIRsimulator(N_regions, v, dt, T_total, ...
-            clear_genes(:,clear_gene), risk_genes(:,risk_gene), ...
-            sconnLen, sconnDen, ROIsize, seed, syn_control, ...
-            init_number, prob_stay, trans_rate);
-        [sim_atrophy] = SIRatrophy(Rnor_all, Rmis_all, sconnDen, N_regions, dt);
-        [corr, tstep] = SIRcorr(sim_atrophy, emp_atrophy, T_total);
-        gene_corrs(index,:) = {risk_name, clear_name, corr, tstep};
-        index = index + 1;
+        % toc
     end
-    % toc
-end
-
-gene_corrs = sortrows(gene_corrs, 3);
-
 end
