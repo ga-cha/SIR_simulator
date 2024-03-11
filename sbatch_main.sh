@@ -1,33 +1,36 @@
 #!/bin/bash
 
+# Check if an input CSV file is provided as an argument
 if [ "$#" -ne 1 ]; then
-	echo "Usage: $0 input.csv"
-	exit 1
+  echo "Usage: $0 clearance_genes.csv"
+  exit 1
 fi
 
 input_csv="$1"
 output_log="slurm_output.log"
 
+# Check if the input CSV file exists
 if [ ! -e "$input_csv" ]; then
-	echo "Input csv not found: $input_csv"
-	exit 1
+  echo "Input CSV file not found: $input_csv"
+  exit 1
 fi
 
+# Loop through each line in the CSV file
 while IFS=',' read -r clear_gene; do
-	sbatch --output="$output_log"<<EOL
+  sbatch --output="$output_log"<<EOL
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=24:00:00
+#SBATCH --time=8:00:00
 #SBATCH --job-name=sir-simulator
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=gabriella.chan@monash.edu
 
 # Load MATLAB module
-module load matlab/r2023a
+module load matlab/r2023b
 
-# Run main with each clearance gene
-# clear_gene_tr="$(echo -e "${clear_gene}" | tr -d '[:space:]')"
-matlab -nodisplay -r "main('$clear_gene'); exit;"
+# Run the MATLAB script with the arguments
+matlab -nodesktop -nodisplay -nosplash -r "main(\"$clear_gene\"); exit;"
 EOL
 done < "$input_csv"
+
