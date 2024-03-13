@@ -15,11 +15,13 @@
 function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
     
     % load gene expressions, real atrophy, ROIsize, functional connectivity...
-    load('data/workspace_DK_pca.mat', 'genes', 'sconnDen', 'sconnLen', ...
+    load('data/workspace_DK_pca.mat', 'genes', 'clear_score', 'risk_score', 'sconnDen', 'sconnLen', ...
         'ROIsize', 'emp_atrophy_bgs', 'emp_atrophy_cobre', 'emp_atrophy_hcpep', ...
         'emp_atrophy_stages');
     % load('data/workspace_DK_PD.mat', 'pd_atrophy_reordered', 'genes');
 
+    all_clears = clear_score;
+    all_risks = risk_score;
 
     % Input clearance genes and risk genes as string arrays
     
@@ -28,26 +30,26 @@ function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
 
     % if there are no input risk genes, all genes are taken as risk genes
     if ~exist("risk_genes_in", "var")
-        risk_genes_in = string(genes.Properties.VariableNames);
+        risk_genes_in = string(all_risks.Properties.VariableNames);
     end
     if ~exist("debugging", "var")
         debugging = false;
         plotting = false;
     end
 
-    clear_genes_bool = ismember(clear_genes_in, genes.Properties.VariableNames);
+    clear_genes_bool = ismember(clear_genes_in, all_clears.Properties.VariableNames);
     valid_clear_genes = clear_genes_in(clear_genes_bool);
-    clear_genes = genes(:, valid_clear_genes);
+    clear_genes = all_clears(:, valid_clear_genes);
 
-    risk_genes_bool = ismember(risk_genes_in, genes.Properties.VariableNames);
+    risk_genes_bool = ismember(risk_genes_in, all_risks.Properties.VariableNames);
     valid_risk_genes = risk_genes_in(risk_genes_bool);
-    risk_genes = genes(:,valid_risk_genes);
+    risk_genes = all_risks(:,valid_risk_genes);
 
     if isempty(clear_genes) || isempty(risk_genes)
         disp(risk_genes_in)
-        disp(genes(:, risk_genes_in))
+        disp(all_risks(:, risk_genes_in))
         disp(clear_genes_in)
-        disp(genes(:,clear_genes_in))
+        disp(all_clears(:,clear_genes_in))
         disp('No valid gene combinations')
         return
     end

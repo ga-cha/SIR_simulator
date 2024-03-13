@@ -36,6 +36,7 @@ function [bgs_max, cobre_max, hcpep_max, stages_max, tstep, err] = SIRcorr(sim_a
         plot(sim_atrophy(:, tstep), p);
 
         t = title(['Spearman correlation = ', num2str(bgs_max)]);
+        % t = title(['Pearson correlation = ', num2str(bgs_max)]);
         t.FontWeight = 'normal';
         xlabel({"simulated atrophy", "risk gene: " + risk_name, "clearance gene: " + clear_name})
         ylabel('empirical atrophy (z score)')
@@ -53,8 +54,8 @@ function [max_corr, tstep] = corry(sim_atrophy, emp_atrophy, plotting, risk_name
         xlabel("t")
         ylabel("correlation")
     end
-    % The first 500 timepoints before spreading heavily weight the seed
+    % The first 1000 timepoints before spreading heavily weight the seed
     % region. Truncated for checking 
     [max_corr, tstep] = max(corrs(1001:end));
-    tstep = tstep + 500;
+    tstep = tstep + 1000;
 end
