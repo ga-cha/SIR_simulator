@@ -21,7 +21,7 @@ while IFS=',' read -r clear_gene; do
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=8:00:00
+#SBATCH --time=12:00:00
 #SBATCH --job-name=sir-simulator
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=gabriella.chan@monash.edu
@@ -30,7 +30,7 @@ while IFS=',' read -r clear_gene; do
 module load matlab/r2023b
 
 # Run the MATLAB script with the arguments
-matlab -nodesktop -nodisplay -nosplash -r "main(\"$clear_gene\"); exit;"
+matlab -nodesktop -nodisplay -nosplash -r "main(\"$clear_gene\", 'results/gene_corrs_240430_ubq_strict.csv'); exit;"
 EOL
 done < "$input_csv"
 
