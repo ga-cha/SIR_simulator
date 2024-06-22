@@ -14,7 +14,7 @@ function [bgs_max, cobre_max, hcpep_max, stages_max, tstep, err] = SIRcorr(sim_a
     emp_atrophy_cobre, emp_atrophy_hcpep, emp_atrophy_stages, risk_name, clear_name, plotting)
 
     % Take log2fold change 
-    % sim_atrophy = real(log2(sim_atrophy));
+    sim_atrophy = real(log2(sim_atrophy));
 
     % Calculate position and value of max correlation coefficient
     [bgs_max, tstep] = corry(sim_atrophy, emp_atrophy_bgs, plotting, risk_name, clear_name);

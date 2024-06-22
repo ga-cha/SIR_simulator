@@ -12,16 +12,16 @@
 % protein aggregates, and correlates this with empirical data           
 
 
-function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
-    
-    % load gene expressions, real atrophy, ROIsize, functional connectivity...
-    load('data/workspace_DK_pca.mat', 'genes', 'clear_score', 'risk_score', 'sconnDen', 'sconnLen', ...
-        'ROIsize', 'emp_atrophy_bgs', 'emp_atrophy_cobre', 'emp_atrophy_hcpep', ...
-        'emp_atrophy_stages');
-    % load('data/workspace_DK_PD.mat', 'pd_atrophy_reordered', 'genes');
+function [] = main(clear_genes_in, out_file, risk_genes_in, debugging, plotting)
 
-    all_clears = clear_score;
-    all_risks = risk_score;
+    load('data/workspace_s332.mat', 'genes', 'fact_den_corr', 'fact_len_35', ...
+        'ROIsize', 'bgs', 'cobre', 'hcpep', 'stages');
+    sconnDen = fact_den_corr;
+    sconnLen = fact_len_35;
+    % bgs = pd_atrophy;
+
+    all_clears = genes;
+    all_risks = genes(:,:);
 
     % Input clearance genes and risk genes as string arrays
     
@@ -54,7 +54,7 @@ function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
         return
     end
     
-    N_regions = 41;
+    N_regions = length(ROIsize);
     v = 1;
     dt = 0.01;
     T_total = 20000;
@@ -63,7 +63,7 @@ function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
     trans_rate = 1;
     % Single seed
     seeds = 1;
-    seed = 40; % anterior hip
+    seed = 151; % DK hip 40, Tian 1. Here 50 cortical then 16 subcort, so 51 or 151
     % Multiple seeds
     % seeds = 41;
     index = 1;
@@ -79,8 +79,8 @@ function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
     % Single seed
     [gene_corrs, ~] = SIRiterator(gene_corrs, index, 0, N_regions, v, dt, T_total, ...
         clear_genes, risk_genes, sconnLen, sconnDen, ROIsize, seed, ...
-        init_number, prob_stay, trans_rate, emp_atrophy_bgs, ...
-        emp_atrophy_cobre, emp_atrophy_hcpep, emp_atrophy_stages, plotting);
+        init_number, prob_stay, trans_rate, bgs, ...
+        cobre, hcpep, stages, plotting);
 
     % Multiple seeds
     % for seed = 1:seeds
@@ -97,8 +97,11 @@ function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
             display(gene_corrs)
             % tail(gene_corrs)
         else
-            out_file = 'results/gene_corrs_240311_pca.csv';
+            if ~exist("out_file", "var")
+                out_file = 'results/gene_corrs_' + string(datetime("now", "Format", "yyMMdd")) + '.csv';
+            end
             write_async(gene_corrs, out_file)
         end
     end
 end
+

@@ -47,10 +47,11 @@ function [Rnor_all, Rmis_all, Rnor0, Pnor0, Pnor_all, Pmis_all] = SIRsimulator(N
 % set the mobility pattern
 weights = sconnDen;
 
-% % A protein movement  correction
+% % GC: A protein movement  correction
 % % the probability of exit from any given region is proportional to region 
 % % size and edge contribution to total connectome weight, and rescale
-% % prob_stay = 1 - rescale(sum(sconnDen)./ROIsize') .* prob_stay;
+% prob_stay = 1 - rescale(sum(sconnDen)./ROIsize') .* prob_stay;
+% prob_stay = 1 - rescale(sum(sconnDen)') .* prob_stay;
 
 weights = (1 - prob_stay) .* weights + prob_stay .* diag(sum(weights, 2)) ;
 
@@ -63,6 +64,9 @@ weights(eye(N_regions, 'logical')) = 0;
 
 % convert gene expression (z) scores to probabilities
 clear_gene = table2array(clear_gene);
+if isa(clear_gene,) == "table"
+    table2array(clear_gene)
+end
 clearance_rate = normcdf(zscore(clear_gene));
 risk_gene = table2array(risk_gene);
 synthesis_rate = normcdf(zscore(risk_gene));
@@ -122,14 +126,14 @@ for t = 1:iter_max
     if abs(Rnor - Rtmp) < (1e-7 * Rtmp); break; end
 end
 
-if plotting
-    figure;
-    plot(Rnor_nor_all');
-    t = title ("Normal protein propagation");
-    t.FontWeight = 'normal';
-    xlabel("t");
-    ylabel("Ni");
-end
+% if plotting
+%     figure;
+%     plot(Rnor_nor_all');
+%     t = title ("Normal protein propagation");
+%     t.FontWeight = 'normal';
+%     xlabel("t");
+%     ylabel("Ni");
+% end
 
 %% misfolded protein spreading process
 Pnor0 = Pnor;
@@ -161,14 +165,14 @@ for t = 1:T_total
 
     misProb = 1 - exp( -Rmis .* gamma0 ) ; % trans_rate: default
     % number of newly infected
-    % % exp(clearance_rate) ignores dt, betaTerm instead?
-    % % N_misfolded = Rnor .* betaTerm       .* misProb ;
+    % % exp(-clearance_rate) ignores dt, betaTerm instead?
+    % N_misfolded = Rnor .* betaTerm       .* misProb ;
     N_misfolded = Rnor .* exp(-clearance_rate) .* misProb ;
     
     % update
     Rnor = Rnor .* betaTerm + alphaTerm - N_misfolded;
     Rmis = Rmis .* betaTerm             + N_misfolded;
-    % I would like to model a reduced clearance rate of misfolded proteins
+    % There may be reduced clearance rate of misfolded proteins
     % something like
     % Rmis = Rmis .* betaTerm .* sqrt(2)    + N_misfolded;
 
@@ -181,20 +185,20 @@ for t = 1:T_total
     % Pmis_ave(:, :, t) = Pmis;
 end
 
-if plotting
-    figure;
-    plot(Rnor_all');
-    t = title ("Misfolded protein propagation: normal");
-    t.FontWeight = 'normal';
-    xlabel("t");
-    ylabel("Ni");
-    figure;
-    plot(Rmis_all');
-    t = title ("Misfolded protein propagation: misfolded");
-    t.FontWeight = 'normal';
-    xlabel("t");
-    ylabel("Mi");
-    ylim([0 30000])
-end
+% if plotting
+%     figure;
+%     plot(Rnor_all');
+%     t = title ("Misfolded protein propagation: normal");
+%     t.FontWeight = 'normal';
+%     xlabel("t");
+%     ylabel("Ni");
+%     figure;
+%     plot(Rmis_all');
+%     t = title ("Misfolded protein propagation: misfolded");
+%     t.FontWeight = 'normal';
+%     xlabel("t");
+%     ylabel("Mi");
+%     ylim([0 30000])
+% end
 
 end

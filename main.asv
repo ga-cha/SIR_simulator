@@ -12,14 +12,16 @@
 % protein aggregates, and correlates this with empirical data           
 
 
-function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
-    
-    % load gene expressions, real atrophy, ROIsize, functional connectivity...
-    load('data/workspace_DK.mat', 'genes', 'sconnDen', 'sconnLen', ...
-        'ROIsize', 'emp_atrophy_bgs', 'emp_atrophy_cobre', 'emp_atrophy_hcpep', ...
-        'emp_atrophy_stages');
-    % load('data/workspace_DK_PD.mat', 'pd_atrophy_reordered');
+function [] = main(clear_genes_in, out_file, risk_genes_in, debugging, plotting)
 
+    load('data/workspace_s132.mat', 'genes', 'fact_den_corr', 'fact_len_35', ...
+        'ROIsize', 'bgs', 'cobre', 'hcpep', 'stages');
+    sconnDen = fact_den_corr;
+    sconnLen = fact_len_35;
+    % bgs = pd_atrophy;
+
+    all_clears = genes;
+    all_risks = genes(:,:);
 
     % Input clearance genes and risk genes as string arrays
     
@@ -28,31 +30,31 @@ function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
 
     % if there are no input risk genes, all genes are taken as risk genes
     if ~exist("risk_genes_in", "var")
-        risk_genes_in = string(genes.Properties.VariableNames);
+        risk_genes_in = string(all_risks.Properties.VariableNames);
     end
     if ~exist("debugging", "var")
         debugging = false;
         plotting = false;
     end
 
-    clear_genes_bool = ismember(clear_genes_in, genes.Properties.VariableNames);
+    clear_genes_bool = ismember(clear_genes_in, all_clears.Properties.VariableNames);
     valid_clear_genes = clear_genes_in(clear_genes_bool);
-    clear_genes = genes(:, valid_clear_genes);
+    clear_genes = all_clears(:, valid_clear_genes);
 
-    risk_genes_bool = ismember(risk_genes_in, genes.Properties.VariableNames);
+    risk_genes_bool = ismember(risk_genes_in, all_risks.Properties.VariableNames);
     valid_risk_genes = risk_genes_in(risk_genes_bool);
-    risk_genes = genes(:,valid_risk_genes);
+    risk_genes = all_risks(:,valid_risk_genes);
 
     if isempty(clear_genes) || isempty(risk_genes)
         disp(risk_genes_in)
-        disp(genes(:, risk_genes_in))
+        disp(all_risks(:, risk_genes_in))
         disp(clear_genes_in)
-        disp(genes(:,clear_genes_in))
+        disp(all_clears(:,clear_genes_in))
         disp('No valid gene combinations')
         return
     end
     
-    N_regions = 41;
+    N_regions = length(ROIsize);
     v = 1;
     dt = 0.01;
     T_total = 20000;
@@ -61,11 +63,10 @@ function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
     trans_rate = 1;
     % Single seed
     seeds = 1;
-    seed = 40; % anterior hip
+    seed = 51; % DK hip 40, Tian 1. Here 50 cortical then 16 subcort, so 51 or 151
     % Multiple seeds
     % seeds = 41;
     index = 1;
-
 
     % Set up gene corr table
     % table is preallocated, so index for next row is passed through
@@ -78,8 +79,8 @@ function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
     % Single seed
     [gene_corrs, ~] = SIRiterator(gene_corrs, index, 0, N_regions, v, dt, T_total, ...
         clear_genes, risk_genes, sconnLen, sconnDen, ROIsize, seed, ...
-        init_number, prob_stay, trans_rate, emp_atrophy_bgs, ...
-        emp_atrophy_cobre, emp_atrophy_hcpep, pd_atrophy_reordered, plotting);
+        init_number, prob_stay, trans_rate, bgs, ...
+        cobre, hcpep, stages, plotting);
 
     % Multiple seeds
     % for seed = 1:seeds
@@ -90,15 +91,17 @@ function [] = main(clear_genes_in, risk_genes_in, debugging, plotting)
     % end
 
     gene_corrs = rmmissing(gene_corrs);
-    % gene_corrs = sortrows(gene_corrs, 4);
 
     if (~isempty(gene_corrs))
         if (debugging)
             display(gene_corrs)
             % tail(gene_corrs)
         else
-            out_file = 'results/gene_corrs_240205_lyso_hcp.csv';
+            if ~exist("out_file", "var")
+                out_file = 'results/gene_corrs_' + string(datetime("now", "Format", "yyMMdd")) + '.csv';
+            end
             write_async(gene_corrs, out_file)
         end
     end
 end
+

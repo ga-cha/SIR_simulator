@@ -23,14 +23,14 @@ if plotting
     % t.FontWeight = 'normal';
     % xlabel("t")
     % ylabel("atrophy")
-
-    figure;
-    plot((Rmis_all ./(Rnor_all + Rmis_all))');
-    t = title ("Rmis/Rnor+mis/t");
-    t.FontWeight = 'normal';
-    xlabel("t")
-    ylabel("atrophy")
-
+    % 
+    % figure;
+    % plot((Rmis_all ./(Rnor_all + Rmis_all))');
+    % t = title ("Rmis/Rnor+mis/t");
+    % t.FontWeight = 'normal';
+    % xlabel("t")
+    % ylabel("atrophy")
+    % 
     % figure;
     % plot(((Rnor_all + Rmis_all)./ROIsize)');
     % t = title ("Rnor+mis/ROIsize/t");
@@ -45,8 +45,11 @@ k2 = 1 - k1;
 % input weigths of deafferentation (scaled by structrual connectivity)
 weights = sconnDen ./ repmat(sum(sconnDen, 2), 1, N_regions);
 
-% % A correction for region size
-% % weights = sconnDen .* rescale(sum(sconnDen)./ROIsize') ./ repmat(sum(sconnDen, 2), 1, N_regions);
+% % GC: An additional correction for (global) structural connectivity (and
+% region size)
+% weights = sconnDen .* rescale(sum(sconnDen)./ROIsize') ./ repmat(sum(sconnDen, 2), 1, N_regions);
+% weights = sconnDen .* rescale(sum(sconnDen)) ./ repmat(sum(sconnDen, 2), 1, N_regions);
+
 
 % neuronal loss caused by lack of input from neighbouring regions
 ratio_cum = weights * (1-exp(-ratio * dt));
