@@ -10,52 +10,61 @@
 % each timepoint, then, we can calculate empirical correlation. We plot
 %  and return the maximum
 
-function [bgs_max, cobre_max, hcpep_max, stages_max, tstep, err] = SIRcorr(sim_atrophy, emp_atrophy_bgs, ...
-    emp_atrophy_cobre, emp_atrophy_hcpep, emp_atrophy_stages, risk_name, clear_name, plotting)
+function [bgs_max, cobre_max, hcpep_max, stages_max, tstep, err] = ...
+    SIRcorr(params, gene)
 
     % Take log2fold change 
-    sim_atrophy = real(log2(sim_atrophy));
+    gene.sim_atrophy = real(log2(gene.sim_atrophy));
 
     % Calculate position and value of max correlation coefficient
-    [bgs_max, tstep] = corry(sim_atrophy, emp_atrophy_bgs, plotting, risk_name, clear_name);
-    [cobre_max, ~] = corry(sim_atrophy, emp_atrophy_cobre, false, risk_name, clear_name);
-    [hcpep_max, ~] = corry(sim_atrophy, emp_atrophy_hcpep, false, risk_name, clear_name);
-    [stages_max, ~] = corry(sim_atrophy, emp_atrophy_stages, false, risk_name, clear_name);
+    bgs_corrs = corr(gene.sim_atrophy, params.bgs, 'Type', 'Spearman');
+    cobre_corrs = corr(gene.sim_atrophy, params.cobre, 'Type', 'Spearman');
+    hcpep_corrs = corr(gene.sim_atrophy, params.hcpep, 'Type', 'Spearman');
+    stages_corrs = corr(gene.sim_atrophy, params.stages, 'Type', 'Spearman');
 
-    err= calcResiduals(sim_atrophy(:, tstep), emp_atrophy_bgs);
-    % err = calcResiduals(sim_atrophy(:, tstep), emp_atrophy);
+    % Truncate first 1000 timepoints which heavily weight seed region
+    [bgs_max, tstep] = max(bgs_corrs(1001:end));
+    cobre_max = max(cobre_corrs(1001:end));
+    hcpep_max = max(hcpep_corrs(1001:end));
+    stages_max = max(stages_corrs(1001:end));
+    tstep = tstep + 1000;
 
-    if plotting
-        figure;
-        hold on;
-        scatter(sim_atrophy(:, tstep), emp_atrophy_bgs); 
-    
-        % polyfit fits a degree 1 polynomial
-        % polyval evaluates polynomial at specified points
-        p = polyval(polyfit(sim_atrophy(:, tstep), emp_atrophy_bgs, 1), sim_atrophy(:, tstep));
-        plot(sim_atrophy(:, tstep), p);
+    err = 0;
+    % err= calcResiduals(sim_atrophy(:, tstep), params.bgs);
 
-        t = title(['Spearman correlation = ', num2str(bgs_max)]);
-        % t = title(['Pearson correlation = ', num2str(bgs_max)]);
-        t.FontWeight = 'normal';
-        xlabel({"simulated atrophy", "risk gene: " + risk_name, "clearance gene: " + clear_name})
-        ylabel('empirical atrophy (z score)')
+    if params.vis
+        plot_corrs(bgs_corrs, cobre_corrs, hcpep_corrs, stages_corrs, gene);
+        max_corr = (bgs_max + cobre_max + hcpep_max)./3;
+        % plot_scatter(sim_atrophy, tstep, params, gene, max_corr); 
     end
 end
 
-function [max_corr, tstep] = corry(sim_atrophy, emp_atrophy, plotting, risk_name, clear_name)
-    corrs = corr(sim_atrophy, emp_atrophy, 'Type', 'Spearman');
-    % corrs = corr(sim_atrophy, emp_atrophy);
-    if plotting
-        figure;
-        plot(corrs);
-        t = title ({"risk gene: " + risk_name, "clearance gene: " + clear_name});
-        t.FontWeight = 'normal';
-        xlabel("t")
-        ylabel("correlation")
-    end
-    % The first 1000 timepoints before spreading heavily weight the seed
-    % region. Truncated for checking 
-    [max_corr, tstep] = max(corrs(1001:end));
-    tstep = tstep + 1000;
+function plot_corrs(bgs_corrs, cobre_corrs, hcpep_corrs, stages_corrs, gene)
+    figure;
+    hold on;
+    plot([bgs_corrs, cobre_corrs, hcpep_corrs, stages_corrs]);
+    t = title ({"risk gene: " + gene.risk_name, "clearance gene: " + gene.clear_name});
+    t.FontWeight = 'normal';
+    xlabel("t");
+    ylabel("correlation");
+    legend("BGS", "COBRE", "HCPEP", "STAGES");
+end
+
+function plot_scatter(sim_atrophy, tstep, params, gene, max_corr)
+    emp_atrophy = (params.bgs + params.cobre + params.hcpep)./3;
+    figure;
+    hold on;
+    scatter(sim_atrophy(:, tstep), emp_atrophy); 
+
+    % polyfit fits a degree 1 polynomial
+    % polyval evaluates polynomial at specified points
+    [p, ~, xfm] = polyfit(sim_atrophy(:, tstep), emp_atrophy, 1);
+    y = polyval(p, sim_atrophy(:, tstep), [], xfm);
+    plot(sim_atrophy(:, tstep), y');
+
+    t = title(['Spearman correlation = ', num2str(max_corr)]);
+    t.FontWeight = 'normal';
+    xlabel({"simulated atrophy", "risk gene: " + gene.risk_name, ...
+        "clearance gene: " + gene.clear_name})
+    ylabel('empirical atrophy (z score)')
 end

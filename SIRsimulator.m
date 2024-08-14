@@ -3,202 +3,175 @@
 % Package based off https://github.com/yingqiuz/SIR_simulator
 % Zheng, Ying-Qiu, et al. PLoS biol. 17.11 (2019): e3000495.
 %
-% Optimisation by Mehul Gajwani 27/08/23
-% mehul.gajwani1@monash.edu
 
-function [Rnor_all, Rmis_all, Rnor0, Pnor0, Pnor_all, Pmis_all] = SIRsimulator(N_regions, ...
-    v, dt, T_total, clear_gene, risk_gene, sconnLen, sconnDen, ROIsize, ...
-    seed, init_number, prob_stay, trans_rate, plotting)
-% A function to simulate the spread of misfolded alpha-syn
+function [Rnor_all, Rmis_all, Pnor_all, Pmis_all] = ...
+    SIRsimulator(params, gene, vis)
 
+    % A function to simulate the spread of misfolded alpha-syn
+    
+    %% output parameters
+    % Rnor_all: A N_regions * T_total matrix, recording the number of normal
+    % alpha-syn in regions
+    % Rmis_all: A N_regions * T_total matrix, recording the number of
+    % misfolded alph-syn in regions
+    % Pnor_all: a N_regions * N_regions * T_total matrix, recording the number of normal alpha-syn in paths
+    % could be memory-consuming)
+    % Pmis_all: a N_regions * N_regions * T_total matrix, recording the number of misfolded alpha-syn in paths
+    % could be memory-consuming)
+    
+    % unpack parameters
+    v = params.v;
+    dt = params.dt;
+    T_total = params.T_total;
+    init_number = params.init_number;
+    prob_stay = params.prob_stay;
+    trans_rate = params.trans_rate;
+    sconnDen = params.sconnDen;
+    sconnLen = params.sconnLen;
+    ROIsize = params.ROIsize;
+    N_regions = params.N_regions;
+    seed = params.seed;
 
-%% input parameters (inside parenthesis are values used in the paper)
-% N_regions: number of regions (42)
-% v: speed (1)
-% dt: time step (0.01)
-% T_total: total time steps (20000)
-% clear_gene: clear_gene gene expression (zscore, N_regions * 1 vector) (empirical clear_gene expression)
-% risk_gene: risk_gene gene expression after normalization (zscore, N_regions * 1 vector) (empirical risk_gene expression)
-% sconnLen: structural connectivity matrix (length) (estimated from HCP data)
-% sconnDen: structural connectivity matrix (strength) (estimated from HCP data)
-% ROIsize: region sizes (voxel counts)
-% seed: seed region of misfolded alpha-syn injection (choose as you like? (^?^)= here substantia nigra)
-% init_number: number of injected misfolded alpha-syn (1)
-% prob_stay: the probability of staying in the same region per unit time (0.5)
-% trans_rate: a scalar value, controlling the baseline infectivity
+    % set maximum timesteps for normal protein propagation
+    % in Zheng 2019 this is different from T_total
+    iter_max = 100000;
+    
+    
+    % set the mobility pattern
+    weights = sconnDen;
+    
+    % GC: A protein movement correction
+    % the probability of exit from any given region is proportional to
+    % edge contribution to total connectome weight
+    prob_stay = 1 - rescale(sum(sconnDen)') .* prob_stay;
+    
+    weights = (1 - prob_stay) .* weights + prob_stay .* diag(sum(weights, 2)) ;
+    
+    % multinomial distribution
+    % element (i,j) is the probability of moving from region i to edge (i,j)
+    weights = weights ./ repmat(sum(weights, 2), 1, N_regions);
+    weights(eye(N_regions, 'logical')) = 0;
+    
+    
+    % convert gene expression (z) scores to probabilities
+    clearance_rate = normcdf(zscore(gene.clear_gene));
+    synthesis_rate = normcdf(zscore(gene.risk_gene));
+    
+    % store the number of normal/misfoled alpha-syn at each time step
+    [Rnor_all, Rmis_all] = deal( zeros([N_regions, T_total]) );
+    [Pnor_all, Pmis_all] = deal( zeros([N_regions, N_regions, T_total]) );
+    % optionally store normal protein growth when filling network 
+    if vis; [Rnor_nor_all] = deal(zeros([N_regions, iter_max])); end
 
+    % Rnor, Rmis, Pnor, Pmis store results of single simulation at each time
+    [Rnor, Rmis] = deal(zeros(N_regions, 1));   % number of normal/misfolded alpha-syn in regions
+    [Pnor, Pmis] = deal(zeros(N_regions));      % number of normal/misfolded alpha-syn in paths
+    
+    % simplification of variables
+    alphaTerm = (synthesis_rate .* ROIsize) .* dt;
+    % betaTerm = exp(-(clearance_rate).*dt);
+    % GC: A modification of clearance rate, since gene expression is a
+    % proxy for protein expression
+    betaTerm = exp(-((1/sqrt(2)) .* clearance_rate).*dt);
 
-%% output parameters
-% Rnor_all: A N_regions * T_total matrix, recording the number of normal
-% alpha-syn in regions
-% Rmis_all: A N_regions * T_total matrix, recording the number of
-% misfolded alph-syn in regions
-% Pnor_all: a N_regions * N_regions * T_total matrix, recording the number of normal alpha-syn in paths
-% could be memory-consuming)
-% Pmis_all: a N_regions * N_regions * T_total matrix, recording the number of misfolded alpha-syn in paths
-% could be memory-consuming)
-% Rnor0: a N_Regions * 1 vector, the population of normal agents in regions before pathogenic spreading
-% Pnor0: a N_Regions * 1 vector, the population of normal agents in edges before pathogenic spreading
-
-% make sure the diag is zero
-% assert(sconnDen(eye(N_regions)==1) == 0);
-% assert(sconnLen(eye(N_regions)==1) == 0);
-
-% set the mobility pattern
-weights = sconnDen;
-
-% % GC: A protein movement  correction
-% % the probability of exit from any given region is proportional to region 
-% % size and edge contribution to total connectome weight, and rescale
-% prob_stay = 1 - rescale(sum(sconnDen)./ROIsize') .* prob_stay;
-% prob_stay = 1 - rescale(sum(sconnDen)') .* prob_stay;
-
-weights = (1 - prob_stay) .* weights + prob_stay .* diag(sum(weights, 2)) ;
-
-% multinomial distribution
-% element (i,j) is the probability of moving from region i to edge (i,j)
-% weights = w_ij/sum(w_i)
-weights = weights ./ repmat(sum(weights, 2), 1, N_regions);
-weights(eye(N_regions, 'logical')) = 0;
-
-
-% convert gene expression (z) scores to probabilities
-clear_gene = table2array(clear_gene);
-if isa(clear_gene,"table")
-    clear_gene = table2array(clear_gene);
-end
-clearance_rate = normcdf(zscore(clear_gene));
-risk_gene = table2array(risk_gene);
-synthesis_rate = normcdf(zscore(risk_gene));
-
-% store the number of normal/misfoled alpha-syn at each time step
-[Rnor_all, Rmis_all] = deal( zeros([N_regions, T_total]) );
-[Pnor_all, Pmis_all] = deal( zeros([N_regions, N_regions, T_total]) );
-
-% Rnor, Rmis, Pnor, Pmis store results of single simulation at each time
-[Rnor, Rmis] = deal(zeros(N_regions, 1)); % number of normal/misfolded alpha-syn in regions
-[Pnor, Pmis] = deal(zeros(N_regions)); % number of normal/misfolded alpha-syn in paths
-
-% simplification of variables
-alphaTerm = (synthesis_rate .* ROIsize) .* dt;
-% betaTerm = exp(-((1/sqrt(2)) .* clearance_rate).*dt);
-betaTerm = exp(-(clearance_rate).*dt);
-sTerm = 1 ./ sconnLen .* dt .* v; sTerm(isinf(sTerm)) = 0;
-wTerm = weights .* dt;
-gamma0 = 1 .* trans_rate ./ ROIsize .* dt ; % the probability of getting misfolded
-
-
-%% normal alpha-syn growth
-% fill the network with normal proteins
-% this should take just over 20000 steps
-iter_max = 500000;
-
-if plotting
-    [Rnor_nor_all] = deal( zeros([N_regions, iter_max]) );
-    [Pnor_nor_all] = deal( zeros([N_regions, N_regions, iter_max]) );
-end
-
-% disp('normal alpha synuclein growth');
-for t = 1:iter_max
-    %%% moving process
-    % regions towards paths
-    % movDrt stores the number of proteins towards each region. i.e.
-    % element in kth row lth col denotes the number of proteins in region k
-    % moving towards l
-    movDrt = Rnor .* wTerm; % IMPLICIT EXPANSION
-
-    % paths towards regions
-    % update moving
-    movOut = Pnor .* sTerm; % longer path & smaller v = lower probability of moving out of paths
-
-    Pnor = Pnor - movOut + movDrt;
-    Rtmp = Rnor;
-    Rnor = Rnor + sum(movOut, 1)' - sum(movDrt, 2);
-
-    %%% growth process
-    Rnor = Rnor .* betaTerm + alphaTerm;
-
-    if plotting
-        Rnor_nor_all(:, t) = Rnor;
-        Pnor_nor_all(:, :, t) = Pnor;
+    sTerm = 1 ./ sconnLen .* dt .* v; sTerm(isinf(sTerm)) = 0;
+    wTerm = weights .* dt;
+    gamma0 = 1 .* trans_rate ./ ROIsize .* dt ; % the probability of getting misfolded
+    
+    
+    %% normal alpha-syn growth
+    % fill the network with normal proteins
+    % typically converges in t < 100000
+    % disp('normal alpha synuclein growth');
+    for t = 1:iter_max
+        %%% moving process
+        % regions towards paths
+        % movDrt stores the number of proteins towards each region. i.e.
+        % element in kth row lth col denotes the number of proteins in region k
+        % moving towards l
+        movDrt = Rnor .* wTerm; % implicit expansion
+    
+        % paths towards regions
+        % update moving
+        movOut = Pnor .* sTerm; % longer path & smaller v = lower probability of moving out of paths
+    
+        Pnor = Pnor - movOut + movDrt;
+        Rtmp = Rnor;
+        Rnor = Rnor + sum(movOut, 1)' - sum(movDrt, 2);
+    
+        %%% growth process
+        Rnor = Rnor .* betaTerm + alphaTerm;
+    
+        if vis; Rnor_nor_all(:, t) = Rnor; end
+    
+        if abs(Rnor - Rtmp) < (1e-7 * Rtmp); break; end
+    end
+    %% misfolded protein spreading process
+    % inject misfolded alpha-syn
+    Rmis(seed) = init_number;
+    % disp('misfolded alpha synuclein spreading');
+    for t = 1:T_total
+        %%% moving process
+        % normal proteins: region -->> paths
+        movDrt_nor = Rnor .* wTerm; % implicit expansion
+    
+        % normal proteins: paths -->> regions
+        movOut_nor = Pnor .* sTerm;
+    
+        % misfolded proteins: region -->> paths
+        movDrt_mis = Rmis .* wTerm; % implicit expansion
+    
+        % misfolded proteins: paths -->> regions
+        movOut_mis = Pmis .* sTerm;
+    
+        % update regions and paths
+        Pnor = Pnor - movOut_nor + movDrt_nor;
+        Rnor = Rnor + sum(movOut_nor, 1)' - sum(movDrt_nor, 2);
+    
+        Pmis = Pmis - movOut_mis + movDrt_mis;
+        Rmis = Rmis + sum(movOut_mis, 1)' - sum(movDrt_mis, 2);
+    
+        misProb = 1 - exp( -Rmis .* gamma0 ) ; % trans_rate: default
+        % number of newly infected
+        N_misfolded = Rnor .* exp(-clearance_rate) .* misProb ;
+        
+        % update
+        Rnor = Rnor .* betaTerm + alphaTerm - N_misfolded;
+        Rmis = Rmis .* betaTerm             + N_misfolded;
+    
+        Rnor_all(:, t) = Rnor ;
+        Rmis_all(:, t) = Rmis ;
+    
+        % uncomment the following lines if you want outputs of alpha-syn in
+        % paths
+        % Pnor_ave(:, :, t) = Pnor;
+        % Pmis_ave(:, :, t) = Pmis;
     end
 
-    if abs(Rnor - Rtmp) < (1e-7 * Rtmp); break; end
+    if vis; plot_propagation(Rnor_nor_all, Rnor_all, Rmis_all); end
+
 end
 
-% if plotting
-%     figure;
-%     plot(Rnor_nor_all');
-%     t = title ("Normal protein propagation");
-%     t.FontWeight = 'normal';
-%     xlabel("t");
-%     ylabel("Ni");
-% end
+function plot_propagation (Rnor_nor_all, Rnor_all, Rmis_all)
+    figure;
+    plot(Rnor_nor_all');
+    t = title ("Normal protein propagation");
+    t.FontWeight = 'normal';
+    xlabel("t");
+    ylabel("Ni");
 
-%% misfolded protein spreading process
-Pnor0 = Pnor;
-Rnor0 = Rnor;
+    figure;
+    plot(Rnor_all');
+    t = title ("Misfolded protein propagation: normal");
+    t.FontWeight = 'normal';
+    xlabel("t");
+    ylabel("Ni");
 
-% inject misfolded alpha-syn
-Rmis(seed) = init_number;
-% disp('misfolded alpha synuclein spreading');
-for t = 1:T_total
-    %%% moving process
-    % normal proteins: region -->> paths
-    movDrt_nor = Rnor .* wTerm; % IMPLICIT EXPANSION
-
-    % normal proteins: paths -->> regions
-    movOut_nor = Pnor .* sTerm;
-
-    % misfolded proteins: region -->> paths
-    movDrt_mis = Rmis .* wTerm; % IMPLICIT EXPANSION
-
-    % misfolded proteins: paths -->> regions
-    movOut_mis = Pmis .* sTerm;
-
-    % update regions and paths
-    Pnor = Pnor - movOut_nor + movDrt_nor;
-    Rnor = Rnor + sum(movOut_nor, 1)' - sum(movDrt_nor, 2);
-
-    Pmis = Pmis - movOut_mis + movDrt_mis;
-    Rmis = Rmis + sum(movOut_mis, 1)' - sum(movDrt_mis, 2);
-
-    misProb = 1 - exp( -Rmis .* gamma0 ) ; % trans_rate: default
-    % number of newly infected
-    % % exp(-clearance_rate) ignores dt, betaTerm instead?
-    % N_misfolded = Rnor .* betaTerm       .* misProb ;
-    N_misfolded = Rnor .* exp(-clearance_rate) .* misProb ;
-    
-    % update
-    Rnor = Rnor .* betaTerm + alphaTerm - N_misfolded;
-    Rmis = Rmis .* betaTerm             + N_misfolded;
-    % There may be reduced clearance rate of misfolded proteins
-    % something like
-    % Rmis = Rmis .* betaTerm .* sqrt(2)    + N_misfolded;
-
-    Rnor_all(:, t) = Rnor ;
-    Rmis_all(:, t) = Rmis ;
-
-    % uncomment the following lines if you want outputs of alpha-syn in
-    % paths
-    % Pnor_ave(:, :, t) = Pnor;
-    % Pmis_ave(:, :, t) = Pmis;
-end
-
-% if plotting
-%     figure;
-%     plot(Rnor_all');
-%     t = title ("Misfolded protein propagation: normal");
-%     t.FontWeight = 'normal';
-%     xlabel("t");
-%     ylabel("Ni");
-%     figure;
-%     plot(Rmis_all');
-%     t = title ("Misfolded protein propagation: misfolded");
-%     t.FontWeight = 'normal';
-%     xlabel("t");
-%     ylabel("Mi");
-%     ylim([0 30000])
-% end
-
+    figure;
+    plot(Rmis_all');
+    t = title ("Misfolded protein propagation: misfolded");
+    t.FontWeight = 'normal';
+    xlabel("t");
+    ylabel("Mi");
+    ylim([0 30000])
 end

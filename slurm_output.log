@@ -1,10 +1,252 @@
+Loading matlab/r2023b
+  Loading requirement: libjpeg-turbo/1.4.2 virtualgl/2.5.0
+Loading matlab/r2023b
+  Loading requirement: libjpeg-turbo/1.4.2 virtualgl/2.5.0Loading matlab/r2023b
+  Loading requirement: libjpeg-turbo/1.4.2 virtualgl/2.5.0
+
+Parallel pool using the 'Processes' profile is shutting down.
+Loading matlab/r2023b
+  Loading requirement: libjpeg-turbo/1.4.2 virtualgl/2.5.0
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+Parallel pool using the 'Processes' profile is shutting down.
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
 
                             < M A T L A B (R) >
                   Copyright 1984-2023 The MathWorks, Inc.
                   R2023b (23.2.0.2365128) 64-bit (glnxa64)
                               August 23, 2023
 
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2023 The MathWorks, Inc.
+                  R2023b (23.2.0.2365128) 64-bit (glnxa64)
+                              August 23, 2023
+
+[Warning: Unable to load Toolbox Path Cache
+/home/gchan/.matlab/R2023b/toolbox_cache-23.2.0-1570976059-glnxa64.xml. The
+cache file is not in the correct format. It will be regenerated upon quitting
+MATLAB.] 
+[Warning: Unable to load Toolbox Path Cache
+/home/gchan/.matlab/R2023b/toolbox_cache-23.2.0-1570976059-glnxa64.xml. The
+cache file is not in the correct format. It will be regenerated upon quitting
+MATLAB.] 
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2023 The MathWorks, Inc.
+                  R2023b (23.2.0.2365128) 64-bit (glnxa64)
+                              August 23, 2023
+
+[Warning: Unable to load Toolbox Path Cache
+/home/gchan/.matlab/R2023b/toolbox_cache-23.2.0-1570976059-glnxa64.xml. The
+cache file is not in the correct format. It will be regenerated upon quitting
+MATLAB.] 
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2023 The MathWorks, Inc.
+                  R2023b (23.2.0.2365128) 64-bit (glnxa64)
+                              August 23, 2023
+
+[Warning: Unable to load Toolbox Path Cache
+/home/gchan/.matlab/R2023b/toolbox_cache-23.2.0-1570976059-glnxa64.xml. The
+cache file is not in the correct format. It will be regenerated upon quitting
+MATLAB.] 
+Parallel pool using the 'Processes' profile is shutting down.
+Connected to parallel pool with 1 workers.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Connected to parallel pool with 1 workers.
+Connected to parallel pool with 1 workers.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Connected to parallel pool with 1 workers.
+Connected to parallel pool with 1 workers.
+Parallel pool using the 'Processes' profile is shutting down.
+ 
+ 
+ 
+To get started, type doc.
+To get started, type doc.
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+For product information, visit www.mathworks.com.
+ 
+For product information, visit www.mathworks.com.
+ 
+Connected to parallel pool with 1 workers.
  
 To get started, type doc.
 For product information, visit www.mathworks.com.
  
+Starting parallel pool (parpool) using the 'Processes' profile ...
+Starting parallel pool (parpool) using the 'Processes' profile ...
+Starting parallel pool (parpool) using the 'Processes' profile ...
+Starting parallel pool (parpool) using the 'Processes' profile ...
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"unknown element "reset-dirs"
+
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+Parallel pool using the 'Processes' profile is shutting down.
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+[Warning: The Cluster reported an error while destroying a job. The error was:
+Could not open file
+"/home/gchan/.matlab/local_cluster_jobs/R2023b/Job352.in.mat", the error
+returned was: Unable to find file or directory
+'/home/gchan/.matlab/local_cluster_jobs/R2023b/Job352.in.mat'...] 
+[> In parallel.internal.cluster.CJSJobMethods.destroyOneJob (line 79)
+In parallel.job.CJSConcurrentJob>@(job)CJSJobMethods.destroyOneJob(job.Parent,job,job.Support,job.SupportID) (line 52)
+In parallel.job/CJSConcurrentJob/destroyJob (line 52)
+In parallel.Job>iDeleteJobs (line 1664)
+In parallel.internal.cluster.hetfun (line 57)
+In parallel/Job/delete (line 1456)
+In parallel/Cluster/hDeleteOneJob (line 1040)
+In parallel.internal.pool.AbstractInteractiveClient>iDeleteJobs (line 479)
+In parallel.internal.pool/AbstractInteractiveClient/pRemoveOldJobs (line 203)
+In parallel.internal.pool/AbstractInteractiveClient/start (line 96)
+In parallel.internal.pool.AbstractClusterPool>iStartClient (line 831)
+In parallel.internal.pool.AbstractClusterPool.hBuildPool (line 626)
+In parallel.internal.pool.doParpool (line 22)
+In parpool (line 118)
+In parallel.internal.parpool.getOrCreateCurrentPool (line 13)
+In parallel.internal.pool.PoolArrayManager.getOrAutoCreateWithCleanup (line 44)
+In pctTryCreatePoolIfNecessary (line 28)
+In parallel_function (line 423)
+In SIRiterator (line 34)
+In main (line 40)] 
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+Fontconfig warning: "/usr/share/fontconfig/conf.avail/05-reset-dirs-sample.conf", line 6: unknown element "reset-dirs"
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Connected to parallel pool with 1 workers.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Connected to parallel pool with 1 workers.
+Parallel pool using the 'Processes' profile is shutting down.
+Connected to parallel pool with 1 workers.
+Connected to parallel pool with 1 workers.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+[Warning: File 'output.lock' not found.] 
+[Warning: File 'output.lock' not found.] 
+[> In write_async (line 21)
+In main (line 45)] 
+[> In write_async (line 21)
+In main (line 45)] 
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+[Warning: File 'output.lock' not found.] 
+[> In write_async (line 21)
+In main (line 45)] 
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+[Warning: File 'output.lock' not found.] 
+[Warning: File 'output.lock' not found.] 
+[> In write_async (line 21)
+In main (line 45)] 
+[> In write_async (line 21)
+In main (line 45)] 
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
+Parallel pool using the 'Processes' profile is shutting down.
