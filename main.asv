@@ -1,5 +1,4 @@
 % main.m
-%                                                                                                                                   
 %
 % Package based off https://github.com/yingqiuz/SIR_simulator
 % Zheng, Ying-Qiu, et al. PLoS biol. 17.11 (2019): e3000495.
@@ -12,96 +11,38 @@
 % protein aggregates, and correlates this with empirical data           
 
 
-function [] = main(clear_genes_in, out_file, risk_genes_in, debugging, plotting)
-
-    load('data/workspace_s132.mat', 'genes', 'fact_den_corr', 'fact_len_35', ...
-        'ROIsize', 'bgs', 'cobre', 'hcpep', 'stages');
-    sconnDen = fact_den_corr;
-    sconnLen = fact_len_35;
-    % bgs = pd_atrophy;
-
-    all_clears = genes;
-    all_risks = genes(:,:);
-
-    % Input clearance genes and risk genes as string arrays
-    
-    % clearance and risk genes are input as gene x region expression tables
-    % tables are indexed by variable names as T(:,["string", "array"])
-
-    % if there are no input risk genes, all genes are taken as risk genes
-    if ~exist("risk_genes_in", "var")
-        risk_genes_in = string(all_risks.Properties.VariableNames);
-    end
-    if ~exist("debugging", "var")
-        debugging = false;
-        plotting = false;
+function [] = main(clear, opt)
+    % input clearance and risk lists as gene x region string arrays
+    % gene tables are indexed as T(:,["string", "array"])
+    % accepts parcellations "DK", "S132", and "S332", for DK + aseg,
+    % Schaefer 100 + Tian S2 and Schaefer 300 + Tian S2 respectively
+    arguments
+        clear {mustBeText}
+        opt.risk {mustBeText}
+        opt.out {mustBeText} = '../SIR_simulator_gene_corrs/results_3/gene_corrs.csv';
+        opt.parc {mustBeText} = "S132" 
+        opt.dbg {mustBeNumericOrLogical} = false;
+        opt.vis {mustBeNumericOrLogical} = false;
     end
 
-    clear_genes_bool = ismember(clear_genes_in, all_clears.Properties.VariableNames);
-    valid_clear_genes = clear_genes_in(clear_genes_bool);
-    clear_genes = all_clears(:, valid_clear_genes);
+    % load workspace variables into parameter object 
+    ws = 'data/workspace_' + opt.parc + '.mat';
+    load(ws, 'gene_expr', 'ifod_len_35', ...
+        'ifod_den_35', 'ROIsize', 'bgs', 'cobre', 'hcpep', 'stages');
+    params = SIRparameters();
+    params = set_atrophy(params, bgs, cobre, hcpep, stages);
+    params = set_netw(params, ifod_len_35, ifod_den_35, ROIsize);
+    params.vis = opt.vis;
 
-    risk_genes_bool = ismember(risk_genes_in, all_risks.Properties.VariableNames);
-    valid_risk_genes = risk_genes_in(risk_genes_bool);
-    risk_genes = all_risks(:,valid_risk_genes);
+    genes = SIRgenes(gene_expr, clear, opt);
 
-    if isempty(clear_genes) || isempty(risk_genes)
-        disp(risk_genes_in)
-        disp(all_risks(:, risk_genes_in))
-        disp(clear_genes_in)
-        disp(all_clears(:,clear_genes_in))
-        disp('No valid gene combinations')
-        return
-    end
-    
-    N_regions = length(ROIsize);
-    v = 1;
-    dt = 0.01;
-    T_total = 20000;
-    init_number = 1;
-    prob_stay = 0.5;
-    trans_rate = 1;
-    % Single seed
-    seeds = 1;
-    seed = 51; % DK hip 40, Tian 1. Here 50 cortical then 16 subcort, so 51 or 151
-    % Multiple seeds
-    % seeds = 41;
-    index = 1;
+    % run SIR simulation for each gene pair
+    gene_corrs = SIRiterator(params, genes);
 
-    % Set up gene corr table
-    % table is preallocated, so index for next row is passed through
-    gene_corrs = table('Size', [width(risk_genes)*width(clear_genes)*seeds, 9], ...
-    'VariableTypes', {'string', 'string', 'double', 'double', 'double', 'double', ...
-    'double', 'double', 'double'}, ...
-    'VariableNames', {'risk gene', 'clearance gene', '~', 'correlation', 'bgs correlation', ...
-    'cobre correlation', 'hcpep correlation', 'stages correlation', 'bgs t'});
-
-    % Single seed
-    [gene_corrs, ~] = SIRiterator(gene_corrs, index, 0, N_regions, v, dt, T_total, ...
-        clear_genes, risk_genes, sconnLen, sconnDen, ROIsize, seed, ...
-        init_number, prob_stay, trans_rate, bgs, ...
-        cobre, hcpep, stages, plotting);
-
-    % Multiple seeds
-    % for seed = 1:seeds
-    %     [gene_corrs, index] = SIRiterator(gene_corrs, index, N_regions, v, dt, T_total, ...
-    %         clear_genes, risk_genes, sconnLen, sconnDen, ROIsize, seed, ...
-    %         init_number, prob_stay, trans_rate, emp_atrophy_bgs, ...
-    %         emp_atrophy_cobre, emp_atrophy_hcpep, emp_atrophy_stages, plotting);
-    % end
-
-    gene_corrs = rmmissing(gene_corrs);
-
-    if (~isempty(gene_corrs))
-        if (debugging)
-            display(gene_corrs)
-            % tail(gene_corrs)
-        else
-            if ~exist("out_file", "var")
-                out_file = 'results/gene_corrs_' + string(datetime("now", "Format", "yyMMdd")) + '.csv';
-            end
-            write_async(gene_corrs, out_file)
-        end
+    if (opt.dbg)
+        display(gene_corrs)
+    else
+        write_async(gene_corrs, opt.out)
     end
 end
 

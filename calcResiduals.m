@@ -7,7 +7,8 @@ if nargin < 3; degree = 1; end
 % yHat = polyval(p,x);
 % out = y - yHat;
 
-out = y - polyval(polyfit(x, y, degree), x);
+[p, ~, xfm] = polyfit(x, y, degree);
+out = y - polyval(p, x, [], xfm);
 
 end
 
