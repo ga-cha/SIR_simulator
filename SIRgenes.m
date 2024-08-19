@@ -16,6 +16,7 @@ classdef SIRgenes
         risk_genes;              % risk_gene: risk_gene gene expression after normalization (zscore, N_regions * 1 vector) (empirical risk_gene expression)
         n_risk;
         n_clear;
+        gene_corrs;
     end
 
     methods
@@ -50,6 +51,9 @@ classdef SIRgenes
             % preslice variables for parfor loop
             self = preslice(self);
 
+            % initialise gene correlation output table
+            self = init_gene_corrs(self, opt);
+
             assert (~isempty(self.clear_genes) && ~isempty(self.risk_genes), ...
                 "No valid gene combinations");
         end
@@ -65,6 +69,18 @@ classdef SIRgenes
                 end
             end
             risk_names = opt.risk;
+        end
+
+        function self = init_gene_corrs(self, opt)
+            dim = 1;
+            if opt.null == "spatial"; dim = 3; end
+            self.gene_corrs = table(                                                ...
+                'Size', [width(self.risk_genes) * width(self.clear_genes) * dim, 8],      ...
+                'VariableTypes', {'string', 'string', 'double', 'double', 'double', ...
+                'double', 'double', 'double'},                                      ...
+                'VariableNames', {'risk gene', 'clearance gene', 'correlation',     ...
+                'bgs correlation', 'cobre correlation', 'hcpep correlation',        ...
+                'stages correlation', 'bgs t'});
         end
 
         function self = preslice(self)

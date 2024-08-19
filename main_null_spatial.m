@@ -15,21 +15,15 @@
 
 
 function [] = main_null_spatial(clear, opt)
-    % clear: single clearance gene
-    % risk: single risk gene
     % gene tables are indexed as T(:, ["gene1", "gene2"])
-    % accepts parcellations "DK", "S132", and "S332", for DK + aseg,
-    % Schaefer 100 + Tian S2 and Schaefer 300 + Tian S2 respectively
-    % dbg: switches output to console or file
-    % vis: switches on visualisation options
     arguments
-        clear {mustBeText}
-        opt.risk {mustBeText}
+        clear {mustBeText}                          % clear: clearance gene string array
+        opt.risk {mustBeText}                       % risk: risk gene string array
+        opt.parc {mustBeText} = "S132"              % accepts parcellations "DK", "S132", and "S332"
+        opt.dbg {mustBeNumericOrLogical} = false;   % dbg: switches output to console or file
         opt.out {mustBeText} = "../SIR_simulator_gene_corrs/results_3/gene_corrs.csv";
-        opt.parc {mustBeText} = "S132" 
-        opt.dbg {mustBeNumericOrLogical} = false;
-        opt.vis {mustBeNumericOrLogical} = false;
-        opt.null {mustBeText};
+        opt.vis {mustBeNumericOrLogical} = false;   % vis: switches on visualisation options
+        opt.null {mustBeText} = "none";
     end
 
     ws = 'data/workspace_' + opt.parc + '.mat';
@@ -37,47 +31,39 @@ function [] = main_null_spatial(clear, opt)
     params = SIRparameters(opt);
     params = set_atrophy(params, ws);
     params = set_netw(params, ws);
-    params = set_null(params, opt);
+    ws_null = 'data/workspace_' + opt.parc + '_null.mat';
+    params = set_null(params, opt, ws_null);
     % load gene expression data in genes parameter object
     genes = SIRgenes(opt, clear, ws);
 
     % run SIR simulation for each gene pair
-    gene_corrs = SIRiterator(params, genes);
+    genes = SIRiterator(params, genes);
 
-    if (opt.dbg)
-        display(gene_corrs)
-    else
-        write_async(gene_corrs, opt.out)
-    end
+    if (opt.dbg); display(genes.gene_corrs);
+    else; write_async(genes.gene_corrs, opt.out); end
 end
 
-function [gene_corrs] = SIRiterator(params, genes)
-    gene_corrs = table(                                                 ...
-    'Size', [0, 8],    ...
-    'VariableTypes', {'string', 'string', 'double', 'double', 'double', ...
-    'double', 'double', 'double'},                                      ...
-    'VariableNames', {'risk gene', 'clearance gene', 'correlation',     ...
-    'bgs correlation', 'cobre correlation', 'hcpep correlation',        ...
-    'stages correlation', 'bgs t'});
+function [genes] = SIRiterator(params, genes)
 
     n = genes.n_risk * genes.n_clear;
-    if params.vis
-        % figure visualisation unavailable with parfor loops
-        for idx = 1:n; gene_corrs = [gene_corrs; iterate(idx, params, genes)]; end
-    else
-        % parfor idx = 1:n; gene_corrs(idx,:) = iterate(idx, params, genes); end
-        parfor idx = 1:n; gene_corrs = [gene_corrs; iterate(idx, params, genes)]; end
-    end
+    for idx = 1:n; genes = iterate(idx, params, genes); end
+
+    % if params.vis
+    %     % figure visualisation unavailable with parfor loops
+    %     for idx = 1:n; genes = iterate(idx, params, genes); end
+    % else
+    %     % parfor idx = 1:n; gene_corrs(idx,:) = iterate(idx, params, genes); end
+    %     parfor idx = 1:n; gene_corrs = [gene_corrs; iterate(idx, params, genes)]; end
+    % end
     
-    assert (~isempty(gene_corrs));
+    assert (~isempty(genes.gene_corrs));
 end
 
 % For each valid gene pair, simulate normal and misfolded protein growth 
 % across all timepoints, and generate atrophy and correlation over time.
-function [gene_corrs] = iterate (idx, params, genes)
+function genes = iterate (idx, params, genes)
 
     gene = SIRgene(genes, idx);
-
     if strcmp(gene.clear_name, gene.risk_name); return; end
 
     % SIRsimulator and SIRatrophy have visualization as a separate
@@ -85,16 +71,16 @@ function [gene_corrs] = iterate (idx, params, genes)
     [gene.Rnor_all, gene.Rmis_all] = SIRsimulator(params, gene, false);
     gene = SIRatrophy(params, gene, false);
 
-    gene_corrs = [];
     n = 1;
-    if params.null == "spatial"; n = 1000; end
+    if params.null == "spatial"; n = 3; end
     for i = 1:n
         [bgs_max, cobre_max, hcpep_max, stages_max, tstep, ~] = ...
-            SIRcorr(params, gene, n);
+            SIRcorr(params, gene, i);
         avg_max = mean([bgs_max, cobre_max, hcpep_max]);
-    
-        gene_corrs = [gene_corrs; [gene.risk_name, gene.clear_name, ...
-            avg_max, bgs_max, cobre_max, hcpep_max, stages_max, tstep]];
+        
+        row = (idx-1)*n + i;
+        genes.gene_corrs(row, :) = {gene.risk_name, gene.clear_name, ...
+            avg_max, bgs_max, cobre_max, hcpep_max, stages_max, tstep};
     end
 end
 

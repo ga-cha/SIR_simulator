@@ -12,6 +12,10 @@ classdef SIRgene
         risk_gene;
         clear_name;
         clear_gene;
+        % some intermediate products
+        Rnor_all;
+        Rmis_all;
+        sim_atrophy;
     end
 
     methods
