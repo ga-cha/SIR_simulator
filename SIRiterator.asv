@@ -34,6 +34,7 @@ function [gene_corrs] = SIRiterator(params, genes)
         parfor idx = 1:n; gene_corrs(idx,:) = iterate(idx, params, genes); end
     end
     
+
     % resize table for skipped rows
     gene_corrs = rmmissing(gene_corrs);
     assert (~isempty(gene_corrs));

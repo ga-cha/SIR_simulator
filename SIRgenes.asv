@@ -16,6 +16,7 @@ classdef SIRgenes
         risk_genes;              % risk_gene: risk_gene gene expression after normalization (zscore, N_regions * 1 vector) (empirical risk_gene expression)
         n_risk;
         n_clear;
+        gene_corrs;
     end
 
     methods
