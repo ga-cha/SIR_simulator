@@ -12,10 +12,14 @@
 
 
 function [] = main(clear, opt)
+    % clr: 
+    % rsk: 
     % input clearance and risk lists as gene x region string arrays
-    % gene tables are indexed as T(:,["string", "array"])
+    % gene tables are indexed as T(:, ["gene1", "gene2"])
     % accepts parcellations "DK", "S132", and "S332", for DK + aseg,
     % Schaefer 100 + Tian S2 and Schaefer 300 + Tian S2 respectively
+    % dbg: switches output to console or file
+    % vis: switches on visualisation options
     arguments
         clear {mustBeText}
         opt.risk {mustBeText}

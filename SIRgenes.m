@@ -20,7 +20,8 @@ classdef SIRgenes
 
     methods
         % Sets risk and clearance gene arrays
-        function self = SIRgenes(gene_expr, clear_names, opt)
+        function self = SIRgenes(opt, clear_names, ws)
+            load(ws, 'gene_expr');
             % TODO: get this function working
             % risk_names = set_risk_names(gene_expr.Properties.VariableNames, opt);
             if ~isfield(opt, 'risk')

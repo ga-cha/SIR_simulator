@@ -49,10 +49,9 @@ classdef SIRparameters
             if isfield(opt, vis); self.vis = opt.vis; end
         end
 
-        function self = set_netw(self, ws)
-            load(ws, 'ifod_len_35', 'ifod_den_35', 'ROIsize');
-            self.sconnLen = ifod_len_35;
-            self.sconnDen = ifod_den_35;
+        function self = set_netw(self, sconnLen, sconnDen, ROIsize)
+            self.sconnLen = sconnLen;
+            self.sconnDen = sconnDen;
             self.ROIsize = ROIsize;
 
             self.N_regions = length(ROIsize);
@@ -68,8 +67,7 @@ classdef SIRparameters
             end           
         end
 
-        function self = set_atrophy(self, ws)
-            load(ws, 'bgs', 'cobre', 'hcpep', 'stages');
+        function self = set_atrophy(self, bgs, cobre, hcpep, stages)
             self.bgs = bgs;
             self.cobre = cobre;
             self.hcpep = hcpep;

@@ -12,10 +12,13 @@
 
 
 function [] = main(clear, opt)
-    % input clearance and risk lists as gene x region string arrays
-    % gene tables are indexed as T(:,["string", "array"])
+    % clr: list of clearance gene x region string arrays
+    % rsk: list of risk gene x region string arrays
+    % gene tables are indexed as T(:, ["gene1", "gene2"])
     % accepts parcellations "DK", "S132", and "S332", for DK + aseg,
     % Schaefer 100 + Tian S2 and Schaefer 300 + Tian S2 respectively
+    % dbg: switches output to console or file
+    % vis: switches on visualisation options
     arguments
         clear {mustBeText}
         opt.risk {mustBeText}
@@ -25,15 +28,15 @@ function [] = main(clear, opt)
         opt.vis {mustBeNumericOrLogical} = false;
     end
 
-    % load workspace variables into parameter object 
     ws = 'data/workspace_' + opt.parc + '.mat';
     load(ws, 'gene_expr', 'ifod_len_35', ...
         'ifod_den_35', 'ROIsize', 'bgs', 'cobre', 'hcpep', 'stages');
+    % load workspace variables into parameter object 
     params = SIRparameters();
     params = set_atrophy(params, bgs, cobre, hcpep, stages);
     params = set_netw(params, ifod_len_35, ifod_den_35, ROIsize);
     params.vis = opt.vis;
-
+    % load gene expression data into genes parameter object
     genes = SIRgenes(gene_expr, clear, opt);
 
     % run SIR simulation for each gene pair
