@@ -11,7 +11,7 @@ classdef SIRparameters
     properties
         % visualisation and null flags
         vis = false;
-        null;
+        null = "none";
 
         %% input parameters (inside parenthesis are values used in Zheng 2019 paper)
         % model tuning parameters
@@ -46,7 +46,7 @@ classdef SIRparameters
 
     methods 
         function self = SIRparameters(opt)
-            if isfield(opt, vis); self.vis = opt.vis; end
+            if isfield(opt, 'vis'); self.vis = opt.vis; end
         end
 
         function self = set_netw(self, ws)
@@ -76,23 +76,27 @@ classdef SIRparameters
             self.stages = stages;
         end
 
-        function self = set_null(self, opt)
-            if ~isfield(opt.null); return; end
+        function self = set_null(self, opt, ws)
             self.null = opt.null;
             % Q: can you directly load into self?
-            if opt.null == "rewired"
-                ws_null = "some_workspace";
-                load(ws_null, 'null_len', 'null_den');
+            if self.null == "rewired"
+                load(ws, 'null_len', 'null_den');
                 self.null_len = null_len;
                 self.null_den = null_den;
-            elseif opt.null == "spatial"
-                ws_null = "some_workspace";
-                load(ws_null, 'null_bgs', 'null_cobre', 'null_hcpep', 'null_stages');
+            elseif self.null == "spatial"
+                load(ws, 'null_bgs', 'null_cobre', 'null_hcpep', 'null_stages');
                 self.null_bgs = null_bgs;
                 self.null_cobre = null_cobre;
                 self.null_hcpep = null_hcpep;
                 self.null_stages = null_stages;
             end
+        end
+
+        function self = set_spatial(self, n)
+            self.bgs = self.null_bgs(:, n);
+            self.cobre = self.null_cobre(:, n);
+            self.hcpep = self.null_hcpep(:, n);
+            self.stages = self.null_stages(:, n);
         end
     end
 end

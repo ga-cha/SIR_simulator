@@ -11,11 +11,13 @@
 %  and return the maximum
 
 function [bgs_max, cobre_max, hcpep_max, stages_max, tstep, err] = ...
-    SIRcorr(params, gene)
+    SIRcorr(params, gene, n)
 
     % Take log2fold change 
     gene.sim_atrophy = real(log2(gene.sim_atrophy));
 
+    if params.null == "spatial"; params = set_spatial(params, n); end
+    
     % Calculate position and value of max correlation coefficient
     bgs_corrs = corr(gene.sim_atrophy, params.bgs, 'Type', 'Spearman');
     cobre_corrs = corr(gene.sim_atrophy, params.cobre, 'Type', 'Spearman');
