@@ -24,17 +24,17 @@ classdef SIRgenes
         function self = SIRgenes(opt, clear_names, ws)
             load(ws, 'gene_expr');
             % TODO: get this function working
-            % risk_names = set_risk_names(gene_expr.Properties.VariableNames, opt);
-            if ~isfield(opt, 'risk')
-                if opt.parc == "S132_PCA"               % 65 risk PCs
-                    opt.risk = gene_expr.Properties.VariableNames(1:65);
-                elseif opt.parc == "S332_PCA"           % 165 risk PCs
-                    opt.risk = gene_expr.Properties.VariableNames(1:165);
-                else
-                    opt.risk = string(gene_expr.Properties.VariableNames);
-                end
-            end
-            risk_names = opt.risk;
+            risk_names = set_risk_names([gene_expr.Properties.VariableNames], opt);
+            % if ~isfield(opt, 'risk')
+            %     if opt.parc == "S132_PCA"               % 65 risk PCs
+            %         opt.risk = gene_expr.Properties.VariableNames(1:65);
+            %     elseif opt.parc == "S332_PCA"           % 165 risk PCs
+            %         opt.risk = gene_expr.Properties.VariableNames(1:165);
+            %     else
+            %         opt.risk = string(gene_expr.Properties.VariableNames);
+            %     end
+            % end
+            % risk_names = opt.risk;
 
             % mask input genes that exist in gene expression table
             % then generate gene expression table of masked genes only
@@ -73,7 +73,7 @@ classdef SIRgenes
 
         function self = init_gene_corrs(self, opt)
             dim = 1;
-            if opt.null == "spatial"; dim = 3; end
+            if opt.null == "spatial"; dim = 1000; end
             self.gene_corrs = table(                                                ...
                 'Size', [width(self.risk_genes) * width(self.clear_genes) * dim, 8],      ...
                 'VariableTypes', {'string', 'string', 'double', 'double', 'double', ...
