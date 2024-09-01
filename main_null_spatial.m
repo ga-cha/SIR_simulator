@@ -72,7 +72,7 @@ function genes = iterate (idx, params, genes)
     gene = SIRatrophy(params, gene, false);
 
     n = 1;
-    if params.null == "spatial"; n = 3; end
+    if params.null == "spatial"; n = 1000; end
     for i = 1:n
         [bgs_max, cobre_max, hcpep_max, stages_max, tstep, ~] = ...
             SIRcorr(params, gene, i);
