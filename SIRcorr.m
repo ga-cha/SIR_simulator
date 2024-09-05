@@ -14,30 +14,26 @@ function [bgs_max, cobre_max, hcpep_max, stages_max, tstep, err] = ...
     SIRcorr(params, gene, n)
 
     % Take log2fold change 
-    gene.sim_atrophy = real(log2(gene.sim_atrophy));
-
+    % gene.sim_atrophy = real(log2(gene.sim_atrophy));
     if params.null == "spatial"; params = set_spatial(params, n); end
-    
     % Calculate position and value of max correlation coefficient
-    bgs_corrs = corr(gene.sim_atrophy, params.bgs, 'Type', 'Spearman');
-    cobre_corrs = corr(gene.sim_atrophy, params.cobre, 'Type', 'Spearman');
-    hcpep_corrs = corr(gene.sim_atrophy, params.hcpep, 'Type', 'Spearman');
-    stages_corrs = corr(gene.sim_atrophy, params.stages, 'Type', 'Spearman');
-
+    bgs_corrs = corr(gene.sim_atrophy, params.bgs, 'Type', 'Pearson');
+    cobre_corrs = corr(gene.sim_atrophy, params.cobre, 'Type', 'Pearson');
+    hcpep_corrs = corr(gene.sim_atrophy, params.hcpep, 'Type', 'Pearson');
+    stages_corrs = corr(gene.sim_atrophy, params.stages, 'Type', 'Pearson');
     % Truncate first 1000 timepoints which heavily weight seed region
     [bgs_max, tstep] = max(bgs_corrs(1001:end));
     cobre_max = max(cobre_corrs(1001:end));
     hcpep_max = max(hcpep_corrs(1001:end));
     stages_max = max(stages_corrs(1001:end));
     tstep = tstep + 1000;
-
     err = 0;
     % err= calcResiduals(sim_atrophy(:, tstep), params.bgs);
 
     if params.vis
         plot_corrs(bgs_corrs, cobre_corrs, hcpep_corrs, stages_corrs, gene);
-        % max_corr = (bgs_max + cobre_max + hcpep_max)./3;
-        % plot_scatter(sim_atrophy, tstep, params, gene, max_corr); 
+        max_corr = (bgs_max + cobre_max + hcpep_max)./3;
+        plot_scatter(tstep, params, gene, max_corr); 
     end
 end
 
@@ -52,17 +48,17 @@ function plot_corrs(bgs_corrs, cobre_corrs, hcpep_corrs, stages_corrs, gene)
     legend("BGS", "COBRE", "HCPEP", "STAGES");
 end
 
-function plot_scatter(sim_atrophy, tstep, params, gene, max_corr)
+function plot_scatter(tstep, params, gene, max_corr)
     emp_atrophy = (params.bgs + params.cobre + params.hcpep)./3;
     figure;
     hold on;
-    scatter(sim_atrophy(:, tstep), emp_atrophy); 
+    scatter(gene.sim_atrophy(:, tstep), emp_atrophy); 
 
     % polyfit fits a degree 1 polynomial
     % polyval evaluates polynomial at specified points
-    [p, ~, xfm] = polyfit(sim_atrophy(:, tstep), emp_atrophy, 1);
-    y = polyval(p, sim_atrophy(:, tstep), [], xfm);
-    plot(sim_atrophy(:, tstep), y');
+    [p, ~, xfm] = polyfit(gene.sim_atrophy(:, tstep), emp_atrophy, 1);
+    y = polyval(p, gene.sim_atrophy(:, tstep), [], xfm);
+    plot(gene.sim_atrophy(:, tstep), y');
 
     t = title(['Spearman correlation = ', num2str(max_corr)]);
     t.FontWeight = 'normal';

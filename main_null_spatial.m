@@ -21,7 +21,7 @@ function [] = main_null_spatial(clear, opt)
         opt.risk {mustBeText}                       % risk: risk gene string array
         opt.parc {mustBeText} = "S132"              % accepts parcellations "DK", "S132", and "S332"
         opt.dbg {mustBeNumericOrLogical} = false;   % dbg: switches output to console or file
-        opt.out {mustBeText} = "../SIR_simulator_gene_corrs/results_3/gene_corrs.csv";
+        opt.out {mustBeText} = "../SIR_results/results_3/gene_corrs.csv";
         opt.vis {mustBeNumericOrLogical} = false;   % vis: switches on visualisation options
         opt.null {mustBeText} = "none";
     end
@@ -57,12 +57,13 @@ function [genes] = SIRiterator(params, genes)
     % end
     
     assert (~isempty(genes.gene_corrs));
+    genes.gene_corrs = rmmissing(genes.gene_corrs);
 end
 
 % For each valid gene pair, simulate normal and misfolded protein growth 
 % across all timepoints, and generate atrophy and correlation over time.
 function genes = iterate (idx, params, genes)
-
+tic
     gene = SIRgene(genes, idx);
     if strcmp(gene.clear_name, gene.risk_name); return; end
 
@@ -70,7 +71,8 @@ function genes = iterate (idx, params, genes)
     % parameter, switched off.
     [gene.Rnor_all, gene.Rmis_all] = SIRsimulator(params, gene, false);
     gene = SIRatrophy(params, gene, false);
-
+toc
+tic
     n = 1;
     if params.null == "spatial"; n = 1000; end
     for i = 1:n
@@ -82,6 +84,7 @@ function genes = iterate (idx, params, genes)
         genes.gene_corrs(row, :) = {gene.risk_name, gene.clear_name, ...
             avg_max, bgs_max, cobre_max, hcpep_max, stages_max, tstep};
     end
+toc
 end
 
 

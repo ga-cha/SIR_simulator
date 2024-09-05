@@ -29,7 +29,7 @@ while IFS=',' read -r clear_gene; do
 module load matlab/r2023b
 
 # Run the MATLAB script with the arguments
-matlab -nodesktop -nodisplay -nosplash -r "main(\"$clear_gene\", parc=\"S132_PCA\", out='../SIR_simulator_gene_corrs/results_3/gene_corrs_240724_S132_PC.csv'); exit;"
+matlab -nodesktop -nodisplay -nosplash -r "main_null_spatial(\"$clear_gene\", null='spatial', out='../SIR_simulator_gene_corrs/results_3/gene_corrs_240820_spatial_null.csv'); exit;"
 # matlab -nodesktop -nodisplay -nosplash -r "main(\"$clear_gene\"); exit;"
 EOL
 done < "$input_csv"
