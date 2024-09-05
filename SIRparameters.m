@@ -76,15 +76,15 @@ classdef SIRparameters
             self.stages = stages;
         end
 
-        function self = set_null(self, opt, ws)
+        function self = set_null(self, opt, null_ws)
             self.null = opt.null;
             % Q: can you directly load into self?
             if self.null == "rewired"
-                load(ws, 'null_len', 'null_den');
+                load(null_ws, 'null_len', 'null_den');
                 self.null_len = null_len;
                 self.null_den = null_den;
             elseif self.null == "spatial"
-                load(ws, 'null_bgs', 'null_cobre', 'null_hcpep', 'null_stages');
+                load(null_ws, 'null_bgs', 'null_cobre', 'null_hcpep', 'null_stages');
                 self.null_bgs = null_bgs;
                 self.null_cobre = null_cobre;
                 self.null_hcpep = null_hcpep;

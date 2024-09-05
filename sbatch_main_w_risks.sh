@@ -16,21 +16,21 @@ if [ ! -e "$clear_csv" ] || [ ! -e "$risk_csv" ]; then
   exit 1
 fi
 
-while IFS=',' read -r clear_gene; do
+paste -d ',' "$clear_csv" "$risk_csv" | while IFS=',' read -r clear_gene risk_gene; do
+    # Remove the quotes and extra characters from clear_gene
     clear_gene=${clear_gene:1:-1}
     clear_gene=$(echo "$clear_gene" | sed 's/""/"/g')
-    while IFS=',' read -r risk_gene; do
-        risk_gene=${risk_gene:1:-1}
-        risk_gene=$(echo "$risk_gene" | sed 's/""/"/g')
-	# Remove leading/trailing whitespace
-        # clear_gene=$(echo "$clear_gene" | xargs | sed 's/\r$//')  
-        # risk_gene=$(echo "$risk_gene" | xargs | sed 's/\r$//')
-        sbatch --output="$output_log"<<EOL
+    
+    # Remove the quotes and extra characters from risk_gene
+    risk_gene=${risk_gene:1:-1}
+    risk_gene=$(echo "$risk_gene" | sed 's/""/"/g')
+
+    # Submit the job with the paired genes
+    sbatch --output="$output_log" --job-name="sir-simulator-$clear_gene" <<EOL
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --time=24:00:00
-#SBATCH --job-name=lyso-sir-simulator
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=gabriella.chan@monash.edu
 
@@ -38,8 +38,7 @@ while IFS=',' read -r clear_gene; do
 module load matlab/r2023b
 
 # Run main with each clearance gene
-matlab -nodesktop -nodisplay -nosplash -r 'main($clear_gene, $risk_gene); exit;'
+matlab -nodesktop -nodisplay -nosplash -r 'main_null_spatial([$clear_gene], risk=[$risk_gene], null="spatial", out="../SIR_results/results_3/240902_gene_corrs_spatial.csv"); exit;'
 
 EOL
-    done < "$risk_csv"
-done < "$clear_csv"
+done

@@ -9,11 +9,11 @@ function [] = write_async(gene_corrs, out_file)
     end        
     
     % write to file, appending if available
-    if ~isfile(out_file)
-        writetable(gene_corrs, out_file)
-    else
+    % if ~isfile(out_file)
+    %     writetable(gene_corrs, out_file)
+    % else
         writetable(gene_corrs, out_file, 'WriteMode', 'Append')
-    end
+    % end
 
     % Release file lock
     fclose(lockFileID);
