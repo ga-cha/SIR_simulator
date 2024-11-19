@@ -10,7 +10,7 @@
 % Simulated atrophy is returned as atrophy per region per timepoint
 %
 
-function gene = SIRatrophy(params, gene, vis)
+function gene = sir_atrophy(params, gene, vis)
     sconnDen = params.sconnDen;
     N_regions = params.N_regions;
     dt = params.dt;
@@ -22,7 +22,7 @@ function gene = SIRatrophy(params, gene, vis)
     k1 = 0.5;
     k2 = 1 - k1;
     % input weigths of deafferentation (scaled by structrual connectivity)
-    % weights = sconnDen ./ repmat(sum(sconnDen, 2), 1, N_regions);
+    weights = sconnDen ./ repmat(sum(sconnDen, 2), 1, N_regions);
     % % GC: An additional correction for (global) structural connectivity
     % weights = sconnDen .* rescale(sum(sconnDen)) ./ repmat(sum(sconnDen, 2), 1, N_regions);    
     

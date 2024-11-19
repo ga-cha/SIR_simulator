@@ -10,11 +10,12 @@
 % each timepoint, then, we can calculate empirical correlation. We plot
 %  and return the maximum
 
-function [bgs_max, cobre_max, hcpep_max, stages_max, tstep, err] = ...
-    SIRcorr(params, gene, n)
+function [bgs_max, cobre_max, hcpep_max, stages_max, tstep] = ...
+    sir_corr(params, gene, n)
 
     % Take log2fold change 
     % gene.sim_atrophy = real(log2(gene.sim_atrophy));
+
     if params.null == "spatial"; params = set_spatial(params, n); end
     % Calculate position and value of max correlation coefficient
     bgs_corrs = corr(gene.sim_atrophy, params.bgs, 'Type', 'Pearson');
@@ -25,14 +26,13 @@ function [bgs_max, cobre_max, hcpep_max, stages_max, tstep, err] = ...
     % cobre_corrs = corr(gene.sim_atrophy, params.cobre, 'Type', 'Spearman');
     % hcpep_corrs = corr(gene.sim_atrophy, params.hcpep, 'Type', 'Spearman');
     % stages_corrs = corr(gene.sim_atrophy, params.stages, 'Type', 'Spearman');
+
     % Truncate first 1000 timepoints which heavily weight seed region
     [bgs_max, tstep] = max(bgs_corrs(1001:end));
     cobre_max = max(cobre_corrs(1001:end));
     hcpep_max = max(hcpep_corrs(1001:end));
     stages_max = max(stages_corrs(1001:end));
     tstep = tstep + 1000;
-    err = 0;
-    % err= calcResiduals(sim_atrophy(:, tstep), params.bgs);
 
     if params.vis
         plot_corrs(bgs_corrs, cobre_corrs, hcpep_corrs, gene);
@@ -65,10 +65,10 @@ function plot_scatter(tstep, params, gene, max_corr)
     y = polyval(p, gene.sim_atrophy(:, tstep), [], xfm);
     plot(gene.sim_atrophy(:, tstep), y');
 
-    % t = title(['Pearson correlation = ', num2str(max_corr)], "risk gene: " + gene.risk_name, ...
+    t = title({['Pearson correlation = ', num2str(max_corr)], "risk gene: " + gene.risk_name, ...
         "clearance gene: " + gene.clear_name});
-    t = title({['Spearman correlation = ', num2str(max_corr)], "risk gene: " + gene.risk_name, ...
-        "clearance gene: " + gene.clear_name});
+    % t = title({['Spearman correlation = ', num2str(max_corr)], "risk gene: " + gene.risk_name, ...
+    %     "clearance gene: " + gene.clear_name});
     t.FontWeight = 'normal';
     xlabel("simulated atrophy")
     ylabel('empirical atrophy (z score)')
