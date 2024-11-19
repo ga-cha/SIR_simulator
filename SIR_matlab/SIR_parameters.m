@@ -7,11 +7,10 @@
 % Holds model tuning parameters, parcellation data and atrophy data
 % 
 
-classdef SIRparameters
+classdef SIR_parameters
     properties
-        % visualisation and null flags
+        % visualisation flag
         vis = false;
-        null = "none";
 
         %% input parameters (inside parenthesis are values used in Zheng 2019 paper)
         % model tuning parameters
@@ -36,6 +35,7 @@ classdef SIRparameters
         seed;                   % seed: seed region of misfolded alpha-syn injection (choose as you like? (^?^)= here substantia nigra)
 
         % optional null parameters
+        null = "none";
         null_len;
         null_den;
         null_bgs;
@@ -48,7 +48,7 @@ classdef SIRparameters
     end
 
     methods 
-        function self = SIRparameters(opt)
+        function self = SIR_parameters(opt)
             if isfield(opt, 'vis'); self.vis = opt.vis; end
             self.ws = 'data/workspace_' + opt.parc + '.mat';
         end

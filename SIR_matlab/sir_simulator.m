@@ -5,7 +5,7 @@
 %
 
 function [Rnor_all, Rmis_all, Pnor_all, Pmis_all] = ...
-    SIRsimulator(params, gene, vis)
+    sir_simulator(params, gene, vis)
 
     % A function to simulate the spread of misfolded alpha-syn
     
