@@ -29,7 +29,7 @@ while IFS=',' read -r clear_gene; do
 module load matlab/r2023b
 
 # Run the MATLAB script with the arguments
-matlab -nodesktop -nodisplay -nosplash -r "main(\"$clear_gene\"); exit;"
+matlab -nodesktop -nodisplay -nosplash -r 'main("$clear_gene", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
 
 EOL
 done < "$input_csv"

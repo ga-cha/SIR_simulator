@@ -8,7 +8,9 @@
 % Monash University
 %
 % Simulates atrophy accrual due to the accumulation of misfolded
-% protein aggregates, and correlates this with empirical data           
+% protein aggregates, and correlates this with empirical data
+%
+% main("RNF144A", risk_names="RFXAP", dbg=true, vis=true);
 
 
 function [] = main(clear_names, opt)
@@ -23,7 +25,7 @@ function [] = main(clear_names, opt)
         clear_names {mustBeText}
         opt.risk_names {mustBeText}
         opt.out {mustBeText} = '../../SIR_results/results_3/gene_corrs.csv';
-        opt.parc {mustBeText} = "S132" 
+        opt.parc {mustBeText} = "S132" ;
         opt.dbg {mustBeNumericOrLogical} = false;
         opt.vis {mustBeNumericOrLogical} = false;
         opt.null {mustBeText} = "none";
@@ -31,17 +33,14 @@ function [] = main(clear_names, opt)
 
     % load workspace variables into parameter object 
     params = SIR_parameters(opt);
-    params = set_atrophy(params);
-    params = set_netw(params);
     % load gene expression data into genes parameter object
     genes = SIR_genes(opt, clear_names);
     % start parallel pool
     p = gcp('nocreate'); if isempty(p); parpool('Threads'); end
 
-    tic
-    % run SIR simulation for each gene pair
-    gene_corrs = sir_iterator(params, genes);
-    toc
+    % tic
+    gene_corrs = run_sim(genes, params);
+    % toc
 
     if (opt.dbg)
         display(gene_corrs)
@@ -50,3 +49,50 @@ function [] = main(clear_names, opt)
     end
 end
 
+
+% We iterate through all gene pairs
+% 
+% 
+% and their gene expression and call SIR
+% simulator to store an array of normal protein expression over regions 
+% over time, and misfolded protein expression over regions over time.
+%
+% From this we derive theortical atrophy per region for each gene and
+% correlate with empirical atrophy per region per gene.
+
+function gene_corrs = run_sim(genes, params)
+    % run SIR simulation for each gene pair
+    n = genes.n_risk * genes.n_clear;
+    gene_objs = SIR_gene.empty(n, 0);
+    
+    if params.vis
+        % figure visualisation unavailable with parfor loops
+        for idx = 1:n
+            gene = SIR_gene(genes, idx);
+            gene_objs(idx) = gene.run_sim(params);
+        end
+    else
+        parfor idx = 1:n
+            gene = SIR_gene(genes, idx);
+            gene_objs(idx) = gene.run_sim(params);
+        end
+    end
+
+    gene_corrs = assemble_gene_corrs(params, gene_objs);
+    assert (~isempty(gene_corrs));
+end
+
+% assemble table from gene pairs, preallocating for speed
+function [gene_corrs] = assemble_gene_corrs(params, gene_objs)
+    % collate correlation from each gene object into a single cell array
+    gene_corr_cells = cell(length(gene_objs), 1);
+    parfor i = 1:length(gene_objs)
+        if isprop(gene_objs(i), 'gene_corr')
+            gene_corr_cells{i} = gene_objs(i).gene_corr;
+        end
+    end
+    % concatenate cell array into a single table
+    C = vertcat(gene_corr_cells{:});
+    gene_corrs = cell2table(C, 'VariableNames', [{'risk gene',               ...
+        'clearance gene'}, params.emp_atr.Properties.VariableNames]);
+end

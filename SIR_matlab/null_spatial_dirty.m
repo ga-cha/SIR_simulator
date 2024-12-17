@@ -1,40 +1,31 @@
 % gene tables are indexed as T(:, ["gene1", "gene2"])
-% clear = ["RNF144A"];
-% opt.risk = ["RFXAP"];
-clear = ["gene64"];
-opt.risk = ["gene424"];
-% opt.parc = "S132";
-opt.parc = "S132_rand";
+% clear_names = ["RNF144A"];
+% opt.risk_names = ["CDK19"];
+clear_names = ["gene350"];
+opt.risk_names = ["gene2453"];
+% opt.parc = "S332";
+opt.parc = "S332_rand";
 opt.dbg = false;
 opt.vis = false;
 opt.null = "none";
 
-ws = 'data/workspace_' + opt.parc + '.mat';
 % load workspace variables in parameter object 
-params = SIRparameters(opt);
-params = set_atrophy(params);
-params = set_netw(params);
-ws_null = 'data/workspace_S132_null.mat';
-params = set_null(params, opt, ws_null);
+params = SIR_parameters(opt);
+
 % load gene expression data in genes parameter object
-genes = SIRgenes(opt, clear);
-gene = SIRgene(genes, 1);
+genes = SIR_genes(opt, clear_names);
 
 % Experimental gene correlation
-[genes] = SIRiterator(params, genes);
-genes.gene_corrs = rmmissing(genes.gene_corrs);
-exp_corr = genes.gene_corrs.correlation;
+gene_corrs = run_sim(params, genes);
+exp_corr = gene_corrs.correlation;
 
 % Null gene correlation
 params.null = "spatial";
 opt.null = "spatial";
-params = set_null(params, opt, ws_null);
+params = params.set_null(opt);
 
-genes = SIRgenes(opt, clear);
-[genes] = SIRiterator(params, genes);
-
-genes.gene_corrs = rmmissing(genes.gene_corrs);
-null_corrs = genes.gene_corrs.correlation;
+gene_corrs = run_sim(params, genes);
+null_corrs = gene_corrs.correlation;
 
 % t-test and plot
 [h,p]=ttest2(exp_corr,null_corrs);
@@ -46,8 +37,8 @@ q3=norminv(.75);
 w95=(q95-q3)/(2*q3);
 
 figure;
-hold on
-boxplot(null_corrs, 'whisker', 0.7193)
+hold on;
+boxplot(null_corrs, 'whisker', w95)
 s=swarmchart(ones(length(null_corrs),1),null_corrs,5,'MarkerEdgeAlpha',0.2);
 s.XJitterWidth=0.15;
 ylim([0 0.85])
@@ -55,40 +46,45 @@ plot(1,exp_corr,'_','LineWidth', 1.2,'MarkerSize',35)
 
 t = title({['Pearson correlation = ', num2str(exp_corr)], ['p = ', num2str(p)]});
 t.FontWeight = 'normal';
-xlabel({"risk gene: " + gene.risk_name, "clearance gene: " + gene.clear_name})
+xlabel({"risk gene: " + opt.risk_names, "clearance gene: " + clear_names})
 ylabel('correlation')
 xlim([0.8 1.2])
 ylim([-0.2 0.7])
 
+hold off;
+
 set(gcf, 'Position',[100 100 350 500])
 
 
-function [genes] = SIRiterator(params, genes)
+function gene_corrs = run_sim(params, genes)
     n = genes.n_risk * genes.n_clear;
-    for idx = 1:n; genes = iterate(idx, params, genes); end
+    gene_objs = SIR_gene.empty(n, 0);
+
+    for idx = 1:n
+        gene = SIR_gene(genes, idx);
+        if params.null == "spatial"
+            gene_objs(idx) = gene.null_sim(params);
+        else 
+            gene_objs(idx) = gene.run_sim(params);
+        end
+    end
     
-    assert (~isempty(genes.gene_corrs));
-    genes.gene_corrs = rmmissing(genes.gene_corrs);
+    gene_corrs = assemble_gene_corrs(gene_objs);
 end
 
-function genes = iterate (idx, params, genes)
-    gene = SIRgene(genes, idx);
-    if strcmp(gene.clear_name, gene.risk_name); return; end
-
-    % SIRsimulator and SIRatrophy have visualization as a separate
-    % parameter, switched off.
-    [gene.Rnor_all, gene.Rmis_all] = SIRsimulator(params, gene, false);
-    gene = SIRatrophy(params, gene, false);
-
-    n = 1;
-    if params.null == "spatial"; n = 1000; end
-    for i = 1:n
-        [bgs_max, cobre_max, hcpep_max, stages_max, tstep, ~] = ...
-            SIRcorr(params, gene, i);
-        avg_max = mean([bgs_max, cobre_max, hcpep_max]);
-        
-        row = (idx-1)*n + i;
-        genes.gene_corrs(row, :) = {gene.risk_name, gene.clear_name, ...
-            avg_max, bgs_max, cobre_max, hcpep_max, stages_max, tstep};
+% assemble table from gene pairs, preallocating for speed
+function [gene_corrs] = assemble_gene_corrs(gene_objs)
+    % collate correlation from each gene object into a single cell array
+    gene_corr_cells = cell(length(gene_objs), 1);
+    parfor i = 1:length(gene_objs)
+        if isprop(gene_objs(i), 'gene_corr')
+            gene_corr_cells{i} = gene_objs(i).gene_corr;
+        end
     end
+    % concatenate cell array into a single table
+    C = vertcat(gene_corr_cells{:});
+    assert (~isempty(C));
+    gene_corrs = cell2table(C, 'VariableNames', {'risk gene',               ...
+        'clearance gene', 'correlation', 'bgs correlation',                 ...
+        'cobre correlation', 'hcpep correlation', 'stages correlation'});
 end

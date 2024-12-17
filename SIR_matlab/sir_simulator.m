@@ -4,8 +4,7 @@
 % Zheng, Ying-Qiu, et al. PLoS biol. 17.11 (2019): e3000495.
 %
 
-function [Rnor_all, Rmis_all, Pnor_all, Pmis_all] = ...
-    sir_simulator(params, gene, vis)
+function proteins = sir_simulator(params, gene, vis)
 
     % A function to simulate the spread of misfolded alpha-syn
     
@@ -22,14 +21,14 @@ function [Rnor_all, Rmis_all, Pnor_all, Pmis_all] = ...
     % unpack parameters
     v = params.v;
     dt = params.dt;
-    T_total = params.T_total;
+    t_total = params.t_total;
     init_number = params.init_number;
     prob_stay = params.prob_stay;
     trans_rate = params.trans_rate;
     sconnDen = params.sconnDen;
     sconnLen = params.sconnLen;
     ROIsize = params.ROIsize;
-    N_regions = params.N_regions;
+    n_rois = params.n_rois;
     seed = params.seed;
 
     % set maximum timesteps for normal protein propagation
@@ -49,8 +48,8 @@ function [Rnor_all, Rmis_all, Pnor_all, Pmis_all] = ...
     
     % multinomial distribution
     % element (i,j) is the probability of moving from region i to edge (i,j)
-    weights = weights ./ repmat(sum(weights, 2), 1, N_regions);
-    weights(eye(N_regions, 'logical')) = 0;
+    weights = weights ./ repmat(sum(weights, 2), 1, n_rois);
+    weights(eye(n_rois, 'logical')) = 0;
     
     
     % convert gene expression (z) scores to probabilities
@@ -58,14 +57,14 @@ function [Rnor_all, Rmis_all, Pnor_all, Pmis_all] = ...
     synthesis_rate = normcdf(zscore(gene.risk_gene));
     
     % store the number of normal/misfoled alpha-syn at each time step
-    [Rnor_all, Rmis_all] = deal( zeros([N_regions, T_total]) );
-    [Pnor_all, Pmis_all] = deal( zeros([N_regions, N_regions, T_total]) );
+    [Rnor_all, Rmis_all] = deal( zeros([n_rois, t_total]) );
+    [Pnor_all, Pmis_all] = deal( zeros([n_rois, n_rois, t_total]) );
     % optionally store normal protein growth when filling network 
-    if vis; [Rnor_nor_all] = deal(zeros([N_regions, iter_max])); end
+    if vis; [Rnor_nor_all] = deal(zeros([n_rois, iter_max])); end
 
     % Rnor, Rmis, Pnor, Pmis store results of single simulation at each time
-    [Rnor, Rmis] = deal(zeros(N_regions, 1));   % number of normal/misfolded alpha-syn in regions
-    [Pnor, Pmis] = deal(zeros(N_regions));      % number of normal/misfolded alpha-syn in paths
+    [Rnor, Rmis] = deal(zeros(n_rois, 1));   % number of normal/misfolded alpha-syn in regions
+    [Pnor, Pmis] = deal(zeros(n_rois));      % number of normal/misfolded alpha-syn in paths
     
     % simplification of variables
     alphaTerm = (synthesis_rate .* ROIsize) .* dt;
@@ -77,6 +76,48 @@ function [Rnor_all, Rmis_all, Pnor_all, Pmis_all] = ...
     sTerm = 1 ./ sconnLen .* dt .* v; sTerm(isinf(sTerm)) = 0;
     wTerm = weights .* dt;
     gamma0 = 1 .* trans_rate ./ ROIsize .* dt ; % the probability of getting misfolded
+    
+
+    %% New approach to mapping steady state: 
+    % regions and paths both become entities in a markov chain, with
+    % distinct transition probabilities
+
+    % tic; 
+    % 
+    % sconnMask = logical(sconnDen); 
+    % [edgeX, edgeY] = find(sconnMask);
+    % N_edges = height(edgeX); 
+    % 
+    % mat1 = sparse(1:N_regions, 1:N_regions, prob_stay); 
+    % 
+    % mat2 = sparse(edgeX, 1:N_edges, 1./sconnLen(sconnMask));
+    % 
+    % sconnDenStr = sum(sconnDen)'; 
+    % mat3 = sparse((1:N_edges)', edgeX, ...
+    %     (1-prob_stay(edgeX)) .* sconnDen(sconnMask) ./ sconnDenStr(edgeX) ); 
+    % 
+    % mat4 = sparse(1:N_edges, 1:N_edges, 1 - 1./sconnLen(sconnMask)); 
+    % 
+    % mat = [mat1, mat2; mat3, mat4];
+    % 
+    % % prev = zeros(N_regions + N_edges, 1); 
+    % % for t = 1:iter_max
+    % %     next = mat * prev; 
+    % %     next(1:N_regions) = next(1:N_regions) .* betaTerm + alphaTerm; 
+    % % 
+    % %     if abs(next - prev) < (1e-7 * prev); break; end
+    % % 
+    % %     prev = next;
+    % % end
+    % [next,~] = eigs(mat, 1, 1); 
+    % 
+    % Rnor = next(1:N_regions); 
+    % Pnor = full(sparse( edgeX, edgeY, next(N_regions+1:end) ));
+    % 
+    % toc; 
+    % 
+    % [Rnor, Rmis] = deal(zeros(N_regions, 1));   % number of normal/misfolded alpha-syn in regions
+    % [Pnor, Pmis] = deal(zeros(N_regions));      % number of normal/misfolded alpha-syn in paths
     
     
     %% normal alpha-syn growth
@@ -106,11 +147,12 @@ function [Rnor_all, Rmis_all, Pnor_all, Pmis_all] = ...
     
         if abs(Rnor - Rtmp) < (1e-7 * Rtmp); break; end
     end
+
     %% misfolded protein spreading process
     % inject misfolded alpha-syn
     Rmis(seed) = init_number;
     % disp('misfolded alpha synuclein spreading');
-    for t = 1:T_total
+    for t = 1:t_total
         %%% moving process
         % normal proteins: region -->> paths
         movDrt_nor = Rnor .* wTerm; % implicit expansion
@@ -147,6 +189,12 @@ function [Rnor_all, Rmis_all, Pnor_all, Pmis_all] = ...
         % Pnor_ave(:, :, t) = Pnor;
         % Pmis_ave(:, :, t) = Pmis;
     end
+
+    
+    proteins.Rnor_all = Rnor_all;
+    proteins.Rmis_all = Rmis_all;
+    % proteins.Pnor_all = Pnor_all;
+    % proteins.Pmis_all = Pmis_all;
 
     if vis; plot_propagation(Rnor_nor_all, Rnor_all, Rmis_all); end
 
