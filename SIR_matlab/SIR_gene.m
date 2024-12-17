@@ -13,17 +13,16 @@ classdef SIR_gene
         clear_name;
         clear_gene;
 
-        % intermediate products
-        Rnor_all;
-        Rmis_all;
-        sim_atrophy;
-
-        % output table
-        gene_corr;
+        % output correlations
+        max_atr = table();
+        max_corr = table();
+        gene_corr = {};
     end
 
     methods
         function self = SIR_gene(genes, idx)
+            if nargin == 0; return; end % needs empty constructor for parfor
+
             % Rearrange index to  risk and clear gene indices
             [i, j] = ind2sub([genes.n_risk, genes.n_clear], idx);
             % Sets name and expression array of this specific gene pair
@@ -31,32 +30,51 @@ classdef SIR_gene
             self.risk_gene = genes.risk_genes.Value(:, i);
             self.clear_name = genes.clear_names.Value(j);
             self.clear_gene = genes.clear_genes.Value(:, j);
-
-            self = init_corr_table(self);
         end
 
+        % Simulate normal and misfolded protein growth
+        % Calculate simuated atrophy over time
+        % Calculate correlations over time
         function self = run_sim(self, params)
             if strcmp(self.risk_name, self.clear_name); return; end
-
+            
             % sir_simulator and sir_atrophy have extra visualisations,
             % infrequently used and called separately to vis
-            [self.Rnor_all, self.Rmis_all] = sir_simulator(params, self, false);
-            self = sir_atrophy(params, self, false);
-            [bgs, cobre, hcpep, stages, tstep] = sir_corr(params, self);
-            avg_max = mean([bgs, cobre, hcpep]);
+            proteins = sir_simulator(params, self, false);
+            sim_atrophy = sir_atrophy(params, proteins, false);
 
-            self.gene_corr = {self.risk_name, self.clear_name,              ...
-                avg_max, bgs, cobre, hcpep, stages, tstep};
+            self = sir_corr(params, self, sim_atrophy);
+
+            % mean_max_corr = mean(table2array(self.max_corr(:, 2)));
+            max_corrs = table2array(self.max_corr(:, 2))';
+    
+            self.gene_corr = [self.gene_corr;                           ...
+                {self.risk_name, self.clear_name},       ...
+                num2cell(max_corrs)];
         end
 
-        function self = init_corr_table(self)
-            self.gene_corr = table(                                         ...
-                'Size', [1, 8],                                             ...
-                'VariableTypes', {'string', 'string', 'double', 'double',   ...
-                'double', 'double', 'double', 'double'},                    ...
-                'VariableNames', {'risk gene', 'clearance gene',            ...
-                'correlation', 'bgs correlation', 'cobre correlation',      ...
-                'hcpep correlation', 'stages correlation', 'bgs t'});
+        % spatial null replicates a lot of above
+        % TODO: refactor
+        function self = null_sim(self, params)
+            if strcmp(self.risk_name, self.clear_name); return; end
+            
+            proteins = sir_simulator(params, self, false);
+            sim_atrophy = sir_atrophy(params, proteins, false);
+
+            for i = 1:1000
+                self.max_atr = table();
+                self.max_corr = table();
+
+                self = sir_corr(params, self, sim_atrophy, i);
+    
+                % mean_max_corr = mean(table2array(self.max_corr(:, 2)));
+                max_corrs = table2array(self.max_corr(:, 2))';
+        
+                self.gene_corr = [self.gene_corr;                           ...
+                    {self.risk_name, self.clear_name},       ...
+                    num2cell(max_corrs)];
+            end
         end
+
     end
 end
