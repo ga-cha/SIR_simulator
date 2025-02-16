@@ -71,11 +71,7 @@ function gene_corrs = run_sim(genes, params)
     else
         parfor idx = 1:n
             gene = SIR_gene(genes, idx);
-            if (params.null ~= "rewired")
-                gene_objs(idx) = gene.run_gene(params);
-            else
-                gene_objs(idx) = gene.run_rewired(params);
-            end
+            gene_objs(idx) = gene.run_gene(params);
         end
     end
 
