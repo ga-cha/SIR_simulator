@@ -10,12 +10,13 @@
 % each timepoint, then, we can calculate empirical correlation. We plot
 %  and return the maximum
 
-function gene = sir_corr(params, gene, sim_atrophy, n)
+function gene = sir_corr(params, gene, sim_atrophy)
 
     % Take log2fold change 
     % sim_atrophy = real(log2(sim_atrophy));
 
-    if params.null == "spatial"; params = set_spatial(params, n); end
+    gene.max_atr = table();
+    gene.max_corr = table();
     all_corrs = table();
 
     for i = 1:width(params.emp_atr)
@@ -25,7 +26,7 @@ function gene = sir_corr(params, gene, sim_atrophy, n)
         [site_max, site_t] = max(site_corrs(1001:end));     % first 1000 heavily weight seed region
         
         % full time series of correlations (time series x sites matrix)
-        % NOTE: this is only used for plotting, take it out
+        % TODO: this is only used for plotting, move it down(?)
         site_corrs = table(site_corrs, 'VariableNames', site_name);
         all_corrs = [all_corrs, site_corrs];                                %#ok<AGROW>
 

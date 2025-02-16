@@ -41,6 +41,7 @@ classdef SIR_genes
             % preslice variables for parfor loop
             self = preslice(self);
 
+            % TODO: check this break statement
             assert (~isempty(self.clear_genes) && ~isempty(self.risk_genes), ...
                 "No valid gene combinations");
         end
@@ -61,6 +62,9 @@ classdef SIR_genes
             % opt.risk_names = ["LAMP5", "PARVA"];
             % opt.risk_names = ["gene5", "gene6"];
             risk_names = opt.risk_names;
+
+            assert(opt.vis == false | (length(risk_names) < 5 & opt.null == "none"), ...
+                "It is not recommended to visualise this many combinations")
         end
 
         function self = preslice(self)

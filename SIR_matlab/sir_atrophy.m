@@ -10,13 +10,13 @@
 % Simulated atrophy is returned as atrophy per region per timepoint
 %
 
-function sim_atrophy = sir_atrophy(params, gene_interm, vis)
+function sim_atrophy = sir_atrophy(params, proteins, vis)
     sconnDen = params.sconnDen;
     n_rois = params.n_rois;
     dt = params.dt;
     
-    ratio = gene_interm.Rmis_all ./(gene_interm.Rnor_all + gene_interm.Rmis_all) ;
-    ratio(gene_interm.Rmis_all<1) = 0; % remove possible NaNs...
+    ratio = proteins.Rmis_all ./(proteins.Rnor_all + proteins.Rmis_all) ;
+    ratio(proteins.Rmis_all<1) = 0; % remove possible NaNs...
        
     % atrophy growth
     k1 = 0.5;
@@ -24,7 +24,7 @@ function sim_atrophy = sir_atrophy(params, gene_interm, vis)
     % input weigths of deafferentation (scaled by structrual connectivity)
     weights = sconnDen ./ repmat(sum(sconnDen, 2), 1, n_rois);
     % % GC: An additional correction for (global) structural connectivity
-    % weights = sconnDen .* rescale(sum(sconnDen)) ./ repmat(sum(sconnDen, 2), 1, N_regions);    
+    % weights = sconnDen .* rescale(sum(sconnDen)) ./ repmat(sum(sconnDen, 2), 1, params.n_rois);    
     
     % neuronal loss caused by lack of input from neighbouring regions
     ratio_cum = weights * (1-exp(-ratio * dt));
@@ -35,7 +35,7 @@ function sim_atrophy = sir_atrophy(params, gene_interm, vis)
     % add all the increments across t
     sim_atrophy = cumsum(ratio_cum, 2);
 
-    if vis; plot_protein(gene_interm.Rnor_all, gene_interm.Rmis_all, params.ROIsize); end
+    if vis; plot_protein(proteins.Rnor_all, proteins.Rmis_all, params.ROIsize); end
 end
 
 function plot_protein(Rnor_all, Rmis_all, ROIsize)

@@ -35,7 +35,7 @@ classdef SIR_gene
         % Simulate normal and misfolded protein growth
         % Calculate simuated atrophy over time
         % Calculate correlations over time
-        function self = run_sim(self, params)
+        function self = run_gene(self, params)
             if strcmp(self.risk_name, self.clear_name); return; end
             
             % sir_simulator and sir_atrophy have extra visualisations,
@@ -43,38 +43,33 @@ classdef SIR_gene
             proteins = sir_simulator(params, self, false);
             sim_atrophy = sir_atrophy(params, proteins, false);
 
-            self = sir_corr(params, self, sim_atrophy);
+            if (params.null ~= "spatial")
+                self = run_sir_corr(self, params, sim_atrophy);
+            else
+                for i = 1:1000
+                    params = set_spatial(params, i); 
+                    self = run_sir_corr(self, params, sim_atrophy);
+                end
+            end
 
-            % mean_max_corr = mean(table2array(self.max_corr(:, 2)));
-            max_corrs = table2array(self.max_corr(:, 2))';
-    
-            self.gene_corr = [self.gene_corr;                           ...
-                {self.risk_name, self.clear_name},       ...
-                num2cell(max_corrs)];
+            % cleanup
+            self.max_atr = table();
+            self.max_corr = table();
         end
 
-        % spatial null replicates a lot of above
-        % TODO: refactor
-        function self = null_sim(self, params)
-            if strcmp(self.risk_name, self.clear_name); return; end
-            
-            proteins = sir_simulator(params, self, false);
-            sim_atrophy = sir_atrophy(params, proteins, false);
-
-            for i = 1:1000
-                self.max_atr = table();
-                self.max_corr = table();
-
-                self = sir_corr(params, self, sim_atrophy, i);
-    
-                % mean_max_corr = mean(table2array(self.max_corr(:, 2)));
-                max_corrs = table2array(self.max_corr(:, 2))';
-        
-                self.gene_corr = [self.gene_corr;                           ...
-                    {self.risk_name, self.clear_name},       ...
-                    num2cell(max_corrs)];
+        function self = run_rewired(self, params)
+            nulls = 1000;
+            for i = 1:nulls
+                params.sconnDen = params.null_den(:, :, i);
+                self = self.run_gene(params);
             end
         end
 
+        function self = run_sir_corr(self, params, sim_atrophy)
+            self = sir_corr(params, self, sim_atrophy);
+            max_corrs = table2array(self.max_corr(:, 2))';
+            self.gene_corr = [self.gene_corr;                           ...
+                {self.risk_name, self.clear_name}, num2cell(max_corrs)];
+        end
     end
 end

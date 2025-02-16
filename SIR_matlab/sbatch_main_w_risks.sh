@@ -26,11 +26,11 @@ paste -d ',' "$clear_csv" "$risk_csv" | while IFS=',' read -r clear_gene risk_ge
     risk_gene=$(echo "$risk_gene" | sed 's/""/"/g')
 
     # Submit the job with the paired genes
-    sbatch --output="$output_log" --job-name="sir-simulator-$clear_gene" <<EOL
+    sbatch --output="$output_log" --job-name="$clear_gene-SIR" <<EOL
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=24:00:00
+#SBATCH --time=12:00:00
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=gabriella.chan@monash.edu
 
@@ -38,7 +38,6 @@ paste -d ',' "$clear_csv" "$risk_csv" | while IFS=',' read -r clear_gene risk_ge
 module load matlab/r2023b
 
 # Run main with each clearance gene
-matlab -nodesktop -nodisplay -nosplash -r 'main_null_spatial([$clear_gene], risk=[$risk_gene], parc="S132_rand", out="../../SIR_results/results_3/rand_S132_corrs.csv"); exit;'
-# matlab -nodesktop -nodisplay -nosplash -r 'main_null_spatial([$clear_gene], risk=[$risk_gene], null="spatial", out="../SIR_results/results_3/240902_gene_corrs_spatial.csv"); exit;'
+matlab -nodesktop -nodisplay -nosplash -r 'main([$clear_gene], risk=[$risk_gene], null="rewired", out="../../SIR_results/lme_beta/S132_corrs_rewired.csv"); exit;'
 EOL
 done

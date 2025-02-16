@@ -3,21 +3,12 @@
 % not quite correct for some variable types
 
 
-function s = get_size(this) 
-    s = 0; 
-   
-    if (~isobject(this)|| isstring(this))
-        % if a single variable, returns variable size
-        s = whos('this').bytes;
-    else
-        % otherwise sum all object subcomponents
-        props = properties(this);
-        for ii=1:length(props) 
-            currentProperty = getfield(this, char(props(ii))); 
-            curr_s = get_size(currentProperty); 
-            s = s + curr_s; 
-        end
-        % s = s * numel(this);
-        % disp(s);
-    end
+function s = get_size(obj)
+
+    % s = whos('this').bytes;
+
+    byteStream = getByteStreamFromArray(obj);
+    s = numel(byteStream);
+
+    disp([num2str(s) ' bytes']);
 end
