@@ -50,10 +50,7 @@ function [] = main(clear_names, opt)
 end
 
 
-% We iterate through all gene pairs
-% 
-% 
-% and their gene expression and call SIR
+% We iterate through all gene pairs and their gene expression and call SIR
 % simulator to store an array of normal protein expression over regions 
 % over time, and misfolded protein expression over regions over time.
 %
@@ -69,12 +66,16 @@ function gene_corrs = run_sim(genes, params)
         % figure visualisation unavailable with parfor loops
         for idx = 1:n
             gene = SIR_gene(genes, idx);
-            gene_objs(idx) = gene.run_sim(params);
+            gene_objs(idx) = gene.run_gene(params);
         end
     else
         parfor idx = 1:n
             gene = SIR_gene(genes, idx);
-            gene_objs(idx) = gene.run_sim(params);
+            if (params.null ~= "rewired")
+                gene_objs(idx) = gene.run_gene(params);
+            else
+                gene_objs(idx) = gene.run_rewired(params);
+            end
         end
     end
 

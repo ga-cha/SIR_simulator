@@ -48,6 +48,10 @@ classdef SIR_parameters
             ws = 'data/workspace_' + opt.parc + '.mat';
             self = self.set_netw(ws);
             self = self.set_atrophy(ws);
+
+            if (opt.null ~= "none")
+                self = self.set_null(opt);
+            end
         end
 
         function self = set_netw(self, ws)
@@ -77,8 +81,7 @@ classdef SIR_parameters
         function self = set_null(self, opt)
             self.null = opt.null;
 
-            % TODO: this is a bit awful
-            ws = 'data/workspace_S'+ string(self.n_rois*2) + '_null.mat';
+            ws = 'data/workspace_' + opt.parc + '_null.mat';
 
             % Q: can you directly load into self?
             if self.null == "rewired"

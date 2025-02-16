@@ -13,448 +13,193 @@ For product information, visit www.mathworks.com.
 Starting parallel pool (parpool) using the 'Threads' profile ...
 Connected to parallel pool with 1 workers.
 Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745863/slurm_script: line 12: 1515959 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("BACE1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745863.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746076/slurm_script: line 12: 3702776 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF111", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746076.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745859/slurm_script: line 12: 2417155 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("DRAM2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745859.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745885/slurm_script: line 12: 3650662 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CLN3", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745885.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745889/slurm_script: line 12: 10958 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CTSD", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745889.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746058/slurm_script: line 12: 3536638 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF123", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746058.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745893/slurm_script: line 12: 3719913 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("C9orf72", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745893.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746002/slurm_script: line 12: 1824060 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("HGS", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746002.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746062/slurm_script: line 12: 3537970 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UHRF2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746062.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745890/slurm_script: line 12: 10878 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CTSB", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745890.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745892/slurm_script: line 12: 3719884 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PPT1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745892.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746006/slurm_script: line 12: 1824025 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CTSL", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746006.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746141/slurm_script: line 12: 14171 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ZNF598", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746141.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745944/slurm_script: line 12: 3074494 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("LAPTM4B", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745944.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746071/slurm_script: line 12: 3702807 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UBE2D3", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746071.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746072/slurm_script: line 12: 3702732 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF170", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746072.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745995/slurm_script: line 12: 1823984 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CLTC", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745995.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746117/slurm_script: line 12: 1828501 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRAF6", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746117.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746142/slurm_script: line 12: 14172 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ASB2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746142.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746004/slurm_script: line 12: 1824131 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SLC38A9", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746004.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745931/slurm_script: line 12: 3913645 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("DEPDC5", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745931.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745942/slurm_script: line 12: 3073611 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("GLA", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745942.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745879/slurm_script: line 12:  9970 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ANKRD27", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745879.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746074/slurm_script: line 12: 3702828 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RFWD3", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746074.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746118/slurm_script: line 12: 1828502 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM26", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746118.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745899/slurm_script: line 12: 1367434 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TSC2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745899.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746120/slurm_script: line 12: 2153362 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF34", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746120.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746066/slurm_script: line 12: 3702552 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF11", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746066.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746005/slurm_script: line 12: 1824057 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PCSK9", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746005.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745933/slurm_script: line 12: 3912126 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ATP13A2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745933.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745934/slurm_script: line 12: 3913432 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VPS41", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745934.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746070/slurm_script: line 12: 3702256 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNFT1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746070.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746063/slurm_script: line 12: 3537969 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF122", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746063.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745938/slurm_script: line 12: 3912986 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("IDS", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745938.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746089/slurm_script: line 12: 3872662 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF31", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746089.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745949/slurm_script: line 12: 3073548 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RB1CC1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745949.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745878/slurm_script: line 12:  9972 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RAMP3", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745878.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745887/slurm_script: line 12: 3650567 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CTSZ", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745887.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746073/slurm_script: line 12: 3702253 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PPP1R11", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746073.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745902/slurm_script: line 12: 1367894 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("BBC3", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745902.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745922/slurm_script: line 12: 3912184 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PCYOX1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745922.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745930/slurm_script: line 12: 3913646 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TPCN2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745930.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745884/slurm_script: line 12: 3650566 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UNC13D", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745884.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746000/slurm_script: line 12: 1824123 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("WDR45B", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746000.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745882/slurm_script: line 12: 3650746 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SRC", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745882.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746106/slurm_script: line 12: 2151342 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF4", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746106.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746121/slurm_script: line 12: 2153360 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PJA2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746121.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746037/slurm_script: line 12: 319048 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UBR4", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746037.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745958/slurm_script: line 12: 3074967 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TMEM59", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745958.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746064/slurm_script: line 12: 3702511 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RCHY1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746064.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745928/slurm_script: line 12: 3912870 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VPS16", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745928.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745926/slurm_script: line 12: 3912850 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PSAP", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745926.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745923/slurm_script: line 12: 3912292 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VPS26A", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745923.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746053/slurm_script: line 12: 3536640 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("DTX4", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746053.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746092/slurm_script: line 12: 3873051 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF14", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746092.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746075/slurm_script: line 12: 3702255 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF167", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746075.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746093/slurm_script: line 12: 3873049 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RC3H2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746093.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745924/slurm_script: line 12: 3913652 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("LAMTOR5", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745924.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746067/slurm_script: line 12: 3702842 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF38", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746067.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745883/slurm_script: line 12: 3650568 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VPS18", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745883.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746065/slurm_script: line 12: 3702257 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("AREL1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746065.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746043/slurm_script: line 12: 319990 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PRPF19", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746043.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745953/slurm_script: line 12: 3074499 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ARSK", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745953.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746008/slurm_script: line 12: 12385 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CTSS", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746008.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745936/slurm_script: line 12: 3913550 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CALCRL", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745936.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745888/slurm_script: line 12: 3650683 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VMA21", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745888.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745937/slurm_script: line 12: 3912861 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ATP6AP2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745937.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746125/slurm_script: line 12: 1828876 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("MDM2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746125.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745970/slurm_script: line 12: 1362073 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("MCOLN1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745970.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746108/slurm_script: line 12: 2151477 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM23", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746108.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745927/slurm_script: line 12: 3913647 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VPS33B", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745927.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745982/slurm_script: line 12: 1362178 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RRAGA", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745982.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746090/slurm_script: line 12: 3872665 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF125", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746090.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746129/slurm_script: line 12: 3877268 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UBE3D", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746129.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745945/slurm_script: line 12: 3074007 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SNX1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745945.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745925/slurm_script: line 12: 3913648 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ARSG", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745925.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745986/slurm_script: line 12: 1362175 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RPTOR", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745986.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746086/slurm_script: line 12: 3872779 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ZNRF2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746086.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745947/slurm_script: line 12: 3073544 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RAB9A", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745947.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746001/slurm_script: line 12: 1824029 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("IFI30", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746001.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745920/slurm_script: line 12: 3913144 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("MFHAS1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745920.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745904/slurm_script: line 12: 1367863 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ARL8B", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745904.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746126/slurm_script: line 12: 327978 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("BFAR", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746126.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746109/slurm_script: line 12: 12947 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SIAH1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746109.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41746039/slurm_script: line 12: 318521 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRAF3", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746039.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746069/slurm_script: line 12: 3702254 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF126", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746069.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745957/slurm_script: line 12: 3074497 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RAB7A", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745957.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745966/slurm_script: line 12: 1362236 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CTSK", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745966.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746027/slurm_script: line 12: 319262 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UBE3A", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746027.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746123/slurm_script: line 12: 3876805 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TMEM129", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746123.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41746084/slurm_script: line 12: 3873185 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("COP1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746084.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746107/slurm_script: line 12: 2151599 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF113A", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746107.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746049/slurm_script: line 12: 3536646 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VPS18", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746049.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746128/slurm_script: line 12: 327979 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("MEX3C", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746128.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745913/slurm_script: line 12: 3912127 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF167", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745913.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745987/slurm_script: line 12: 1361476 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TMEM192", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745987.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746077/slurm_script: line 12: 3872660 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TOPORS", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746077.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745935/slurm_script: line 12: 3912979 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ZFYVE26", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745935.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745918/slurm_script: line 12: 3912218 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VOPP1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745918.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746078/slurm_script: line 12: 3872663 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RBX1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746078.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745886/slurm_script: line 12: 3650647 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VPS11", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745886.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745914/slurm_script: line 12: 3912101 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("MTOR", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745914.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746112/slurm_script: line 12: 3920246 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM8", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746112.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745898/slurm_script: line 12: 1367893 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SNX6", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745898.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746044/slurm_script: line 12: 318350 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("FANCL", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746044.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746119/slurm_script: line 12: 2153382 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("FBXL22", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746119.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746046/slurm_script: line 12: 318404 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM65", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746046.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746047/slurm_script: line 12: 319856 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ANAPC11", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746047.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745901/slurm_script: line 12: 1367828 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("AP5M1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745901.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745951/slurm_script: line 12: 3074496 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SCARB1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745951.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746133/slurm_script: line 12: 1369650 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PEX12", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746133.batch. Some of the step tasks have been OOM Killed.
 Parallel pool using the 'Threads' profile is shutting down.
 Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745897/slurm_script: line 12: 1367507 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PRSS16", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745897.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745997/slurm_script: line 12: 1824117 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("NAAA", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745997.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745990/slurm_script: line 12: 1824178 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("NEU4", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745990.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746131/slurm_script: line 12: 1369647 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RBBP6", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746131.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746143/slurm_script: line 12: 15096 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("BRAP", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746143.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745932/slurm_script: line 12: 3913700 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RRAGB", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745932.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745988/slurm_script: line 12: 1362309 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RRAGD", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745988.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745917/slurm_script: line 12: 3913649 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("GAA", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745917.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745979/slurm_script: line 12: 1362264 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VPS4A", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745979.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746085/slurm_script: line 12: 3872758 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("MKRN1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746085.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746054/slurm_script: line 12: 3536641 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF144A", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746054.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746115/slurm_script: line 12: 3078878 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PEX2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746115.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745954/slurm_script: line 12: 3074495 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("GRN", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745954.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746034/slurm_script: line 12: 319693 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM52", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746034.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745962/slurm_script: line 12: 1361469 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("KLHL22", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745962.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746007/slurm_script: line 12: 1824072 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SIDT2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746007.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745905/slurm_script: line 12: 1367660 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SNX2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745905.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746050/slurm_script: line 12: 3536647 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UHRF1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746050.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746111/slurm_script: line 12: 3920247 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("IRF2BPL", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746111.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745903/slurm_script: line 12: 1367895 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("BCL10", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745903.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41746079/slurm_script: line 12: 3872666 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UBE2D2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746079.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745971/slurm_script: line 12: 1361750 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("LAMP2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745971.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746055/slurm_script: line 12: 3536645 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("NT5C2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746055.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745967/slurm_script: line 12: 1361459 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CTNS", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745967.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745921/slurm_script: line 12: 3912346 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CD164", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745921.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746041/slurm_script: line 12: 319981 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CDC42", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746041.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745895/slurm_script: line 12: 1367694 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PLEKHM1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745895.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745948/slurm_script: line 12: 3073900 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("NPC2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745948.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745972/slurm_script: line 12: 1362181 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF152", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745972.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745985/slurm_script: line 12: 1361616 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("DTX3L", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745985.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746137/slurm_script: line 12: 328862 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM25", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746137.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745983/slurm_script: line 12: 1362308 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("LAMP1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745983.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746122/slurm_script: line 12: 2153361 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("NEDD4", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746122.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745876/slurm_script: line 12:  9992 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("FYCO1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745876.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746081/slurm_script: line 12: 3872756 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("HERC5", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746081.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746124/slurm_script: line 12: 1828877 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF152", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746124.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745858/slurm_script: line 12: 1975770 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UVRAG", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745858.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41746132/slurm_script: line 12: 1369649 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF10", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746132.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746057/slurm_script: line 12: 3536642 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UBE2O", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746057.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745956/slurm_script: line 12: 3074498 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ASAH1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745956.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746138/slurm_script: line 12: 328861 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM21", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746138.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746088/slurm_script: line 12: 3872966 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ASB1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746088.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745894/slurm_script: line 12: 1367464 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ADA", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745894.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745968/slurm_script: line 12: 1361862 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("HYAL2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745968.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746083/slurm_script: line 12: 3873181 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PELI1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746083.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745960/slurm_script: line 12: 1361529 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ACP2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745960.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745881/slurm_script: line 12:  9971 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VPS35", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745881.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746051/slurm_script: line 12: 3536639 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("VPS11", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746051.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746035/slurm_script: line 12: 319985 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("MUL1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746035.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745896/slurm_script: line 12: 1367831 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("HPS4", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745896.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746068/slurm_script: line 12: 3702507 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("MYCBP2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746068.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745989/slurm_script: line 12: 1362182 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CTSH", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745989.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746127/slurm_script: line 12: 327977 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UBR5", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746127.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745955/slurm_script: line 12: 3073709 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRPM2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745955.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745908/slurm_script: line 12: 3912135 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ACE", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745908.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746010/slurm_script: line 12: 319049 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("EPDR1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746010.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745877/slurm_script: line 12:  9973 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RPS6KC1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745877.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746042/slurm_script: line 12: 318249 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM24", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746042.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745999/slurm_script: line 12: 1824194 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("HCK", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745999.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745911/slurm_script: line 12: 3912107 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("PLEKHF1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745911.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746136/slurm_script: line 12: 328871 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM7", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746136.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745943/slurm_script: line 12: 3074079 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNASET2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745943.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745912/slurm_script: line 12: 3912422 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RILP", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745912.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745950/slurm_script: line 12: 3073780 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SGSH", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745950.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745915/slurm_script: line 12: 3912103 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("AGA", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745915.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745909/slurm_script: line 12: 3912042 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CLN5", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745909.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745992/slurm_script: line 12: 1824182 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("CXCR4", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745992.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745910/slurm_script: line 12: 3912136 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SMPD1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745910.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745961/slurm_script: line 12: 1361822 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("GLMP", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745961.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746082/slurm_script: line 12: 3873136 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRAF3IP2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746082.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746016/slurm_script: line 12: 318416 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("IRF2BP1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746016.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745906/slurm_script: line 12: 3911407 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TMEM175", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745906.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41746048/slurm_script: line 12: 319691 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM27", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746048.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745963/slurm_script: line 12: 1362517 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TMEM106B", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745963.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41745981/slurm_script: line 12: 1362237 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("MYO5A", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745981.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746052/slurm_script: line 12: 3536644 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("ZNRF1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746052.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41746100/slurm_script: line 12: 2151508 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF185", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746100.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745919/slurm_script: line 12: 3913401 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RAB7B", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745919.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745977/slurm_script: line 12: 1361751 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("LAPTM5", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745977.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745993/slurm_script: line 12: 1824093 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TPP1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745993.batch. Some of the step tasks have been OOM Killed.
-Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41746130/slurm_script: line 12: 1369646 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SH3RF1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746130.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745976/slurm_script: line 12: 1362214 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("KCNQ1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745976.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746134/slurm_script: line 12: 1369648 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("MYLIP", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746134.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746091/slurm_script: line 12: 3872661 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIP12", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746091.batch. Some of the step tasks have been OOM Killed.
 Parallel pool using the 'Threads' profile is shutting down.
 Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41746059/slurm_script: line 12: 1370713 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("HERC2", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746059.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745959/slurm_script: line 12: 1362494 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RRAGC", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745959.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745980/slurm_script: line 12: 1362077 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SORT1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745980.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41745978/slurm_script: line 12: 1362211 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("DRAM1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41745978.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746095/slurm_script: line 12: 2151607 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF41", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746095.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746139/slurm_script: line 12: 2155603 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM45", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746139.batch. Some of the step tasks have been OOM Killed.
 Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41746105/slurm_script: line 12: 2151343 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UBE3C", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746105.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746101/slurm_script: line 12: 2151339 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("SYVN1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746101.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746099/slurm_script: line 12: 2151341 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF213", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746099.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746103/slurm_script: line 12: 2151640 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("UBE2D1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746103.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746094/slurm_script: line 12: 2151340 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF25", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746094.batch. Some of the step tasks have been OOM Killed.
 Parallel pool using the 'Threads' profile is shutting down.
-/var/spool/slurmd/job41746098/slurm_script: line 12: 2151451 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("NSMCE1", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746098.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746096/slurm_script: line 12: 2151337 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF181", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746096.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746104/slurm_script: line 12: 2151639 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("RNF139", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746104.batch. Some of the step tasks have been OOM Killed.
-/var/spool/slurmd/job41746097/slurm_script: line 12: 2151338 Killed                  matlab -nodesktop -nodisplay -nosplash -r 'main("TRIM41", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
-slurmstepd: error: Detected 1 oom_kill event in StepId=41746097.batch. Some of the step tasks have been OOM Killed.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
+Parallel pool using the 'Threads' profile is shutting down.
