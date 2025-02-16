@@ -32,44 +32,60 @@ classdef SIR_gene
             self.clear_gene = genes.clear_genes.Value(:, j);
         end
 
-        % Simulate normal and misfolded protein growth
-        % Calculate simuated atrophy over time
-        % Calculate correlations over time
-        function self = run_gene(self, params)
-            if strcmp(self.risk_name, self.clear_name); return; end
-            
-            % sir_simulator and sir_atrophy have extra visualisations,
-            % infrequently used and called separately to vis
-            proteins = sir_simulator(params, self, false);
-            sim_atrophy = sir_atrophy(params, proteins, false);
-
-            if (params.null ~= "spatial")
-                self = run_sir_corr(self, params, sim_atrophy);
-            else
-                for i = 1:1000
-                    params = set_spatial(params, i); 
-                    self = run_sir_corr(self, params, sim_atrophy);
-                end
-            end
-
-            % cleanup
-            self.max_atr = table();
-            self.max_corr = table();
-        end
-
-        function self = run_rewired(self, params)
-            nulls = 1000;
-            for i = 1:nulls
-                params.sconnDen = params.null_den(:, :, i);
-                self = self.run_gene(params);
-            end
-        end
-
-        function self = run_sir_corr(self, params, sim_atrophy)
+        function self = calculate_correlations(self, params, sim_atrophy)
             self = sir_corr(params, self, sim_atrophy);
             max_corrs = table2array(self.max_corr(:, 2))';
             self.gene_corr = [self.gene_corr;                           ...
                 {self.risk_name, self.clear_name}, num2cell(max_corrs)];
+        end
+
+        function self = run_gene(self, params)
+            if strcmp(self.risk_name, self.clear_name); return; end
+
+            if params.null == "none"
+                self = run_model(self, params);
+            elseif params.null == "spatial"
+                self = run_spatial(self, params);
+            elseif params.null == "rewired"
+                self = run_rewired(self, params);
+            end
+
+            % Cleanup
+            self.max_atr = table();
+            self.max_corr = table();
+        end
+
+        function self = run_model(self, params)
+            % sir_simulator and sir_atrophy have extra visualisations,
+            % infrequently used and called separately to vis
+            
+            % Simulate normal and misfolded protein growth
+            proteins = sir_simulator(params, self, false);
+            % Calculate simuated atrophy over time
+            sim_atrophy = sir_atrophy(params, proteins, false);
+            % Calculate correlations over time
+            self = calculate_correlations(self, params, sim_atrophy);
+        end
+        
+        function self = run_spatial(self, params)
+            % run_spatial produces the same simulated result as run_model
+            % this simulation is correlated against null maps of atrophy
+            proteins = sir_simulator(params, self, false);
+            sim_atrophy = sir_atrophy(params, proteins, false);
+            for i = 1:1000
+                params = set_spatial(params, i); 
+                self = calculate_correlations(self, params, sim_atrophy);
+            end
+        end 
+
+        function self = run_rewired(self, params)
+            % run_rewired produces a different simulated result to run_model
+            % by setting different connectome weights
+            % this simulation is correlated against empirical atrophy
+            for i = 1:1000
+                params.sconnDen = params.null_den(:, :, i);
+                self = self.run_model(params);
+            end
         end
     end
 end
