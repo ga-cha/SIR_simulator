@@ -38,12 +38,11 @@ classdef SIR_genes
             self.risk_genes = gene_expr(:, self.risk_names);
             self.n_risk = width(self.risk_names);
 
-            % preslice variables for parfor loop
-            self = preslice(self);
-
-            % TODO: check this break statement
             assert (~isempty(self.clear_genes) && ~isempty(self.risk_genes), ...
                 "No valid gene combinations");
+
+            % preslice variables for parfor loop
+            self = preslice(self);
         end
 
         function risk_names = set_risk_names(self, opt, gene_expr)          %#ok<INUSD>
@@ -56,6 +55,7 @@ classdef SIR_genes
                     opt.risk_names = gene_expr.Properties.VariableNames(1:165);
                 else
                     opt.risk_names = string(gene_expr.Properties.VariableNames);
+                    % opt.risk_names = string(gene_expr.Properties.VariableNames(1:1000));
                 end
             end
 

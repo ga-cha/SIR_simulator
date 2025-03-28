@@ -30,17 +30,17 @@ function proteins = sir_simulator(params, gene, vis)
     ROIsize = params.ROIsize;
     n_rois = params.n_rois;
     seed = params.seed;
-
+    beta_coeff = params.beta_coeff;
+    
     % set maximum timesteps for normal protein propagation
     % in Zheng 2019 this is different from T_total
     iter_max = 100000;
-    
     
     % set the mobility pattern
     weights = sconnDen;
     
     % GC: A protein movement correction
-    % the probability of exit from any given region is proportional to
+    % the probability of exiting a region is proportional to
     % edge contribution to total connectome weight
     prob_stay = 1 - rescale(sum(sconnDen)') .* prob_stay;
     
@@ -51,14 +51,13 @@ function proteins = sir_simulator(params, gene, vis)
     weights = weights ./ repmat(sum(weights, 2), 1, n_rois);
     weights(eye(n_rois, 'logical')) = 0;
     
-    
     % convert gene expression (z) scores to probabilities
     clearance_rate = normcdf(zscore(gene.clear_gene));
     synthesis_rate = normcdf(zscore(gene.risk_gene));
     
     % store the number of normal/misfoled alpha-syn at each time step
     [Rnor_all, Rmis_all] = deal( zeros([n_rois, t_total]) );
-    [Pnor_all, Pmis_all] = deal( zeros([n_rois, n_rois, t_total]) );
+    % [Pnor_all, Pmis_all] = deal( zeros([n_rois, n_rois, t_total]) );
     % optionally store normal protein growth when filling network 
     if vis; [Rnor_nor_all] = deal(zeros([n_rois, iter_max])); end
 
@@ -68,62 +67,17 @@ function proteins = sir_simulator(params, gene, vis)
     
     % simplification of variables
     alphaTerm = (synthesis_rate .* ROIsize) .* dt;
-    % betaTerm = exp(-(clearance_rate).*dt);
     % GC: A modification of clearance rate, since gene expression is a
     % proxy for protein expression
-    betaTerm = exp(-((1/sqrt(2)) .* clearance_rate).*dt);
+    betaTerm = exp(-(beta_coeff .* clearance_rate).*dt);
 
     sTerm = 1 ./ sconnLen .* dt .* v; sTerm(isinf(sTerm)) = 0;
     wTerm = weights .* dt;
     gamma0 = 1 .* trans_rate ./ ROIsize .* dt ; % the probability of getting misfolded
     
 
-    %% New approach to mapping steady state: 
-    % regions and paths both become entities in a markov chain, with
-    % distinct transition probabilities
-
-    % tic; 
-    % 
-    % sconnMask = logical(sconnDen); 
-    % [edgeX, edgeY] = find(sconnMask);
-    % N_edges = height(edgeX); 
-    % 
-    % mat1 = sparse(1:N_regions, 1:N_regions, prob_stay); 
-    % 
-    % mat2 = sparse(edgeX, 1:N_edges, 1./sconnLen(sconnMask));
-    % 
-    % sconnDenStr = sum(sconnDen)'; 
-    % mat3 = sparse((1:N_edges)', edgeX, ...
-    %     (1-prob_stay(edgeX)) .* sconnDen(sconnMask) ./ sconnDenStr(edgeX) ); 
-    % 
-    % mat4 = sparse(1:N_edges, 1:N_edges, 1 - 1./sconnLen(sconnMask)); 
-    % 
-    % mat = [mat1, mat2; mat3, mat4];
-    % 
-    % % prev = zeros(N_regions + N_edges, 1); 
-    % % for t = 1:iter_max
-    % %     next = mat * prev; 
-    % %     next(1:N_regions) = next(1:N_regions) .* betaTerm + alphaTerm; 
-    % % 
-    % %     if abs(next - prev) < (1e-7 * prev); break; end
-    % % 
-    % %     prev = next;
-    % % end
-    % [next,~] = eigs(mat, 1, 1); 
-    % 
-    % Rnor = next(1:N_regions); 
-    % Pnor = full(sparse( edgeX, edgeY, next(N_regions+1:end) ));
-    % 
-    % toc; 
-    % 
-    % [Rnor, Rmis] = deal(zeros(N_regions, 1));   % number of normal/misfolded alpha-syn in regions
-    % [Pnor, Pmis] = deal(zeros(N_regions));      % number of normal/misfolded alpha-syn in paths
-    
-    
     %% normal alpha-syn growth
-    % fill the network with normal proteins
-    % typically converges in t < 100000
-    % disp('normal alpha synuclein growth');
+    % fill the network with normal proteins,  typically converges in t < 100000
     for t = 1:iter_max
         %%% moving process
         % regions towards paths
@@ -151,7 +105,6 @@ function proteins = sir_simulator(params, gene, vis)
     %% misfolded protein spreading process
     % inject misfolded alpha-syn
     Rmis(seed) = init_number;
-    % disp('misfolded alpha synuclein spreading');
     for t = 1:t_total
         %%% moving process
         % normal proteins: region -->> paths
@@ -223,3 +176,47 @@ function plot_propagation (Rnor_nor_all, Rnor_all, Rmis_all)
     ylabel("Mi");
     ylim([0 30000])
 end
+
+
+    %% New approach to mapping steady state: 
+    % regions and paths both become entities in a markov chain, with
+    % distinct transition probabilities
+
+    % tic; 
+    % 
+    % sconnMask = logical(sconnDen); 
+    % [edgeX, edgeY] = find(sconnMask);
+    % N_edges = height(edgeX); 
+    % 
+    % mat1 = sparse(1:N_regions, 1:N_regions, prob_stay); 
+    % 
+    % mat2 = sparse(edgeX, 1:N_edges, 1./sconnLen(sconnMask));
+    % 
+    % sconnDenStr = sum(sconnDen)'; 
+    % mat3 = sparse((1:N_edges)', edgeX, ...
+    %     (1-prob_stay(edgeX)) .* sconnDen(sconnMask) ./ sconnDenStr(edgeX) ); 
+    % 
+    % mat4 = sparse(1:N_edges, 1:N_edges, 1 - 1./sconnLen(sconnMask)); 
+    % 
+    % mat = [mat1, mat2; mat3, mat4];
+    % 
+    % % prev = zeros(N_regions + N_edges, 1); 
+    % % for t = 1:iter_max
+    % %     next = mat * prev; 
+    % %     next(1:N_regions) = next(1:N_regions) .* betaTerm + alphaTerm; 
+    % % 
+    % %     if abs(next - prev) < (1e-7 * prev); break; end
+    % % 
+    % %     prev = next;
+    % % end
+    % [next,~] = eigs(mat, 1, 1); 
+    % 
+    % Rnor = next(1:N_regions); 
+    % Pnor = full(sparse( edgeX, edgeY, next(N_regions+1:end) ));
+    % 
+    % toc; 
+    % 
+    % [Rnor, Rmis] = deal(zeros(N_regions, 1));   % number of normal/misfolded alpha-syn in regions
+    % [Pnor, Pmis] = deal(zeros(N_regions));      % number of normal/misfolded alpha-syn in paths
+    
+    

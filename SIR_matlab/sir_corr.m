@@ -50,8 +50,9 @@ function gene = sir_corr(params, gene, sim_atrophy)
 end
     
 function plot_corrs(gene, all_corrs)
-    corrs = table2array(all_corrs);
-    % corrs = table2array(mean(all_corrs(:, 1:3), 2));
+    % corrs = table2array(all_corrs);
+    % corrs = table2array(all_corrs(:, 1));
+    corrs = [table2array(all_corrs(:, 1)), table2array(all_corrs(:, 22:end))];
     
     plot(corrs);
     t = title ({"Simulated and empirical atrophy", "risk gene: " +          ...
@@ -59,13 +60,15 @@ function plot_corrs(gene, all_corrs)
     t.FontWeight = 'normal';
     xlabel("t");
     ylabel("correlation");
-    legend(all_corrs.Properties.VariableNames(:));
+    % legend(all_corrs.Properties.VariableNames(:));
 end
 
 function plot_scatter(gene, params)
     hold on;
-    colors = lines(width(gene.max_atr));    % match color of scatter and best fit
-    for i = 1:width(gene.max_atr)
+    % n_sites = width(gene.max_atr);
+    n_sites = 1;
+    colors = lines(n_sites);    % match color of scatter and best fit
+    for i = 1:n_sites
         sim_atr = gene.max_atr{:, i};
         sim_atr = normalize(sim_atr);       % rescale for vis
         emp_atr = params.emp_atr{:, i};
@@ -74,8 +77,8 @@ function plot_scatter(gene, params)
         plot_bestfit(sim_atr, emp_atr, c=colors(i, :));
     end
 
-    mid_max_corr = median(table2array(gene.max_corr(:, 2)));
-    t = title({['Correlation = ', num2str(mid_max_corr)], ...
+    diagnosis_corr = num2str(table2array(gene.max_corr(1, 2)));
+    t = title({['Correlation = ', diagnosis_corr], ...
         "risk gene: " + gene.risk_name, "clearance gene: " + gene.clear_name});
     t.FontWeight = 'normal';
     xlabel("simulated atrophy")

@@ -24,11 +24,12 @@ function [] = main(clear_names, opt)
     arguments
         clear_names {mustBeText}
         opt.risk_names {mustBeText}
-        opt.out {mustBeText} = '../../SIR_results/results_3/gene_corrs.csv';
+        opt.out {mustBeText} = '../../SIR_results/gene_corrs.csv';
         opt.parc {mustBeText} = "S132" ;
         opt.dbg {mustBeNumericOrLogical} = false;
         opt.vis {mustBeNumericOrLogical} = false;
         opt.null {mustBeText} = "none";
+        opt.beta {mustBeNumeric} = 1/sqrt(2);
     end
 
     % load workspace variables into parameter object 
@@ -37,6 +38,7 @@ function [] = main(clear_names, opt)
     genes = SIR_genes(opt, clear_names);
     % start parallel pool
     p = gcp('nocreate'); if isempty(p); parpool('Threads'); end
+    % p = gcp('nocreate'); if isempty(p); parpool('Processes'); end
 
     % tic
     gene_corrs = run_sim(genes, params);
@@ -61,7 +63,6 @@ function gene_corrs = run_sim(genes, params)
     % run SIR simulation for each gene pair
     n = genes.n_risk * genes.n_clear;
     gene_objs = SIR_gene.empty(n, 0);
-    
     if params.vis
         % figure visualisation unavailable with parfor loops
         for idx = 1:n
@@ -69,7 +70,8 @@ function gene_corrs = run_sim(genes, params)
             gene_objs(idx) = gene.run_gene(params);
         end
     else
-        parfor idx = 1:n
+        % parfor idx = 1:n
+        for idx = 1:n
             gene = SIR_gene(genes, idx);
             gene_objs(idx) = gene.run_gene(params);
         end
@@ -83,13 +85,18 @@ end
 function [gene_corrs] = assemble_gene_corrs(params, gene_objs)
     % collate correlation from each gene object into a single cell array
     gene_corr_cells = cell(length(gene_objs), 1);
-    parfor i = 1:length(gene_objs)
+    for i = 1:length(gene_objs)
         if isprop(gene_objs(i), 'gene_corr')
             gene_corr_cells{i} = gene_objs(i).gene_corr;
         end
     end
     % concatenate cell array into a single table
     C = vertcat(gene_corr_cells{:});
-    gene_corrs = cell2table(C, 'VariableNames', [{'risk gene',               ...
-        'clearance gene'}, params.emp_atr.Properties.VariableNames]);
+    if params.null == "none"
+        gene_corrs = cell2table(C, "VariableNames", [{'risk gene',               ...
+            'clearance gene'}, params.emp_atr.Properties.VariableNames]);
+    else
+        gene_corrs = cell2table(C, "VariableNames", ["risk gene",               ...
+            "clearance gene", "mean", "SD"]);
+    end
 end

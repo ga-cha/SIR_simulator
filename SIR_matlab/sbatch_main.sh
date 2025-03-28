@@ -21,15 +21,17 @@ while IFS=',' read -r clear_gene; do
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=1
 #SBATCH --time=12:00:00
-#SBATCH --mail-type=ALL
+#SBATCH --mail-type=all
 #SBATCH --mail-user=gabriella.chan@monash.edu
+
 
 # Load MATLAB module
 module load matlab/r2023b
 
 # Run the MATLAB script with the arguments
-matlab -nodesktop -nodisplay -nosplash -r 'main("$clear_gene", parc="S132", out="../../SIR_results/lme_beta/S132_corrs.csv"); exit;'
+matlab -nodesktop -nodisplay -nosplash -r 'main("$clear_gene", parc="S132", out="../../SIR_results/lme_beta/S132_spatial.csv", null="spatial"); exit;'
 
 EOL
 done < "$input_csv"

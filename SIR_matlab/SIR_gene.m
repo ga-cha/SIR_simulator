@@ -44,10 +44,15 @@ classdef SIR_gene
 
             if params.null == "none"
                 self = run_model(self, params);
-            elseif params.null == "spatial"
-                self = run_spatial(self, params);
-            elseif params.null == "rewired"
-                self = run_rewired(self, params);
+            else
+                if params.null == "spatial"
+                    self = run_spatial(self, params);
+                elseif params.null == "rewired"
+                    self = run_rewired(self, params);
+                end
+                % Assign summary statistics to output table
+                corrs = cell2mat(self.gene_corr(:, 3));
+                self.gene_corr = [self.gene_corr(1, 1:2), mean(corrs), std(corrs)];
             end
 
             % Cleanup
