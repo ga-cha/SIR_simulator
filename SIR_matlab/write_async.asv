@@ -1,0 +1,40 @@
+function [] = write_async(gene_corrs, out_file, ii)
+    if ~exist('ii', 'var'); ii = 10; end
+    
+    if (ii == 0)
+    lockFile = 'output' + string(keyHash(out_file + ii)) + '.lock';
+
+    % holds until file lock is cleared
+    % timeout prevents deadlocks
+    timeout = 120; % Timeout in seconds
+    elapsed = 0;
+    while isfile(lockFile) && elapsed < timeout
+        pause(1);
+        elapsed = elapsed + 1;
+    end
+    if isfile(lockFile)
+        disp('Timeout reached, proceeding without acquiring lock.');
+    end
+    
+    % Create the lock file
+    fid = fopen(lockFile, 'w');
+    if fid ~= -1
+        fclose(fid);
+    else
+        error('Could not create lock file.');
+    end
+
+    try
+        % Write to file, appending if available
+        writetable(gene_corrs, out_file, 'WriteMode', 'Append')
+    catch ME
+        % Handle error if needed
+        disp('Error writing to file:');
+        disp(ME.message);
+    end
+
+    % Release file lock
+    if isfile(lockFile)
+        delete(lockFile);
+    end
+end

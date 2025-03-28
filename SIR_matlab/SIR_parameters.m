@@ -20,6 +20,7 @@ classdef SIR_parameters
         init_number = 1;        % init_number: number of injected misfolded alpha-syn (1)
         prob_stay = 0.5;        % prob_stay: the probability of staying in the same region per unit time (0.5)
         trans_rate = 1;         % trans_rate: a scalar value, controlling the baseline infectivity
+        beta_coeff;
 
         % parcellation specific parameters
         sconnLen;               % sconnLen: structural connectivity matrix (length) (estimated from HCP data)
@@ -36,32 +37,25 @@ classdef SIR_parameters
         null = "none";
         null_len;
         null_den;
-        null_bgs;
-        null_cobre;
-        null_hcpep;
-        null_stages;
+        null_atr;
     end
 
     methods 
         function self = SIR_parameters(opt)
             if isfield(opt, 'vis'); self.vis = opt.vis; end
-            ws = 'data/workspace_' + opt.parc + '.mat';
-            self = self.set_netw(ws);
-            self = self.set_atrophy(ws);
+            self.null = opt.null;
+            self.beta_coeff = opt.beta;
 
-            if (opt.null ~= "none")
-                self = self.set_null(opt);
-            end
+            self = self.set_params(opt);
+            self = self.set_netw(opt);
+            self = self.set_atrophy(opt);
         end
 
-        function self = set_netw(self, ws)
-            load(ws, 'ifod_len_35', 'ifod_den_35', 'ROIsize');
-            self.sconnLen = ifod_len_35;
-            self.sconnDen = ifod_den_35;
+        function self = set_params(self, opt)
+            ws = 'data/workspace_' + opt.parc + '.mat';
+            load(ws, 'ROIsize');
             self.ROIsize = ROIsize;
-
             self.n_rois = length(ROIsize);
-
             if self.n_rois == 41         % DK + aseg
                 self.seed = 40;
             elseif self.n_rois == 66     % Schaefer 100 + Tian S2
@@ -70,38 +64,38 @@ classdef SIR_parameters
                 self.seed = 151;
             else
                 error("Accepts DK + aseg or Schaefer100/300 + Tian S2 only");
-            end           
+            end
         end
 
-        function self = set_atrophy(self, ws)
-            load(ws, 'emp_atr');
-            self.emp_atr = emp_atr;
-        end
-
-        function self = set_null(self, opt)
-            self.null = opt.null;
-
-            ws = 'data/workspace_' + opt.parc + '_null.mat';
-
-            % Q: can you directly load into self?
-            if self.null == "rewired"
+        function self = set_netw(self, opt)
+            if opt.null ~= "rewired"
+                ws = 'data/workspace_' + opt.parc + '.mat';
+                load(ws, 'ifod_len_35', 'ifod_den_35');
+                self.sconnLen = ifod_len_35;
+                self.sconnDen = ifod_den_35;
+            else
+                ws = 'data/workspace_' + opt.parc + '_null.mat';
                 load(ws, 'null_len', 'null_den');
-                self.null_len = null_len;
+                self.sconnLen = null_len;
                 self.null_den = null_den;
-            elseif self.null == "spatial"
-                load(ws, 'null_bgs', 'null_cobre', 'null_hcpep', 'null_stages');
-                self.null_bgs = null_bgs;
-                self.null_cobre = null_cobre;
-                self.null_hcpep = null_hcpep;
-                self.null_stages = null_stages;
+            end
+        end
+
+        function self = set_atrophy(self, opt)
+            if opt.null ~= "spatial"
+                ws = 'data/workspace_' + opt.parc + '.mat';
+                load(ws, 'emp_atr');
+                self.emp_atr = emp_atr;
+            else
+                ws = 'data/workspace_' + opt.parc + '_null.mat';
+                load(ws, 'null_atr');
+                self.null_atr = null_atr;
+                self.emp_atr = self.null_atr{1};
             end
         end
 
         function self = set_spatial(self, n)
-            emp = [self.null_bgs(:, n), self.null_cobre(:, n),     ...
-                self.null_hcpep(:, n), self.null_stages(:, n)];
-            self.emp_atr = array2table(emp, 'VariableNames', {'bgs',               ...
-            'cobre', 'hcpep', 'stages'});
+            self.emp_atr = self.null_atr{n};
         end
     end
 end
