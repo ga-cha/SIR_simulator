@@ -14,35 +14,39 @@ function gene = sir_corr(params, gene, sim_atrophy)
 
     % evaluate at step_ sized intervals
     % TODO: double check for off-by-ones
-    step_ = 3;
+    step_ = 1;
 
     % Compute correlation time series for all sites
-    all_corrs = compute_corrs(params, sim_atrophy, step_);
+    all_corrs_p = compute_corrs(params, sim_atrophy, step_, 'Pearson');
 
     % Find maximum correlations for each site
-    gene = compute_max_corr(params, gene, all_corrs, step_);
+    gene = compute_max_corr(params, gene, all_corrs_p, step_);
 
     if params.null == "none"
         % Find time step where correlation reaches max
-        gene.t_max = (find(all_corrs(:, 1) >= max(all_corrs(:, 1)), 1) - 1) * step_ + 1;
+        gene.t_max = (find(all_corrs_p(:, 1) >= max(all_corrs_p(:, 1)), 1) - 1) * step_ + 1;
         % Find time step where correlation is greater than 0.5
-        gene.t_05 = (find(all_corrs(:, 1) >= 0.5, 1) - 1) * step_ + 1;
+        gene.t_05 = (find(all_corrs_p(:, 1) >= 0.5, 1) - 1) * step_ + 1;
     end
 
     if params.vis && params.null == "none"
         % Compute max atrophy per roi
         max_atr = compute_atr(params, sim_atrophy, gene.max_corr, step_);
-        % Plot visualisation
-        % figure('Position', [100 100 1500 600], 'Color', 'white');
-        figure('Position', [100 100 1000 400], 'Color', 'white');
-        subplot(1, 2, 1);
-        plot_corrs(gene, all_corrs, step_);
-        subplot(1, 2, 2);
+        all_corrs_s = compute_corrs(params, sim_atrophy, step_, 'Spearman');
+
+        % Show animated video plot
+        % plot_video(params, sim_atrophy, all_corrs_p, all_corrs_s, step_, 2000);
+
+        % Show static plots
+        figure('Position', [100 100 500 1000], 'Color', 'white');
+        subplot(2, 1, 1);
+        plot_corrs(gene, all_corrs_p, all_corrs_s, step_);
+        subplot(2, 1, 2);
         plot_scatter(params, gene, max_atr);
     end
 end
 
-function all_corrs = compute_corrs(params, sim_atrophy, step_)
+function all_corrs = compute_corrs(params, sim_atrophy, step_, type)
     % returns (time series x sites) matrix
     % full time series only used for plot_corrs
 
@@ -50,7 +54,7 @@ function all_corrs = compute_corrs(params, sim_atrophy, step_)
 
     for i = 1:params.n_sites
         emp_atr = table2array(params.emp_atr(:, i));
-        all_corrs(:, i) = corr(sim_atrophy(:, 1:step_:end), emp_atr, 'Type', 'Pearson');
+        all_corrs(:, i) = corr(sim_atrophy(:, 1:step_:end), emp_atr, 'Type', type);
     end
 end
 
@@ -77,19 +81,23 @@ function max_atr = compute_atr(params, sim_atrophy, max_corr, step_)
     end
 end
 
-function plot_corrs(gene, all_corrs, step_)
+function plot_corrs(gene, all_corrs_p, all_corrs_s, step_)
     % produces correlation over the full time series
-    corrs = all_corrs(:, 1);                       % lme beta only
+    corrs_p = all_corrs_p(:, 1);                       % lme beta only
+    corrs_s = all_corrs_s(:, 1);                       % lme beta only
     % corrs = all_corrs;
-    
-    plot(1:3:length(corrs)*step_, corrs);
-
-    xline(gene.t_max, '-.r', num2str(corrs((gene.t_max-1)/step_)), 'LabelHorizontalAlignment', 'center', 'LabelVerticalAlignment','bottom');
+ 
+    % t_total = length(corrs_p)*step_;
+    t_total = 2000;  % limit x axis for vis
+    hold on;
+    plot(1:step_:t_total, corrs_p(1:t_total/step_), 'LineWidth', 1.5);
+    plot(1:step_:t_total, corrs_s(1:t_total/step_), 'LineWidth', 1.5);
+    % xline(gene.t_max, '-.r', num2str(corrs_p((gene.t_max-1)/step_)), 'LabelHorizontalAlignment', 'center', 'LabelVerticalAlignment','bottom');
 
     % t = title ({"Simulated and empirical atrophy", "risk gene: " +          ...
         % gene.risk_name, "clearance gene: " + gene.clear_name});
-    t = title ({"Simulation correlation over time"});
-    t.FontWeight = 'normal';
+    t = title ({"Correlation over time"});
+    % t.FontWeight = 'normal';
     xlabel("t");
     ylabel("correlation");
     ylim([0 0.8]);
@@ -105,7 +113,7 @@ function plot_scatter(params, gene, max_atr)
     for i = 1:n_sites
         sim_atr = normalize(max_atr(:, i));          % rescale for vis
         emp_atr = params.emp_atr{:, i};
-        scatter(sim_atr, emp_atr, 25, colors(i,:));
+        scatter(sim_atr, emp_atr, 25, colors(i,:), 'filled', 'MarkerFaceAlpha', 0.7);
         plot_bestfit(sim_atr, emp_atr, c=colors(i, :));
     end
 
@@ -113,8 +121,98 @@ function plot_scatter(params, gene, max_atr)
     % t = title({['Correlation = ', diagnosis_corr], ...
     %     "risk gene: " + gene.risk_name, "clearance gene: " + gene.clear_name});
     t = title ({"GMV at peak correlation"});
-    t.FontWeight = 'normal';
+    % t.FontWeight = 'normal';
     xlabel("simulated GMV")
     ylabel('empirical GMV (z score)')
     hold off;
 end
+
+function plot_video(params, sim_atrophy, all_corrs_p, all_corrs_s, step_, max_t)
+    % creates an animated video showing both scatter plot and correlation plot evolving through time
+    % Left panel: correlation plot building up over time (Pearson and Spearman)
+    % Right panel: scatter plot with moving dots as atrophy evolves
+    % Automatically exports video to 'sir_simulation.mp4'
+    
+    % Setup figure
+    fig = figure('Position', [100 100 500 500], 'Color', 'white');
+    
+    % Setup video writer
+    v = VideoWriter('sir_simulation.avi', 'Motion JPEG AVI');
+    v.FrameRate = 10;
+    v.Quality = 90;
+    open(v);
+    
+    % Calculate time points and data ranges
+    n_timepoints = size(all_corrs_p, 1);
+    
+    max_timepoint = min(ceil(max_t/step_), n_timepoints);
+    
+    corrs_p = all_corrs_p(:, 1);  % Pearson, lme beta only
+    corrs_s = all_corrs_s(:, 1);  % Spearman, lme beta only
+    % emp_atr = params.emp_atr{:, 1};  % empirical atrophy
+    
+    % Pre-calculate scatter plot data only up to max_timepoint
+    % sim_atr_data = zeros(params.n_rois, max_timepoint);
+    % for t = 1:max_timepoint
+    %     sim_atr_data(:, t) = normalize(sim_atrophy(:, (t-1)*step_+1));
+    % end
+    
+    % Set up axis limits based on data range up to max_timepoint
+    max_corr = max([max(corrs_p(1:max_timepoint)), max(corrs_s(1:max_timepoint))]);
+    corr_ylim = [0, max(0.8, max_corr * 1.1)];
+    % scatter_xlim = [min(sim_atr_data,[],1)' * 1.1, max(sim_atr_data,[],1)' * 1.1];
+    % scatter_ylim = [min(emp_atr) * 1.1, max(emp_atr) * 1.1];
+
+    colors = lines(3);            % match colors
+    for t = 10:10:max_timepoint
+        clf(fig);  % Clear figure
+        
+        % subplot: Correlation over time
+        % subplot(2, 1, 1);
+        hold on;
+        
+        % Plot correlations up to current time point
+        time_axis = 1:step_:t*step_;
+        plot(time_axis, corrs_p(1:t), 'Color', colors(1,:), 'LineWidth', 1.5, 'DisplayName', 'Pearson');
+        plot(time_axis, corrs_s(1:t), 'Color', colors(2,:), 'LineWidth', 1.5, 'DisplayName', 'Spearman');
+
+        % Highlight current points
+        plot(t*step_, corrs_p(t), 'o', 'MarkerSize', 6, 'MarkerFaceColor', colors(1,:), 'MarkerEdgeColor', colors(1,:));
+        plot(t*step_, corrs_s(t), 'o', 'MarkerSize', 6, 'MarkerFaceColor', colors(2,:), 'MarkerEdgeColor', colors(2,:));
+
+        legend({'Pearson', 'Spearman'}, 'Location', 'southeast');
+
+        xlim([1, max_timepoint*step_]);
+        ylim(corr_ylim);
+        xlabel('t');
+        ylabel('correlation');
+        title(sprintf('Correlation over time (t = %d)', t*step_));
+        hold off;
+        
+        % subplot: Scatter plot at current time
+        % subplot(2, 1, 2);
+        % hold on;
+        % 
+        % % Plot scatter
+        % scatter(sim_atr_data(:, t), emp_atr, 25, colors(1,:), 'filled', 'MarkerFaceAlpha', 0.7);
+        % plot_bestfit(sim_atr_data(:, t), emp_atr, c=colors(1, :));
+        % current_corr = corr(sim_atr_data(:, t), emp_atr, 'Type', 'Pearson');
+        % 
+        % xlim(scatter_xlim(t, :));
+        % ylim(scatter_ylim);
+        % xlabel('simulated GMV');
+        % ylabel('empirical GMV (z score)');
+        % title(sprintf('GMV at time %d (r = %.2f)', t*step_, current_corr));
+        % hold off;
+        
+        % pause(0.1); % Pause for visualization
+        % Capture frame for video export
+        frame = getframe(fig);
+        writeVideo(v, frame);
+        drawnow;
+    end
+    
+    % Close video writer
+    close(v);
+end
+

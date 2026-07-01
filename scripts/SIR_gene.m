@@ -12,6 +12,7 @@ classdef SIR_gene
         risk_gene;
         clear_name;
         clear_gene;
+        idx;
 
         % output correlations
         max_corr;               % ([site_name, site_max, site_t] x sites)
@@ -23,16 +24,17 @@ classdef SIR_gene
     end
 
     methods
-        function self = SIR_gene(genes, params, idx)
+        function self = SIR_gene(params, idx)
             if nargin == 0; return; end % needs empty constructor for parfor
 
+            self.idx = idx;
             % Rearrange index to  risk and clear gene indices
-            [i, j] = ind2sub([genes.n_risk, genes.n_clear], idx);
+            [i, j] = ind2sub([params.n_risk, params.n_clear], idx);
             % Sets name and expression array of this specific gene pair
-            self.risk_name = genes.risk_names.Value(i);
-            self.risk_gene = genes.risk_genes.Value(:, i);
-            self.clear_name = genes.clear_names.Value(j);
-            self.clear_gene = genes.clear_genes.Value(:, j);
+            self.risk_name = params.risk_names.Value(i);
+            self.risk_gene = params.risk_genes.Value(:, i);
+            self.clear_name = params.clear_names.Value(j);
+            self.clear_gene = params.clear_genes.Value(:, j);
 
             self.max_corr = table('Size', [params.n_sites, 3], ...
                 'VariableTypes', {'string', 'double', 'double'}, ...
@@ -53,6 +55,8 @@ classdef SIR_gene
                     self = run_spatial(self, params);
                 elseif params.null == "rewired"
                     self = run_rewired(self, params);
+                elseif params.null == "gene"
+                    self = run_gene_null(self, params);
                 end
                 % Calculate p value of experimental correlation from null distribution
                 % correlation column is the first column after preamble
@@ -72,32 +76,29 @@ classdef SIR_gene
         end
 
         function p = tail_approx(self, null_corrs, exp_corr, vis)
-            % nonparametric estimate of p value using Generalized Pareto 
-            % Distribution (Winkler et al 2016 Neuroimage)
+            % Use palm_pareto (Winkler et al.) for tail/GPD approximation.
+            % https://github.com/andersonwinkler/PALM
+            null_corrs = double(null_corrs(:));
+            assert(~isempty(null_corrs), 'Null correlations are empty');
 
-            % threshold at p = 0.1
-            threshold = prctile(null_corrs, 90);
-            tail_data = null_corrs(null_corrs > threshold);
-            % Fit GPD to the tail data (excesses above threshold)
-            excesses = tail_data - threshold;
-            % pd = fitdist(excesses, 'GeneralizedPareto');
-            parmhat = gpfit(excesses);   % returns [khat, sigmahat]
-
-            % If exp_corr is below threshold, use empirical p-value
-            if exp_corr <= threshold
-                p = mean(null_corrs >= exp_corr);
-            else % Use Generalized Patero Distribution
-                excess_exp = exp_corr - threshold;
-                % Survival function of GPD: P[X > y] (upper tail probability)
-                % p = (length(tail_data) / length(null_corrs)) * (1 - cdf(pd, excess_exp));
-                p = (length(tail_data) / length(null_corrs)) * (1 - gpcdf(excess_exp, parmhat(1), parmhat(2)));
+            try
+                [p, apar, kpar, upar] = palm_pareto(exp_corr, null_corrs, false, 0.1, false);
+            catch
+                p = palm_pareto(exp_corr, null_corrs, false, 0.1, false);
             end
 
-            if p == 0; p = eps; end
-
-            if vis; plot_gpd(self, excesses, excess_exp, parmhat); end
+            % Visualization: reconstruct tail/excess for plotting if possible
+            if vis && exist('upar','var') && ~isempty(upar) && exp_corr > upar
+                tail_data = null_corrs(null_corrs > upar);
+                if ~isempty(tail_data)
+                    excesses = tail_data - upar;
+                    excess_exp = exp_corr - upar;
+                    parmhat = [kpar, apar]; % [shape, scale] matching plot_gpd expectation
+                    plot_gpd(self, excesses, excess_exp, parmhat);
+                end
+            end
         end
-
+        
         function self = calculate_correlations(self, params, sim_atrophy, i)
             self = sir_corr(params, self, sim_atrophy);
             max_corrs = self.max_corr{:, 2}';
@@ -128,7 +129,7 @@ classdef SIR_gene
             proteins = sir_simulator(params, self, false);
             sim_atrophy = sir_atrophy(params, proteins, false);
             for i = 1:1000
-                params = set_spatial(params, i); 
+                params.emp_atr = params.null_atr{i};
                 self = calculate_correlations(self, params, sim_atrophy, i);
             end
         end 
@@ -139,6 +140,22 @@ classdef SIR_gene
             % this simulation is correlated against empirical atrophy
             for i = 1:1000
                 params.sc_weight = params.null_weight(:, :, i);
+                self = self.run_model(params, i);
+            end
+        end
+
+        function self = run_gene_null(self, params)
+            % run_gene_null produces a different simulated result to run_model
+            % by setting different gene expression profiles
+            % this simulation is correlated against empirical atrophy
+            for i = 1:1000
+                params = set_gene_null(params, i);
+
+                % TODO: refactor
+                [j, k] = ind2sub([params.n_risk, params.n_clear], self.idx);
+                self.risk_gene = params.risk_genes.Value(:, j);
+                self.clear_gene = params.clear_genes.Value(:, k);
+
                 self = self.run_model(params, i);
             end
         end
@@ -169,7 +186,7 @@ classdef SIR_gene
             hold off;
         end
 
-        function [] = plot_gpd(self, excesses, excess_exp, parmhat)
+        function [] = plot_gpd(~, excesses, excess_exp, parmhat)
             % Plot GPD fit to null_corrs > threshold and exp_corr
             figure('Color','white');
             hold on;

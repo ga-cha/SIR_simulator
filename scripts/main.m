@@ -35,9 +35,9 @@ function gene_corrs = main(clear_names, opt)
     end
 
     % load workspace variables into parameter object 
-    params = SIR_parameters(opt);
-    % load gene expression data into genes parameter object
-    genes = SIR_genes(opt, clear_names);
+    params = SIR_parameters(opt, clear_names);
+    % % load gene expression data into genes parameter object
+    % genes = SIR_genes(opt, clear_names);
     % start parallel pool
     p = gcp('nocreate'); 
     if (isempty(p) && params.pf == true)
@@ -45,7 +45,7 @@ function gene_corrs = main(clear_names, opt)
     end
 
     % tic
-    gene_corrs = run_sim(genes, params);
+    gene_corrs = run_sim(params);
     % toc
 
     if (opt.dbg)
@@ -58,18 +58,18 @@ end
 
 % Iterates through all gene pairs and generates gene pair object.
 % Gene correlations are assembled from collated list of gene objects
-function gene_corrs = run_sim(genes, params)
+function gene_corrs = run_sim(params)
     % run SIR simulation for each gene pair
-    n = genes.n_risk * genes.n_clear;
+    n = params.n_risk * params.n_clear;
     gene_objs = SIR_gene.empty(n, 0);
     if params.pf
         parfor idx = 1:n
-            gene = SIR_gene(genes, params, idx);
+            gene = SIR_gene(params, idx);
             gene_objs(idx) = gene.run_gene(params);
         end
     else
         for idx = 1:n
-            gene = SIR_gene(genes, params, idx);
+            gene = SIR_gene(params, idx);
             gene_objs(idx) = gene.run_gene(params);
         end
     end
