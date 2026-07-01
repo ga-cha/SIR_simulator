@@ -11,14 +11,13 @@ classdef SIR_parameters
     properties
         %% input parameters (inside parenthesis are values used in Zheng 2019 paper)
         % model tuning parameters
-        v = 1;                  % v: speed (1)
+        v = 0.3;                  % v: speed (1)
         dt = 0.01;              % dt: time step (0.01)
         t = 10000;              % T_total: total time steps (20000)
         init_number;            % init_number: number of injected misfolded alpha-syn (1)
-        prob_stay = 0.1;        % prob_stay: the probability of staying in the same region per unit time (0.5)
-                                % TODO: double check, this gets flipped (is this actually prob_exit??) 
-        trans_rate = 1;         % trans_rate: a scalar value, controlling the baseline infectivity
-        beta_coeff = 1/sqrt(2);
+        prob_exit = 0.3;        % prob_stay: the probability of staying in the same region per unit time (0.5)
+        trans_rate = 2.25;      % trans_rate: a scalar value, controlling the baseline infectivity
+        beta_coeff = 1;         % many preliminary results use 1/sqrt(2)
 
         % user input parameters
         sc_length;              % sconnLen: structural connectivity matrix (length) (estimated from HCP data)
@@ -36,24 +35,26 @@ classdef SIR_parameters
         null = "none";          % null flag
         null_weight;            % rewired null sc weights
         null_atr;               % spatial null empirical atrophy
+
+        ws;
     end
 
     methods 
         function self = SIR_parameters(opt)
-            ws = '../data/workspace_' + opt.parc + '.mat';
+            self.ws = '../data/workspace_' + opt.parc + '.mat';
 
             self.vis = opt.vis;
             self.pf = (opt.pf && ~opt.vis); % visualisation unavailable with parfor
             self.null = opt.null;
                     
-            load(ws, 'roi_size');
+            load(self.ws, 'roi_size');
             self.roi_size = roi_size;
             self.n_rois = length(roi_size);
             self.init_number = opt.init;
 
             self = self.set_seed(opt);
-            self = self.set_netw(ws);
-            self = self.set_emp_atr(ws);
+            self = self.set_netw(self.ws);
+            self = self.set_emp_atr(self.ws);
             
             self.n_sites = width(self.emp_atr);
             self.site_names = string(self.emp_atr.Properties.VariableNames);
@@ -90,16 +91,18 @@ classdef SIR_parameters
         end
 
         function self = set_null(self)
-            ws = '../data/workspace_' + opt.parc + '.mat';
-            if self.null ~= "spatial"
-                load(ws, 'null_atr');
+            if self.null == "spatial"
+                load(self.ws, 'null_atr');
                 self.null_atr = null_atr;
                 self.emp_atr = self.null_atr{1};
-            elseif self.null ~= "rewired"
-                load(ws, 'null_l', 'null_w');
+            elseif self.null == "rewired"
+                load(self.ws, 'null_l', 'null_w');
                 self.sc_length = null_l;
                 self.null_weight = null_w;
+                self.emp_atr = self.emp_atr(:,1);
             end
+            self.n_sites = width(self.emp_atr);
+            self.site_names = string(self.emp_atr.Properties.VariableNames);
         end
 
         function self = set_spatial(self, n)

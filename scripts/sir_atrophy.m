@@ -19,13 +19,8 @@ function sim_atrophy = sir_atrophy(params, proteins, vis)
     ratio(proteins.r_mis < 1) = 0; % remove possible NaNs...
        
     % atrophy growth
-    % GC: rescaled so deafferentation input is proportional to global 
-    % region connectivity
-    scaled_sc = sum(sc_weight)' ./ max(sum(sc_weight));
-    % scaled_sc = 1;
-    k2w = 0.5;
-    k2 = k2w .* scaled_sc;
-    k1 = 1 - k2w;
+    k2 = 0.5;
+    k1 = 1 - k2;
 
     % input weigths of deafferentation (scaled by structrual connectivity)
     weights = sc_weight ./ sum(sc_weight, 2);

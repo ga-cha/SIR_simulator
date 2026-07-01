@@ -11,13 +11,13 @@ classdef SIR_parameters
     properties
         %% input parameters (inside parenthesis are values used in Zheng 2019 paper)
         % model tuning parameters
-        v = 1;                  % v: speed (1)
+        v = 0.1;                  % v: speed (1)
         dt = 0.01;              % dt: time step (0.01)
         t = 10000;              % T_total: total time steps (20000)
         init_number;            % init_number: number of injected misfolded alpha-syn (1)
-        prob_exit = 0.1;        % prob_stay: the probability of staying in the same region per unit time (0.5)
-        trans_rate = 1;         % trans_rate: a scalar value, controlling the baseline infectivity
-        beta_coeff = 1/sqrt(2);
+        prob_exit = 0.3;        % prob_stay: the probability of staying in the same region per unit time (0.5)
+        trans_rate = 2.25;      % trans_rate: a scalar value, controlling the baseline infectivity
+        beta_coeff = 1;         % many preliminary results use 1/sqrt(2)
 
         % user input parameters
         sc_length;              % sconnLen: structural connectivity matrix (length) (estimated from HCP data)
